@@ -14,10 +14,9 @@ public class Comment implements Content {
     @OneToOne
     private Profile Commenter;
 
-    @OneToMany
-    // @JoinColumn(name = "post_id")
-    // @JsonIgnore
-
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    @JsonIgnore
     private Content commentedOn;
     private String comment;
     private int numOfReactions;

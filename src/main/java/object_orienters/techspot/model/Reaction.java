@@ -1,9 +1,8 @@
 package object_orienters.techspot.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -14,7 +13,9 @@ public class Reaction {
     @OneToOne
     private Profile reactor;
     ReactionType type;
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "content_id") //NOTE: what shoulf be the column name here?
+    @JsonBackReference
     private Content contentReactedTo;
 
 

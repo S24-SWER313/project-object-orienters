@@ -2,9 +2,8 @@ package object_orienters.techspot.model;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -12,8 +11,16 @@ import lombok.Data;
 @Table(name = "Chat")
 public class Chat {
     @Id
+    @Column(name = "chat_id")
     private Long chatId;
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    @JsonBackReference
     private Profile sender;
+    @ManyToOne
+    @JoinColumn(name = "profile_id")
+    @JsonBackReference
     private Profile receiver;
+    @OneToMany(mappedBy = "chat", fetch = FetchType.EAGER)
     private List<Message> messages;
 }
