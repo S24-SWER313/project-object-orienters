@@ -1,7 +1,7 @@
 package object_orienters.techspot.controller;
 
 import object_orienters.techspot.CommentModelAssembler;
-import object_orienters.techspot.PostRepository;
+import object_orienters.techspot.repository.PostRepository;
 import object_orienters.techspot.exception.CommentNotFoundException;
 import object_orienters.techspot.exception.PostNotFoundException;
 import object_orienters.techspot.model.Comment;
@@ -10,8 +10,6 @@ import object_orienters.techspot.repository.CommentRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.stream.Collectors;
 
 public class CommentController {
 

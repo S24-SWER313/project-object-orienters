@@ -2,7 +2,7 @@ package object_orienters.techspot.controller;
 
 
 import object_orienters.techspot.PostModelAssembler;
-import object_orienters.techspot.PostRepository;
+import object_orienters.techspot.repository.PostRepository;
 import object_orienters.techspot.exception.PostNotFoundException;
 import object_orienters.techspot.exception.PostUnrelatedToUserException;
 import object_orienters.techspot.exception.UserNotFoundException;

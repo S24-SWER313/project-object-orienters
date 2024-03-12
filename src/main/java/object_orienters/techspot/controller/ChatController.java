@@ -15,11 +15,11 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/profiles")
-public class ChatControler {
+public class ChatController {
     ImpleChatService chatService;
     ImpleUserService userService;
 
-    public ChatControler(ImpleChatService chatService, ImpleUserService userService) {
+    public ChatController(ImpleChatService chatService, ImpleUserService userService) {
         this.chatService = chatService;
         this.userService = userService;
     }

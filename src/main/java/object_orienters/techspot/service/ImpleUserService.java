@@ -3,7 +3,10 @@ package object_orienters.techspot.service;
 import object_orienters.techspot.exception.UserNotFoundException;
 import object_orienters.techspot.model.Profile;
 import object_orienters.techspot.repository.ProfileRepository;
+import org.springframework.stereotype.Service;
 
+
+@Service
 public class ImpleUserService implements UserService{
     ProfileRepository userRepository;
     @Override

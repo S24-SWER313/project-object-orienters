@@ -17,6 +17,7 @@ public class Comment implements Content {
     @OneToMany
     // @JoinColumn(name = "post_id")
     // @JsonIgnore
+
     private Content commentedOn;
     private String comment;
     private int numOfReactions;
