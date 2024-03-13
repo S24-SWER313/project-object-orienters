@@ -2,13 +2,14 @@ package object_orienters.techspot.service;
 
 import java.util.Collection;
 
-import object_orienters.techspot.PostRepository;
+import object_orienters.techspot.repository.PostRepository;
 import object_orienters.techspot.exception.PostNotFoundException;
 import object_orienters.techspot.exception.PostUnrelatedToUserException;
 import object_orienters.techspot.exception.UserNotFoundException;
 import object_orienters.techspot.model.Post;
 import object_orienters.techspot.model.Profile;
 import object_orienters.techspot.repository.ProfileRepo;
+import object_orienters.techspot.service.interfaces.PostService;
 
 public class ImplePostService implements PostService {
     private PostRepository postRepository;
