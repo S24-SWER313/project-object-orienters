@@ -1,22 +1,23 @@
 package object_orienters.techspot;
 
 import object_orienters.techspot.model.Comment;
+import object_orienters.techspot.model.Content;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.NonNullApi;
 
-public class CommentModelAssembler implements RepresentationModelAssembler<Comment, EntityModel<Comment>>{
+public class CommentModelAssembler implements RepresentationModelAssembler<Content, EntityModel<Content>>{
     @Override
     @NonNull
-    public EntityModel<Comment> toModel(@NonNull Comment entity) {
+    public EntityModel<Content> toModel(@NonNull Content entity) {
         return EntityModel.of(entity);
     }
 
     @Override
     @NonNull
-    public CollectionModel<EntityModel<Comment>> toCollectionModel(Iterable<? extends Comment> entities) {
+    public CollectionModel<EntityModel<Content>> toCollectionModel(Iterable<? extends Content> entities) {
         return RepresentationModelAssembler.super.toCollectionModel(entities);
     }
 }

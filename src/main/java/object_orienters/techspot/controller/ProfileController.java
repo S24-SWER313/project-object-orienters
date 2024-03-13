@@ -1,11 +1,11 @@
 package object_orienters.techspot.controller;
 
+import object_orienters.techspot.repository.profileRepository;
 import org.springframework.web.bind.annotation.RestController;
 
 import object_orienters.techspot.exception.UserNotFoundException;
 import object_orienters.techspot.model.Profile;
 import object_orienters.techspot.repository.ProfileModelAssembler;
-import object_orienters.techspot.repository.ProfileRepo;
 import object_orienters.techspot.service.ImpleProfileService;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 public class ProfileController {
-    private final ProfileRepo repo;
+    private final profileRepository repo;
     private final ProfileModelAssembler assembler;
     private final ImpleProfileService profileService;
 
-    public ProfileController(ProfileRepo repo, ProfileModelAssembler assembler, ImpleProfileService profileService) {
+    public ProfileController(profileRepository repo, ProfileModelAssembler assembler, ImpleProfileService profileService) {
         this.repo = repo;
         this.assembler = assembler;
         this.profileService = profileService;

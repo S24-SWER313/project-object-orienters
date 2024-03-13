@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Entity
+@Embeddable
 @NoArgsConstructor
 public class SharedPost implements PostBase {
 
@@ -21,6 +21,9 @@ public class SharedPost implements PostBase {
     private Profile sharer;
 
     @Getter
+    @ManyToOne
+    @JoinColumn(name = "content_id")
+    @JsonBackReference
     private Post post;
 
     private Privacy privacy;

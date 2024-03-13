@@ -8,11 +8,12 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Entity
+
 @Data
-public class Post implements Content, PostBase {
-    @Id
-    @Column(name = "post_id")
+@DiscriminatorValue("Post")
+public class Post  extends Content implements PostBase {
+//    @Id
+//    @Column(name = "post_id")
     private long postId;
 
     @ManyToOne
@@ -25,11 +26,11 @@ public class Post implements Content, PostBase {
     private int numOfComments;
     private int numOfLikes;
     // private int numOfShares;
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
-    private List<Comment> comments;
-
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
-    private List<Reaction> reactions;
+//    @OneToMany(mappedBy = "Content", fetch = FetchType.EAGER)
+//    private List<Comment> comments;
+//
+//    @OneToMany(mappedBy = "Content", fetch = FetchType.EAGER)
+//    private List<Reaction> reactions;
 
     @Override
     public void like(Reaction reaction) {
@@ -39,7 +40,7 @@ public class Post implements Content, PostBase {
     @Override
     public void comment(Comment comment) {
         this.numOfComments++;
-        this.comments.add(comment);
+        getComments().add(comment);
     }
 
     @Override

@@ -6,16 +6,16 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 
-@Entity
 @Data
-public class Comment implements Content {
-    @Id
-    private String commentId;
+@DiscriminatorValue("Comment")
+public class Comment extends Content {
+//    @Id
+//    private String commentId;
     @OneToOne
     private Profile Commenter;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "content_id")
     @JsonIgnore
     private Content commentedOn;
     private String comment;

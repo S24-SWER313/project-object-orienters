@@ -5,14 +5,14 @@ import java.util.Optional;
 
 import object_orienters.techspot.exception.UserNotFoundException;
 import object_orienters.techspot.model.Profile;
-import object_orienters.techspot.repository.ProfileRepo;
+import object_orienters.techspot.repository.profileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class ImpleProfileService implements ProfileService {
-    private ProfileRepo repo;
+    private profileRepository repo;
 
     @Override
     public Profile getUserByUsername(String username) throws UserNotFoundException {

@@ -8,7 +8,7 @@ import object_orienters.techspot.exception.PostUnrelatedToUserException;
 import object_orienters.techspot.exception.UserNotFoundException;
 import object_orienters.techspot.model.Post;
 import object_orienters.techspot.model.Profile;
-import object_orienters.techspot.repository.ProfileRepo;
+import object_orienters.techspot.repository.profileRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +18,9 @@ public class PostController {
     //private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
     private final PostModelAssembler assembler;
     private final PostRepository postRepository;
-    private final ProfileRepo profileRepository;
+    private final profileRepository profileRepository;
 
-    PostController(PostRepository postRepository, ProfileRepo profileRepository, PostModelAssembler assembler) {
+    PostController(PostRepository postRepository, profileRepository profileRepository, PostModelAssembler assembler) {
         this.postRepository = postRepository;
         this.profileRepository = profileRepository;
         this.assembler = assembler;

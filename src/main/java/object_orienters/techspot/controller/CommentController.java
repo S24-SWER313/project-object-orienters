@@ -1,6 +1,7 @@
 package object_orienters.techspot.controller;
 
 import object_orienters.techspot.CommentModelAssembler;
+import object_orienters.techspot.model.Content;
 import object_orienters.techspot.repository.PostRepository;
 import object_orienters.techspot.exception.CommentNotFoundException;
 import object_orienters.techspot.exception.PostNotFoundException;
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
 
     //private  CommentService commentService;
-    private CommentModelAssembler commentModelAssembler;
-    private CommentRepository commentRepository;
-    private PostRepository postRepository;
+    private final CommentModelAssembler commentModelAssembler;
+    private final CommentRepository commentRepository;
+    private final PostRepository postRepository;
 
     CommentController(CommentRepository commentRepository, PostRepository postRepository , CommentModelAssembler commentModelAssembler){
         this.commentModelAssembler = commentModelAssembler;
@@ -26,29 +27,29 @@ public class CommentController {
     }
 
     @GetMapping("/posts/{postId}/comments")
-    public CollectionModel<EntityModel<Comment>> getCommentsOfPost(@PathVariable long postId) throws PostNotFoundException {
+    public CollectionModel<EntityModel<Content>> getCommentsOfPost(@PathVariable long postId) throws PostNotFoundException {
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
         return  commentModelAssembler.toCollectionModel(post.getComments());
     }
 
     @PostMapping("/posts/{postId}/comments")
-    public EntityModel<Comment> addCommentToPost(@PathVariable long postId, @RequestBody Comment newComment) throws PostNotFoundException {
+    public EntityModel<Content> addCommentToPost(@PathVariable long postId, @RequestBody Comment newComment) throws PostNotFoundException {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId));
         newComment.setCommentedOn(post);
         Comment savedComment = commentRepository.save(newComment);
         post.getComments().add(newComment);
         postRepository.save(post);
-        return commentModelAssembler.toModel(savedComment);
+        return commentModelAssembler.toModel( savedComment);
     }
 
 
     @DeleteMapping("/posts/{postId}/comments/{commentId}")
-    public void deleteComment(@PathVariable long postId, @PathVariable String commentId) throws PostNotFoundException, CommentNotFoundException {
+    public void deleteComment(@PathVariable long postId, @PathVariable long commentId) throws PostNotFoundException, CommentNotFoundException {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException(postId));
-        Comment comment = post.getComments().stream()
-                .filter(c -> c.getCommentId().equals(commentId))
+        Content comment = post.getComments().stream()
+                .filter(c -> c.getContentId().equals(commentId))
                 .findFirst()
                 .orElseThrow(() -> new CommentNotFoundException(commentId));
         post.getComments().remove(comment);

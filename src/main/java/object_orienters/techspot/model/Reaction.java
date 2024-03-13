@@ -14,7 +14,7 @@ public class Reaction {
     private Profile reactor;
     ReactionType type;
     @ManyToOne
-    @JoinColumn(name = "content_id") //NOTE: what shoulf be the column name here?
+    @JoinColumn(name = "content_id")
     @JsonBackReference
     private Content contentReactedTo;
 
