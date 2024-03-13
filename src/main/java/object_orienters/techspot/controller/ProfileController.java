@@ -1,6 +1,6 @@
 package object_orienters.techspot.controller;
 
-import object_orienters.techspot.repository.profileRepository;
+import object_orienters.techspot.repository.ProfileRepository;
 import org.springframework.web.bind.annotation.RestController;
 
 import object_orienters.techspot.exception.UserNotFoundException;
@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @RestController
 public class ProfileController {
-    private final profileRepository repo;
+    private final ProfileRepository repo;
     private final ProfileModelAssembler assembler;
     private final ImpleProfileService profileService;
 
-    public ProfileController(profileRepository repo, ProfileModelAssembler assembler, ImpleProfileService profileService) {
+    public ProfileController(ProfileRepository repo, ProfileModelAssembler assembler, ImpleProfileService profileService) {
         this.repo = repo;
         this.assembler = assembler;
         this.profileService = profileService;

@@ -16,7 +16,7 @@ public class LocalDatabase {
         private static final Logger log = LoggerFactory.getLogger(LoadDatabase.class);
 
         @Bean
-        CommandLineRunner initDatabase(profileRepository repository, ReactionRepository reactionRepository, PostRepository postRepository,
+        CommandLineRunner initDatabase(ProfileRepository repository, ReactionRepository reactionRepository, PostRepository postRepository,
                                        CommentRepository commentRepository, MessageRepository messageRepository, ChatRepository chatRepository) {
 
             return args -> {

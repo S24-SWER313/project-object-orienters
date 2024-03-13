@@ -21,7 +21,7 @@ public abstract class Content {
     @OneToMany(mappedBy = "Content", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Reaction> reactions;
     @OneToMany(mappedBy = "content", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @Filter(name = "commentFilter", condition = "type = 'COMMENT'")
+    //@Filter(name = "commentFilter", condition = "type = 'COMMENT'")
     private List<Content> comments;
     
 }

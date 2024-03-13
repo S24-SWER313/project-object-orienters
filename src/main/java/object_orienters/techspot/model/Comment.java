@@ -9,10 +9,10 @@ import java.sql.Timestamp;
 @Data
 @DiscriminatorValue("Comment")
 public class Comment extends Content {
-//    @Id
-//    private String commentId;
-    @OneToOne
-    private Profile Commenter;
+                //    @Id
+                //    private String commentId;
+//    @OneToOne
+//    private Profile Commenter;
 
     @ManyToOne
     @JoinColumn(name = "content_id")

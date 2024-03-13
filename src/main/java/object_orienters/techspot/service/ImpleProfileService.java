@@ -5,14 +5,13 @@ import java.util.Optional;
 
 import object_orienters.techspot.exception.UserNotFoundException;
 import object_orienters.techspot.model.Profile;
-import object_orienters.techspot.repository.profileRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import object_orienters.techspot.repository.ProfileRepository;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class ImpleProfileService implements ProfileService {
-    private profileRepository repo;
+    private ProfileRepository repo;
 
     @Override
     public Profile getUserByUsername(String username) throws UserNotFoundException {
@@ -45,23 +44,43 @@ public class ImpleProfileService implements ProfileService {
 
     @Override
     public List<Profile> getUserFollowersByUsername(String username) throws UserNotFoundException {
-        return repo.findFollowersByUserId(username);
+        return null;
     }
 
     @Override
-    public Profile getFollowerByUsername(String username, String followerUserName) throws UserNotFoundException {
-        return repo.findFollowerByUsername(username, followerUserName);
+    public Profile getFollowerByUsername(String username, String followerUsername) throws UserNotFoundException {
+        return null;
     }
 
     @Override
     public List<Profile> getUserFollowingByUsername(String username) throws UserNotFoundException {
-        return repo.findFollowingByUserId(username);
+        return null;
     }
 
     @Override
     public Profile getFollowingByUsername(String username, String followingUsername) throws UserNotFoundException {
-        return repo.findFollowingByUsername(username, followingUsername);
+        return null;
     }
+
+//    @Override
+//    public List<Profile> getUserFollowersByUsername(String username) throws UserNotFoundException {
+//        return repo.findFollowersByUserId(username);
+//    }
+//
+//    @Override
+//    public Profile getFollowerByUsername(String username, String followerUserName) throws UserNotFoundException {
+//        return repo.findFollowerByUsername(username, followerUserName);
+//    }
+//
+//    @Override
+//    public List<Profile> getUserFollowingByUsername(String username) throws UserNotFoundException {
+//        return repo.findFollowingByUserId(username);
+//    }
+//
+//    @Override
+//    public Profile getFollowingByUsername(String username, String followingUsername) throws UserNotFoundException {
+//        return repo.findFollowingByUsername(username, followingUsername);
+//    }
 
     //TODO: REVISION NEEDED
     @Override

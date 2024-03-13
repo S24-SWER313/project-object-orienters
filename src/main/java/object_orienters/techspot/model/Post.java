@@ -16,21 +16,17 @@ public class Post  extends Content implements PostBase {
 //    @Column(name = "post_id")
     private long postId;
 
-    @ManyToOne
-    @JoinColumn(name = "profile_id")
-    @JsonBackReference
-    private Profile author;
+//    @ManyToOne
+//    @JoinColumn(name = "profile_id")
+//    @JsonBackReference
+//    private Profile author;
     private Timestamp timestamp;
     private String content;
     private Privacy privacy;
     private int numOfComments;
     private int numOfLikes;
-    // private int numOfShares;
-//    @OneToMany(mappedBy = "Content", fetch = FetchType.EAGER)
-//    private List<Comment> comments;
-//
-//    @OneToMany(mappedBy = "Content", fetch = FetchType.EAGER)
-//    private List<Reaction> reactions;
+    //private int numOfShares;
+
 
     @Override
     public void like(Reaction reaction) {
