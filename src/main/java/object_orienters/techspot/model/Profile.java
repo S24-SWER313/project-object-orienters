@@ -2,10 +2,9 @@ package object_orienters.techspot.model;
 
 import jakarta.persistence.*;
 
-import java.awt.image.BufferedImage;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,24 +18,40 @@ public class Profile {
     @Id
     @Column(name = "profile_id")
     private String username;
-    private BufferedImage profilePic;
+    private String profilePic;
     private String name;
-    private String proffesion; 
+    private String profession;
     private String email;
     private Gender gender;
     private LocalDate dob;
-    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "username", fetch = FetchType.EAGER)
     private List<Profile> followers;
-    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "username", fetch = FetchType.EAGER)
     private List<Profile> following;
-    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private List<Post> publishedPosts;
-    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
-    private List<SharedPost> sharedPosts;
-    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
-    private Set<Chat> Inbox;
+//    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
+//    private List<SharedPost> sharedPosts;
+//    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
+//    private Set<Chat> Inbox;
 
 
+    public Profile(String username, String name, String profession, String email, String profilePic){
+        this.username = username;
+        this.profilePic = profilePic;
+        this.name = name;
+        this.profession = profession;
+        this.email = email;
+        this.profilePic = profilePic;
+        this.gender = Gender.FEMALE;
+        this.followers  = new ArrayList<>();
+        this.following = new ArrayList<>();
+        this.publishedPosts = new ArrayList<>();
+    }
+
+    public String toString(){
+        return "Username: " + username + " Name: " + name + " Profession: " + profession + " Email: " + email;
+    }
 
 }
 

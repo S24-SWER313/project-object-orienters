@@ -7,15 +7,16 @@ import lombok.Data;
 import java.sql.Timestamp;
 
 @Data
-@DiscriminatorValue("Comment")
+@Entity
+@Table(name = "comment")
 public class Comment extends Content {
-                //    @Id
-                //    private String commentId;
+        //    @Id
+        //    private String commentId;
 //    @OneToOne
 //    private Profile Commenter;
 
     @ManyToOne
-    @JoinColumn(name = "content_id")
+    @JoinColumn(name = "comment_id")
     @JsonIgnore
     private Content commentedOn;
     private String comment;

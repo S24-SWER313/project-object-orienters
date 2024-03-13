@@ -8,20 +8,20 @@ import org.hibernate.annotations.Filter;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @Table(name = "content")
 @Data
 public abstract class Content {
     @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
+   // @GeneratedValue (strategy = GenerationType.AUTO)
     @Column(name = "content_id", updatable = false, nullable = false)
     @Getter
     private Long contentId;
 
-    @OneToMany(mappedBy = "Content", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Reaction> reactions;
     @OneToMany(mappedBy = "content", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    //@Filter(name = "commentFilter", condition = "type = 'COMMENT'")
-    private List<Content> comments;
+    private List<Reaction> reactions;
+//    @OneToMany(mappedBy = "content", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    //@Filter(name = "commentFilter", condition = "type = 'COMMENT'")
+//    private List<Comment> comments;
     
 }

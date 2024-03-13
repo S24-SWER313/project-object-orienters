@@ -52,7 +52,7 @@ public class ProfileController {
 
     // @RamHusam111 here the assembler returns links to self and to the followers
     // get user profile
-    @GetMapping("/profiles/{userName}")
+    @GetMapping("/profiles/{username}")
     public EntityModel<Profile> one(@PathVariable String username) throws UserNotFoundException {
         return assembler.toModel(profileService.getUserByUsername(username));
     }
@@ -68,7 +68,7 @@ public class ProfileController {
     // @RamHusam111 here when we use the assembler how will it return a link to the
     // followers of the user?
     // update user profile
-    @PutMapping("/profiles/{userName}")
+    @PutMapping("/profiles/{username}")
     ResponseEntity<EntityModel<Profile>> updateProfile(@RequestBody Profile newUser, @PathVariable String username)
             throws UserNotFoundException {
         Profile updatedUser = profileService.updateUserProfile(newUser, username);
@@ -78,7 +78,7 @@ public class ProfileController {
     };
 
     // get user followers
-    @GetMapping("/profiles/{userName}/followers")
+    @GetMapping("/profiles/{username}/followers")
     public ResponseEntity<CollectionModel<EntityModel<Profile>>> Followers(@PathVariable String username)
             throws UserNotFoundException {
         List<EntityModel<Profile>> followers = profileService.getUserFollowersByUsername(username).stream()
@@ -90,7 +90,7 @@ public class ProfileController {
     }
 
     // get specific user follower
-    @GetMapping("/profiles/{userName}/followers/{followerUserName}")
+    @GetMapping("/profiles/{username}/followers/{followerUserName}")
     public EntityModel<Profile> getSpecificFollower(@PathVariable String username,
             @PathVariable String followerUserName) {
         Profile follower = profileService.getFollowerByUsername(username, followerUserName);
@@ -99,7 +99,7 @@ public class ProfileController {
     }
 
     // get user followers
-    @GetMapping("/profiles/{userName}/following")
+    @GetMapping("/profiles/{username}/following")
     public ResponseEntity<CollectionModel<EntityModel<Profile>>> Following(@PathVariable String userName)
             throws UserNotFoundException {
         List<EntityModel<Profile>> following = profileService.getUserFollowingByUsername(userName).stream()
@@ -111,7 +111,7 @@ public class ProfileController {
     }
 
     // get specific user following
-    @GetMapping("/profiles/{userName}/following/{userName}")
+    @GetMapping("/profiles/{username}/following/{followingUsername}")
     public EntityModel<Profile> getSpecificFollowing(@PathVariable String username,
             @PathVariable String followingUsername) throws UserNotFoundException {
         Profile follower = profileService.getFollowingByUsername(username, followingUsername);
@@ -119,21 +119,21 @@ public class ProfileController {
     }
 
     // add new follower to user
-    @PostMapping("/profiles/{userName}/followers")
+    @PostMapping("/profiles/{username}/followers")
     public EntityModel<Profile> newFollower(@PathVariable String username, @RequestBody Profile newFollower)
             throws UserNotFoundException {
         return assembler.toModel(profileService.addNewFollower(username, newFollower));
     }
 
     // delete follower from user
-    @DeleteMapping("/profiles/{userName}/followers/{UserName}")
+    @DeleteMapping("/profiles/{username}/followers/{UserName}")
     ResponseEntity<Profile> deleteFollower(@PathVariable String username) throws UserNotFoundException {
         profileService.deleteFollower(username);
         return ResponseEntity.noContent().build();
     }
 
     // add new following to user
-    @PostMapping("/profiles/{userName}/following")
+    @PostMapping("/profiles/{username}/following")
     public EntityModel<Profile> newFollowing(@PathVariable String username, @RequestBody Profile newFollowing)
             throws UserNotFoundException {
         return assembler.toModel(profileService.addNewFollowing(username, newFollowing));
@@ -141,7 +141,7 @@ public class ProfileController {
 
     // TODO
     // delete following from user
-    @DeleteMapping("/profiles/{userName}/following/{delUserName}")
+    @DeleteMapping("/profiles/{username}/following/{delUserName}")
     ResponseEntity<Profile> deleteFollowing(@PathVariable String username, @PathVariable String delUserName)
             throws UserNotFoundException {
                 profileService.deleteFollowing(username);

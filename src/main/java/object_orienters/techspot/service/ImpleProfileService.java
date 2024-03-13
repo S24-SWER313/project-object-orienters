@@ -33,10 +33,10 @@ public class ImpleProfileService implements ProfileService {
             user.setFollowers(newUser.getFollowers());
             user.setFollowing(newUser.getFollowing());
             user.setName(newUser.getName());
-            user.setProffesion(newUser.getProffesion());
+            user.setProfession(newUser.getProfession());
             user.setGender(newUser.getGender());
             user.setPublishedPosts(newUser.getPublishedPosts());
-            user.setSharedPosts(newUser.getSharedPosts());
+            //user.setSharedPosts(newUser.getSharedPosts());
             return repo.save(user);
         }).orElseThrow(() -> new UserNotFoundException(username));
         return updatedUser;

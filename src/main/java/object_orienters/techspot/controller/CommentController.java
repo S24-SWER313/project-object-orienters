@@ -25,12 +25,12 @@ public class CommentController {
         this.postRepository = postRepository;
 
     }
-
-    @GetMapping("/posts/{postId}/comments")
-    public CollectionModel<EntityModel<Content>> getCommentsOfPost(@PathVariable long postId) throws PostNotFoundException {
-        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
-        return  commentModelAssembler.toCollectionModel(post.getComments());
-    }
+//
+//    @GetMapping("/posts/{postId}/comments")
+//    public CollectionModel<EntityModel<Content>> getCommentsOfPost(@PathVariable long postId) throws PostNotFoundException {
+//        Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
+//        return  commentModelAssembler.toCollectionModel(post.getComments());
+//    }
 
     @PostMapping("/posts/{postId}/comments")
     public EntityModel<Content> addCommentToPost(@PathVariable long postId, @RequestBody Comment newComment) throws PostNotFoundException {
@@ -38,22 +38,12 @@ public class CommentController {
                 .orElseThrow(() -> new PostNotFoundException(postId));
         newComment.setCommentedOn(post);
         Comment savedComment = commentRepository.save(newComment);
-        post.getComments().add(newComment);
+       // post.getComments().add(newComment);
         postRepository.save(post);
         return commentModelAssembler.toModel( savedComment);
     }
 
 
-    @DeleteMapping("/posts/{postId}/comments/{commentId}")
-    public void deleteComment(@PathVariable long postId, @PathVariable long commentId) throws PostNotFoundException, CommentNotFoundException {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new PostNotFoundException(postId));
-        Content comment = post.getComments().stream()
-                .filter(c -> c.getContentId().equals(commentId))
-                .findFirst()
-                .orElseThrow(() -> new CommentNotFoundException(commentId));
-        post.getComments().remove(comment);
-        postRepository.save(post);
-    }
+
 
 }

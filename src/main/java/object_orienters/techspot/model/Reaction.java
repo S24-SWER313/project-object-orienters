@@ -10,13 +10,13 @@ import lombok.Data;
 public class Reaction {
     @Id
     private String reactionId;
-//    @OneToOne
-//    private Profile reactor;
+    @OneToOne
+    private Profile reactor;
     ReactionType type;
     @ManyToOne
     @JoinColumn(name = "content_id")
     @JsonBackReference
-    private Content contentReactedTo;
+    private Content content;
 
 
     enum ReactionType {
