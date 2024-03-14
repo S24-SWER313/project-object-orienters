@@ -1,6 +1,7 @@
 package object_orienters.techspot.controller;
 
 import object_orienters.techspot.repository.ProfileRepository;
+import org.slf4j.Logger;
 import org.springframework.web.bind.annotation.RestController;
 
 import object_orienters.techspot.exception.UserNotFoundException;
@@ -57,12 +58,15 @@ public class ProfileController {
         return assembler.toModel(profileService.getUserByUsername(username));
     }
 
+    Logger log = org.slf4j.LoggerFactory.getLogger(ProfileController.class);
+
     // create new user profile
     @PostMapping("/profiles")
     public ResponseEntity<EntityModel<Profile>> createUser(@RequestBody Profile newUser) {
-        EntityModel<Profile> entityModel = assembler.toModel(profileService.createNewUser(newUser));
-        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
-                .body(entityModel);
+        log.info("Creating new user");
+        repo.save(newUser);
+        EntityModel<Profile> entityModel = assembler.toModel(newUser);
+        return ResponseEntity.created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()).body(entityModel);
     }
 
     // @RamHusam111 here when we use the assembler how will it return a link to the
@@ -75,7 +79,9 @@ public class ProfileController {
         EntityModel<Profile> entityModel = assembler.toModel(updatedUser);
         return ResponseEntity.ok().location(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri())
                 .body(entityModel);
-    };
+    }
+
+    ;
 
     // get user followers
     @GetMapping("/profiles/{username}/followers")
@@ -92,7 +98,7 @@ public class ProfileController {
     // get specific user follower
     @GetMapping("/profiles/{username}/followers/{followerUserName}")
     public EntityModel<Profile> getSpecificFollower(@PathVariable String username,
-            @PathVariable String followerUserName) {
+                                                    @PathVariable String followerUserName) {
         Profile follower = profileService.getFollowerByUsername(username, followerUserName);
         return assembler.toModel(follower);
 
@@ -100,20 +106,20 @@ public class ProfileController {
 
     // get user followers
     @GetMapping("/profiles/{username}/following")
-    public ResponseEntity<CollectionModel<EntityModel<Profile>>> Following(@PathVariable String userName)
+    public ResponseEntity<CollectionModel<EntityModel<Profile>>> Following(@PathVariable String username)
             throws UserNotFoundException {
-        List<EntityModel<Profile>> following = profileService.getUserFollowingByUsername(userName).stream()
+        List<EntityModel<Profile>> following = profileService.getUserFollowingByUsername(username).stream()
                 .map(userModel -> assembler.toModel(userModel))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(CollectionModel.of(following,
-                linkTo(methodOn(ProfileController.class).one(userName)).withSelfRel()));
+                linkTo(methodOn(ProfileController.class).one(username)).withSelfRel()));
     }
 
     // get specific user following
     @GetMapping("/profiles/{username}/following/{followingUsername}")
     public EntityModel<Profile> getSpecificFollowing(@PathVariable String username,
-            @PathVariable String followingUsername) throws UserNotFoundException {
+                                                     @PathVariable String followingUsername) throws UserNotFoundException {
         Profile follower = profileService.getFollowingByUsername(username, followingUsername);
         return assembler.toModel(follower);
     }
@@ -144,7 +150,7 @@ public class ProfileController {
     @DeleteMapping("/profiles/{username}/following/{delUserName}")
     ResponseEntity<Profile> deleteFollowing(@PathVariable String username, @PathVariable String delUserName)
             throws UserNotFoundException {
-                profileService.deleteFollowing(username);
+        profileService.deleteFollowing(username);
         return ResponseEntity.noContent().build();
     }
 }

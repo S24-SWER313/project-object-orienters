@@ -2,12 +2,15 @@ package object_orienters.techspot.model;
 
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 @Entity
 @Data
@@ -29,7 +32,7 @@ public class Post  extends Content implements PostBase {
     private int numOfLikes;
     //private int numOfShares;
 
-    public Post(String content, Profile author) {
+    public Post(String content) {
         this.content = content;
         this.author = author;
         this.timestamp = new Timestamp(System.currentTimeMillis());

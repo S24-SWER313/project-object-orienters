@@ -1,5 +1,6 @@
 package object_orienters.techspot;
 
+import object_orienters.techspot.controller.ProfileController;
 import object_orienters.techspot.model.Post;
 import object_orienters.techspot.model.Profile;
 import object_orienters.techspot.repository.*;
@@ -21,12 +22,14 @@ public class LocalDatabase {
                                        CommentRepository commentRepository) {
 
             return args -> {
+                log.info("hello world");
                 Profile prof = new Profile("johndoe", "John Doe", "Software Engineer", "ff", "ff");
 
                 log.info("Preloading " + repository.save(prof));
 
-                Post post = new Post();
+                Post post = new Post("hello");
                 log.info("Preloading " + postRepository.save(post));
+                log.info("Preloading " + repository.save(prof));
 
 //                Profile prof2 = new Profile("janedoe", "Jane Doe", "Software Engineer", "ff", "ff   ");
 //

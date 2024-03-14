@@ -6,11 +6,13 @@ import java.util.Optional;
 import object_orienters.techspot.exception.UserNotFoundException;
 import object_orienters.techspot.model.Profile;
 import object_orienters.techspot.repository.ProfileRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class ImpleProfileService implements ProfileService {
+    @Autowired
     private ProfileRepository repo;
 
     @Override

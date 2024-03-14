@@ -9,6 +9,8 @@ import object_orienters.techspot.exception.UserNotFoundException;
 import object_orienters.techspot.model.Post;
 import object_orienters.techspot.model.Profile;
 import object_orienters.techspot.repository.ProfileRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.*;
@@ -26,24 +28,26 @@ public class PostController {
         this.assembler = assembler;
     }
 
-//    @GetMapping("/profiles/{username}/posts")
-//    public CollectionModel<EntityModel<Post>> getTimelinePosts(@PathVariable String username) throws UserNotFoundException {
-//
-//        return assembler.toCollectionModel(postRepository.findByAuthor(profileRepository.findById(username).orElseThrow(() -> new UserNotFoundException(username))));
-//    }
+    @GetMapping("/profiles/{username}/posts")
+    public CollectionModel<EntityModel<Post>> getTimelinePosts(@PathVariable String username) throws UserNotFoundException {
 
-//    @PostMapping("/profiles/{username}/posts")
-//    public EntityModel<Post> addTimelinePosts(@PathVariable String username, @RequestBody Post post) throws UserNotFoundException {
-//        Profile user = profileRepository.findById(username).orElseThrow(() -> new UserNotFoundException(username));
-//        post.setAuthor(user);
-//        postRepository.save(post);
-//
-//        //TODO: Specify if post is shared or authored
-//        user.getPublishedPosts().add(post);
-//        profileRepository.save(user);
-//        return assembler.toModel(post);
-//
-//    }
+        return assembler.toCollectionModel(postRepository.findByAuthor(profileRepository.findById(username).orElseThrow(() -> new UserNotFoundException(username))));
+    }
+
+    @PostMapping("/profiles/{username}/posts")
+    public EntityModel<Post> addTimelinePosts(@PathVariable String username, @RequestBody Post post) throws UserNotFoundException {
+        Profile user = profileRepository.findById(username).orElseThrow(() -> new UserNotFoundException(username));
+        postRepository.save(post);
+
+        post.setAuthor(user);
+        postRepository.save(post);
+
+        //TODO: Specify if post is shared or authored
+        user.getPublishedPosts().add(post);
+        profileRepository.save(user);
+        return assembler.toModel(post);
+
+    }
 
 //    @PutMapping("/profiles/{username}/posts/{postId}")
 //    public EntityModel<Post> editTimelinePost(@PathVariable String username, @PathVariable long postId, @RequestBody Post newPost) throws UserNotFoundException, PostNotFoundException, PostUnrelatedToUserException {
@@ -81,12 +85,13 @@ public class PostController {
 
 
     }
+    private static final Logger LOG = LoggerFactory.getLogger(PostController.class);
 
     @GetMapping("/posts/{postId}")
     public EntityModel<Post> getPost(@PathVariable long postId) throws PostNotFoundException {
+        LOG.info("Getting post with id: " + postId);
         Post post = postRepository.findById(postId).orElseThrow(() -> new PostNotFoundException(postId));
         return assembler.toModel(post);
     }
-
 
 }

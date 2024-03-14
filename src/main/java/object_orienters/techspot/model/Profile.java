@@ -8,6 +8,8 @@ import java.util.List;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
 
 @Entity
 @Data
@@ -24,9 +26,11 @@ public class Profile {
     private String email;
     private Gender gender;
     private LocalDate dob;
-    @OneToMany(mappedBy = "username", fetch = FetchType.EAGER)
+    @ManyToOne
+    private Profile master;
+    @OneToMany(mappedBy = "master", fetch = FetchType.EAGER)
     private List<Profile> followers;
-    @OneToMany(mappedBy = "username", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "master", fetch = FetchType.EAGER)
     private List<Profile> following;
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private List<Post> publishedPosts;
