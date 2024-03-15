@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import object_orienters.techspot.comment.Comment;
-import object_orienters.techspot.model.Content;
+import object_orienters.techspot.content.Content;
 import object_orienters.techspot.model.PostBase;
 import object_orienters.techspot.model.Privacy;
 import object_orienters.techspot.profile.Profile;

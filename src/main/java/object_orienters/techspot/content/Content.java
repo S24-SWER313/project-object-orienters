@@ -1,4 +1,4 @@
-package object_orienters.techspot.model;
+package object_orienters.techspot.content;
 
 import jakarta.persistence.*;
 import lombok.Data;
