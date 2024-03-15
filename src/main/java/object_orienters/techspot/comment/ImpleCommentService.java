@@ -5,7 +5,9 @@ import java.util.List;
 import object_orienters.techspot.post.PostRepository;
 import object_orienters.techspot.post.PostNotFoundException;
 import object_orienters.techspot.post.Post;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ImpleCommentService implements CommentService {
     private CommentRepository commentRepository;
     private PostRepository postRepository;

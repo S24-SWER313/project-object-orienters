@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import object_orienters.techspot.chat.Chat;
 import object_orienters.techspot.post.Post;
+import object_orienters.techspot.post.SharedPost;
 
 @Entity
 @Data
@@ -29,19 +30,23 @@ public class Profile {
     private LocalDate dob;
     @ManyToOne
     private Profile master;
+
     @OneToMany(mappedBy = "master", fetch = FetchType.EAGER)
     private List<Profile> followers;
+
     @OneToMany(mappedBy = "master", fetch = FetchType.EAGER)
     private List<Profile> following;
+
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private List<Post> publishedPosts;
-   @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
-   private List<?> sharedPosts; //TODO: Change to Post or SharedPost or Content
-   @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
-   private Set<Chat> Inbox;
+
+    @OneToMany(mappedBy = "sharer", fetch = FetchType.EAGER)
+    private List<SharedPost> sharedPosts; //TODO: Change to Post or SharedPost or Content
+//   @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
+//   private Set<Chat> Inbox;
 
 
-    public Profile(String username, String name, String profession, String email, String profilePic){
+    public Profile(String username, String name, String profession, String email, String profilePic) {
         this.username = username;
         this.profilePic = profilePic;
         this.name = name;
@@ -49,20 +54,19 @@ public class Profile {
         this.email = email;
         this.profilePic = profilePic;
         this.gender = Gender.FEMALE;
-        this.followers  = new ArrayList<>();
+        this.followers = new ArrayList<>();
         this.following = new ArrayList<>();
         this.publishedPosts = new ArrayList<>();
     }
 
-    public String toString(){
+    public String toString() {
         return "Username: " + username + " Name: " + name + " Profession: " + profession + " Email: " + email;
     }
 
 }
 
 
-
-    enum Gender {
-        MALE,
-        FEMALE
-    }
+enum Gender {
+    MALE,
+    FEMALE
+}
