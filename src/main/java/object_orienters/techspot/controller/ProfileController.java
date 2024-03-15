@@ -128,6 +128,7 @@ public class ProfileController {
     @PostMapping("/profiles/{username}/followers")
     public EntityModel<Profile> newFollower(@PathVariable String username, @RequestBody Profile newFollower)
             throws UserNotFoundException {
+        newFollower.getFollowing().add(profileService.getUserByUsername(username));
         return assembler.toModel(profileService.addNewFollower(username, newFollower));
     }
 

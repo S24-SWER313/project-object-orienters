@@ -34,7 +34,6 @@ public class Post  extends Content implements PostBase {
 
     public Post(String content) {
         this.content = content;
-        this.author = author;
         this.timestamp = new Timestamp(System.currentTimeMillis());
         this.privacy = Privacy.PUBLIC;
     }

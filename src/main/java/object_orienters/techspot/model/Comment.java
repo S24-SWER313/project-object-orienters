@@ -16,8 +16,8 @@ import java.sql.Timestamp;
 public class Comment extends Content {
         //    @Id
         //    private String commentId;
-//    @OneToOne
-//    private Profile Commenter;
+    @OneToOne
+    private Profile Commenter;
 
     @ManyToOne
     @JoinColumn(name = "comment_id")
