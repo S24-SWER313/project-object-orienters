@@ -5,7 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import lombok.Data;
-import object_orienters.techspot.Content;
+import object_orienters.techspot.model.Content;
 import object_orienters.techspot.profile.Profile;
 
 @Entity

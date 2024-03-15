@@ -3,10 +3,12 @@ package object_orienters.techspot.comment;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import object_orienters.techspot.Content;
+import object_orienters.techspot.model.Content;
 import object_orienters.techspot.profile.Profile;
 
 import java.sql.Timestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @Entity

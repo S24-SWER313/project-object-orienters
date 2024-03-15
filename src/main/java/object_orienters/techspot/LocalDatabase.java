@@ -1,14 +1,18 @@
 package object_orienters.techspot;
 
-import object_orienters.techspot.controller.ProfileController;
-import object_orienters.techspot.model.Post;
-import object_orienters.techspot.model.Profile;
-import object_orienters.techspot.repository.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import object_orienters.techspot.comment.CommentRepository;
+import object_orienters.techspot.post.Post;
+import object_orienters.techspot.post.PostRepository;
+import object_orienters.techspot.profile.Profile;
+import object_orienters.techspot.profile.ProfileRepository;
+import object_orienters.techspot.reaction.ReactionRepository;
 
 
 public class LocalDatabase {

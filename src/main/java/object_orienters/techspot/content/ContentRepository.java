@@ -1,4 +1,4 @@
-package object_orienters.techspot.repository;
+package object_orienters.techspot;
 
 import object_orienters.techspot.model.Content;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,3 @@
-package object_orienters.techspot.repository;
 package object_orienters.techspot.post;
 
 import object_orienters.techspot.profile.Profile;

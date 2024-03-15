@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,10 +35,10 @@ public class Profile {
     private List<Profile> following;
     @OneToMany(mappedBy = "author", fetch = FetchType.EAGER)
     private List<Post> publishedPosts;
-//    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
-//    private List<SharedPost> sharedPosts;
-//    @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
-//    private Set<Chat> Inbox;
+   @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
+   private List<?> sharedPosts; //TODO: Change to Post or SharedPost or Content
+   @OneToMany(mappedBy = "profile", fetch = FetchType.EAGER)
+   private Set<Chat> Inbox;
 
 
     public Profile(String username, String name, String profession, String email, String profilePic){

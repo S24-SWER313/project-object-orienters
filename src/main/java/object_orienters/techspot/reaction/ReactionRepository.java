@@ -1,7 +1,6 @@
 package object_orienters.techspot.reaction;
 
-import object_orienters.techspot.Content;
-import object_orienters.techspot.reaction.Reaction;
+import object_orienters.techspot.model.Content;
 import object_orienters.techspot.profile.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
