@@ -1,11 +1,13 @@
-import logo from './logo.svg';
 import './App.css';
-import MealsHomePage from './MealsHomePage'
+import Post from './Post';
+
 
 function App() {
   return (
     <div className="App">
-        <MealsHomePage/>
+      <Post />
+
+
     </div>
   );
 }
