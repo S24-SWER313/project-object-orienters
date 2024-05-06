@@ -58,7 +58,7 @@ function MediaContentData({mediaData}) {
     return (
         <div>
             {mediaContent}
-            {loadError && <p>Error loading media</p>}
+            {/* {loadError && <p>Error loading media</p>} */}
         </div>
     );
 }
