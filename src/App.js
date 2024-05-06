@@ -1,24 +1,19 @@
 // Import icons from react-icons
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import { BiLike, BiChat, BiShare } from 'react-icons/bi'; // Corrected import paths
-
-// Import Chakra UI components
 import {
-    Card, CardHeader, CardBody, CardFooter,
-    Avatar, Box, Heading, Text, Flex,
-    IconButton, Image, Button
+    Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, IconButton, Text
 } from '@chakra-ui/react';
 
 // Import custom components or styles
 import './App.css';
-import Post from './Post';
+import PostList from './PostList';
 
 function App() {
     return (
-        <div className="App">
+            <Box display="flex" flexDirection="column" alignItems="center" >
+                <PostList />
+            </Box>
 
-            <Post />
-        </div>
     );
 }
 
