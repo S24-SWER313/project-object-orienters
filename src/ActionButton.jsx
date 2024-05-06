@@ -2,6 +2,8 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp as farThumbsUp, faComment as farComment } from '@fortawesome/free-regular-svg-icons';
 import { faShareSquare as fasShareSquare } from '@fortawesome/free-solid-svg-icons';  // Solid style for share
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 const ActionButton = (props) => {
     let icon;
@@ -20,10 +22,13 @@ const ActionButton = (props) => {
     }
 
     return (
-        <button onClick={() => console.log('Button clicked!')}>
-            {icon && <FontAwesomeIcon icon={icon} size="2x" />}
-            {props.text}
-        </button>
+        <button onClick={() => console.log('Button clicked!')} type="button" className="btn btn-outline-primary" >
+            {icon && <FontAwesomeIcon icon={icon} size="2x" />}  {props.text}</button>
+
+        // <button onClick={() => console.log('Button clicked!')}>
+        //     {icon && <FontAwesomeIcon icon={icon} size="2x" />}
+        //     {props.text}
+        // </button>
     );
 };
 
