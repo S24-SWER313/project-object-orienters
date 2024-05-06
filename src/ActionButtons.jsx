@@ -6,9 +6,9 @@ const ActionButtons = () => {
 
     return (
         <div>
-            <ActionButton icon="like" text="Like" />
-            <ActionButton icon="comment" text="Comment" />
-            <ActionButton icon="share" text="Share" />
+            <ActionButton icon="like"/> &nbsp;
+            <ActionButton icon="comment"/>&nbsp;&nbsp;
+            <ActionButton icon="share"/>
         </div>
     );
 };
