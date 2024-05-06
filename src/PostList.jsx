@@ -5,7 +5,7 @@ function PostList() {
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:8080/feed?ClientUsername=Husam', {
+        fetch('http://localhost:8080/feed?ClientUsername=hello', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
