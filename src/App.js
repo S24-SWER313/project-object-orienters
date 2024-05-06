@@ -10,12 +10,20 @@ function App() {
 
     return (<>
 
-        <div display='flex'  p={4} flexDirection="column" alignItems="center" background={"lightblue"} >
+{/* style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            background: 'lightblue'
+
+        }} */}
+
+        <Box display='flex'  p={4} flexDirection="column" alignItems="center" background={"lightblue"} >
             <Heading as='h1' size='4xl' noOfLines={1}>
                 TechSpot
             </Heading>
             <PostList />
-        </div>
+        </Box>
     </>
 
 

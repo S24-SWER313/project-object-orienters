@@ -32,7 +32,7 @@ function Post(props) {
     }, [props.authorProfilePic]); // Effect runs whenever the profile picture prop changes
 
     return (
-        <Card key={props.contentID} w='35%' m='4'>
+        <Card key={props.contentID} w={[0.99, 0.9, 0.8]} maxW={550} m='4'>
             <CardHeader marginBottom='-6'>
                 <Flex spacing='4'>
                     <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
@@ -55,7 +55,7 @@ function Post(props) {
                 <Text marginBottom='4'>
                     {props.textData}
                 </Text>
-                <MediaContentData objectFit='cover' mediaData={props.mediaData} />
+                <MediaContentData style={{ margin: "auto"}} objectFit='cover' mediaData={props.mediaData}  />
             </CardBody>
             <CardFooter
                 marginTop='-9'
