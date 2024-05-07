@@ -6,11 +6,21 @@ import {
 import './App.css';
 import PostList from './PostList';
 
+
 function App() {
 
-    return (<>
 
-{/* style={{
+    
+
+
+    return (
+
+
+
+
+        <>
+
+            {/* style={{
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -18,13 +28,15 @@ function App() {
 
         }} */}
 
-        <Box display='flex'  p={4} flexDirection="column" alignItems="center" background={"lightblue"} >
-            <Heading as='h1' size='4xl' noOfLines={1}>
-                TechSpot
-            </Heading>
-            <PostList />
-        </Box>
-    </>
+            <Box display='flex' flexDirection="column" alignItems="center" background={"lightblue"} >
+
+                <Heading p={4} bg={'white'} as='h1' size='4xl' noOfLines={1} w={'99vw'} textAlign={'center'}>
+                    TechSpot
+                </Heading>
+                <PostList />
+            </Box>
+
+        </>
 
 
     );

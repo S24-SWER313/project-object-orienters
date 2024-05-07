@@ -39,7 +39,7 @@ function PostList() {
         observer.current = new IntersectionObserver(entries => {
             if (entries[0].isIntersecting && hasMore) {
                 console.log('Visible');
-                setOffset(prevOffset => prevOffset + 10);
+                setOffset(prevOffset => prevOffset + limit);
             }
         });
         if (node) observer.current.observe(node);
@@ -71,7 +71,7 @@ function PostList() {
                         mediaData={post.mediaData}
                         authorName={post.contentAuthor.name}
                         authorProfilePic={post.contentAuthor.profilePic?.data || '/default-profile.jpg'}
-                        authorProfession={post.contentAuthor.profession || 'Unknown Profession'}
+                        authorProfession={post.contentAuthor.profession || 'No Profession'}
                     />
 
                 } else {
@@ -83,7 +83,7 @@ function PostList() {
                         mediaData={post.mediaData}
                         authorName={post.contentAuthor.name}
                         authorProfilePic={post.contentAuthor.profilePic?.data || '/default-profile.jpg'}
-                        authorProfession={post.contentAuthor.profession || 'Unknown Profession'}
+                        authorProfession={post.contentAuthor.profession || 'No Profession'}
                     />
 
                     // return <div style={{
@@ -94,8 +94,6 @@ function PostList() {
                 }
             }
             )}
-            <div>{loading && 'Loading...'}</div>
-            <div>{error && 'Error'}</div>
         </>
     );
 }

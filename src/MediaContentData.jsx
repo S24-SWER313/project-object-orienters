@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { ungzip } from 'pako'; // Or another library for gzip decompression
-import { Buffer } from 'buffer'; // Import the buffer polyfill
+import { ungzip } from 'pako';
+import { Buffer } from 'buffer';
 
 function MediaContentData({ mediaData }) {
     const [mediaContent, setMediaContent] = useState(null);
@@ -11,15 +11,18 @@ function MediaContentData({ mediaData }) {
 
         if (mediaData && mediaData.data) {
             try {
-                // Use Buffer from the buffer polyfill to decode the base64 data
                 const base64DecodedData = Buffer.from(mediaData.data, 'base64');
-                const mimeType = mediaData.type || 'application/octet-stream';
-                console.log("2");
-                const ungzipedData = ungzip(base64DecodedData);
-                console.log("3");
+                let processedData;
 
-                // Create a URL object from the decompressed data
-                objectUrl = URL.createObjectURL(new Blob([ungzipedData], { type: mimeType }));
+                // Check if data is gzipped by checking the magic number
+                if (base64DecodedData[0] === 0x1f && base64DecodedData[1] === 0x8b) {
+                    processedData = ungzip(base64DecodedData);  // If gzipped, decompress
+                } else {
+                    processedData = base64DecodedData;         // If not gzipped, use as is
+                }
+
+                const mimeType = mediaData.type || 'application/octet-stream';
+                objectUrl = URL.createObjectURL(new Blob([processedData], { type: mimeType }));
 
                 // Determine the media type and render appropriate content
                 switch (mimeType.split('/')[0]) {
@@ -36,8 +39,7 @@ function MediaContentData({ mediaData }) {
                             <source src={objectUrl} type={mimeType} />
                         </audio>);
                         break;
-                    default:
-                        setMediaContent(<p>No preview available</p>);
+                    
                 }
                 setLoadError(false);
             } catch (error) {
@@ -49,7 +51,6 @@ function MediaContentData({ mediaData }) {
             setMediaContent(null);
         }
 
-        // Cleanup URL object after component unmount
         return () => {
             if (objectUrl) {
                 URL.revokeObjectURL(objectUrl);
@@ -60,7 +61,7 @@ function MediaContentData({ mediaData }) {
     return (
         <div>
             {mediaContent}
-            {/* {loadError && <p>Error loading media</p>} */}
+            {/* {loadError && <p>Error loading media. Please check the format.</p>} */}
         </div>
     );
 }
