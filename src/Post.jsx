@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import {
     Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, IconButton, Text
 } from '@chakra-ui/react';
@@ -8,7 +8,7 @@ import { ungzip } from 'pako';
 import { Buffer } from 'buffer';
 import MediaContentData from './MediaContentData';
 
-function Post(props) {
+const Post = forwardRef((props, ref) => {
     const [profilePicUrl, setProfilePicUrl] = useState(null);
 
     useEffect(() => {
@@ -32,7 +32,7 @@ function Post(props) {
     }, [props.authorProfilePic]); // Effect runs whenever the profile picture prop changes
 
     return (
-        <Card key={props.contentID} w={[0.99, 0.9, 0.8]} maxW={550} m='4'>
+        <Card ref={ref} key={props.contentID} w={[0.99, 0.9, 0.8]} maxW={550} m='4'>
             <CardHeader marginBottom='-6'>
                 <Flex spacing='4'>
                     <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
@@ -55,7 +55,7 @@ function Post(props) {
                 <Text marginBottom='4'>
                     {props.textData}
                 </Text>
-                <MediaContentData style={{ margin: "auto"}} objectFit='cover' mediaData={props.mediaData}  />
+                {props.mediaData !="AAAAAAAAAAAAAA==" && <MediaContentData style={{ margin: "auto"}} objectFit='cover' mediaData={props.mediaData}  />}
             </CardBody>
             <CardFooter
                 marginTop='-9'
@@ -80,6 +80,6 @@ function Post(props) {
             </CardFooter>
         </Card>
     );
-}
+});
 
 export default Post;

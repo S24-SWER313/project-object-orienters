@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {ungzip} from 'pako'; // Or another library for gzip decompression
-import {Buffer} from 'buffer'; // Import the buffer polyfill
+import React, { useEffect, useState } from 'react';
+import { ungzip } from 'pako'; // Or another library for gzip decompression
+import { Buffer } from 'buffer'; // Import the buffer polyfill
 
-function MediaContentData({mediaData}) {
+function MediaContentData({ mediaData }) {
     const [mediaContent, setMediaContent] = useState(null);
     const [loadError, setLoadError] = useState(false);
 
@@ -13,25 +13,27 @@ function MediaContentData({mediaData}) {
             try {
                 // Use Buffer from the buffer polyfill to decode the base64 data
                 const base64DecodedData = Buffer.from(mediaData.data, 'base64');
-                const ungzipedData = ungzip(base64DecodedData);
                 const mimeType = mediaData.type || 'application/octet-stream';
+                console.log("2");
+                const ungzipedData = ungzip(base64DecodedData);
+                console.log("3");
 
                 // Create a URL object from the decompressed data
-                objectUrl = URL.createObjectURL(new Blob([ungzipedData], {type: mimeType}));
+                objectUrl = URL.createObjectURL(new Blob([ungzipedData], { type: mimeType }));
 
                 // Determine the media type and render appropriate content
                 switch (mimeType.split('/')[0]) {
                     case 'image':
-                        setMediaContent(<img src={objectUrl} alt="Media"/>);
+                        setMediaContent(<img src={objectUrl} alt="Media" />);
                         break;
                     case 'video':
                         setMediaContent(<video controls>
-                            <source src={objectUrl} type={mimeType}/>
+                            <source src={objectUrl} type={mimeType} />
                         </video>);
                         break;
                     case 'audio':
                         setMediaContent(<audio controls>
-                            <source src={objectUrl} type={mimeType}/>
+                            <source src={objectUrl} type={mimeType} />
                         </audio>);
                         break;
                     default:
