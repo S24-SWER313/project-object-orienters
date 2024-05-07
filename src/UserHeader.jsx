@@ -1,6 +1,7 @@
 import React from 'react';
 
 function UserHeader({ name, position, profilePic, timeStamp }) {
+    
     return (
         <div>
             <img src={profilePic} alt="Profile" style={{ width: 60, height: 60, borderRadius: '50%' }} />

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import {
     Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, IconButton, Text
 } from '@chakra-ui/react';
@@ -7,23 +7,37 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { ungzip } from 'pako';
 import { Buffer } from 'buffer';
 import MediaContentData from './MediaContentData';
+import moment from 'moment'; // Import moment library
 
-function Post(props) {
+const Post = forwardRef((props, ref) => {
     const [profilePicUrl, setProfilePicUrl] = useState(null);
+
+    const moment = require('moment');
+    const specificDateTime = moment(props.timestamp, 'YYYY-MM-DD HH:mm:ss.SSS');
+    const duration = moment(specificDateTime).fromNow();
+
+    const toProperCase = (str) => {
+        return str.toLowerCase().replace(/\b\w/g, function(char) {
+            return char.toUpperCase();
+        });
+    }
 
     useEffect(() => {
         if (props.authorProfilePic) {
             try {
-                // Decode the base64 data and decompress it
                 const base64DecodedData = Buffer.from(props.authorProfilePic, 'base64');
-                const ungzipedData = ungzip(base64DecodedData);
-                
-                // Create a URL object from the decompressed data
-                const objectUrl = URL.createObjectURL(new Blob([ungzipedData], {type: 'image/jpeg'})); // Assuming JPEG, adjust accordingly
-                setProfilePicUrl(objectUrl);
+                let processedData;
 
-                // Cleanup URL object after component unmount
-                return () => URL.revokeObjectURL(objectUrl);
+                // Check if data is gzipped by checking the magic number
+                if (base64DecodedData[0] === 0x1f && base64DecodedData[1] === 0x8b) {
+                    processedData = ungzip(base64DecodedData);  // If gzipped, decompress
+                } else {
+                    processedData = base64DecodedData;         // If not gzipped, use as is
+                }
+
+                const mimeType = props.authorProfilePic.type || 'application/octet-stream';
+                setProfilePicUrl(URL.createObjectURL(new Blob([processedData], { type: mimeType })));
+
             } catch (error) {
                 console.error('Error decompressing profile picture:', error);
                 setProfilePicUrl(null);
@@ -32,15 +46,15 @@ function Post(props) {
     }, [props.authorProfilePic]); // Effect runs whenever the profile picture prop changes
 
     return (
-        <Card key={props.contentID} w={[0.99, 0.9, 0.8]} maxW={550} m='4'>
+        <Card ref={ref} key={props.contentID} w={[0.88, 0.9, 0.8]} maxW={550} m='2'>
             <CardHeader marginBottom='-6'>
                 <Flex spacing='4'>
                     <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                         <Avatar name={props.authorName} src={profilePicUrl || undefined} />
                         <Box alignItems="left">
-                            <Heading size='sm' textAlign={['left']}>{props.authorName}</Heading>
-                            <Text textAlign={['left']}>{props.authorProfession}</Text>
-                            <Text fontSize='0.8em' textAlign={['left']} >{props.timestamp}</Text>
+                            <Heading size='sm' textAlign={['left']}>{toProperCase(props.authorName)}</Heading>
+                            <Text fontSize='0.8em' textAlign={['left']}>{toProperCase(props.authorProfession)}</Text>
+                            <Text fontSize='0.7em' textAlign={['left']} color={'gray'} >{duration}</Text>
                         </Box>
                     </Flex>
                     <IconButton
@@ -55,18 +69,19 @@ function Post(props) {
                 <Text marginBottom='4'>
                     {props.textData}
                 </Text>
-                <MediaContentData style={{ margin: "auto"}} objectFit='cover' mediaData={props.mediaData}  />
+                {props.mediaData !="AAAAAAAAAAAAAA==" && <MediaContentData style={{ margin: "auto"}} objectFit='cover' mediaData={props.mediaData}  />}
             </CardBody>
             <CardFooter
                 marginTop='-9'
                 marginBottom='-3'
                 justify='space-between'
-                flexWrap='wrap'
+                flexWrap='nowrap'
                 sx={{
                     '& > button': {
-                        minW: '136px',
+                        minW: '50',
                     },
                 }}
+               // width='100%'
             >
                 <Button flex='1' variant='ghost' leftIcon={<BiLike />}>
                     Like
@@ -80,6 +95,6 @@ function Post(props) {
             </CardFooter>
         </Card>
     );
-}
+});
 
 export default Post;
