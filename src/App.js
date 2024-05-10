@@ -5,6 +5,7 @@ import {
 // Import custom components or styles
 import './App.css';
 import PostList from './PostList';
+import Header from './Header';
 
 
 function App() {
@@ -27,12 +28,16 @@ function App() {
             background: 'lightblue'
 
         }} */}
+        {/* <IconButton icon={<i className="bi bi-image"></i>} /> */}
+
+        <Header/>
+
 
             <Box display='flex' flexDirection="column" alignItems="center" background={"lightblue"} >
 
-                <Heading p={4} bg={'white'} as='h1' size='4xl' noOfLines={1} w={'99vw'} textAlign={'center'}>
+                {/* <Heading p={4} bg={'white'} as='h1' size='4xl' noOfLines={1} w={'99vw'} textAlign={'center'}>
                     TechSpot
-                </Heading>
+                </Heading> */}
                 <PostList />
             </Box>
 
