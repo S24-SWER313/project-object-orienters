@@ -23,14 +23,14 @@ function PostList() {
     const [feedType, setFeedType] = useState('ALL_USERS');
     const [feedValue, setFeedValue] = useState('following');
     const [offset, setOffset] = useState(0);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(5);
 
     const {
         posts,
         loading,
         error,
         hasMore
-    } = useFeedLoading(feedType, feedValue, offset, limit, "hello");
+    } = useFeedLoading(feedType, feedValue, offset, limit, "Husam");
 
     const observer = useRef();
     const lastPostElementRef = useCallback(node => {

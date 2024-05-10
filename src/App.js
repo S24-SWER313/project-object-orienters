@@ -1,33 +1,13 @@
-// Import icons from react-icons
 import {
-    Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, IconButton, Text
+    Box, Heading
 } from '@chakra-ui/react';
-// Import custom components or styles
 import './App.css';
 import PostList from './PostList';
-
+import { Highlight } from '@chakra-ui/react'
 
 function App() {
-
-
-    
-
-
     return (
-
-
-
-
         <>
-
-            {/* style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            background: 'lightblue'
-
-        }} */}
-
             <Box display='flex' flexDirection="column" alignItems="center" background={"lightblue"} >
 
                 <Heading p={4} bg={'white'} as='h1' size='4xl' noOfLines={1} w={'99vw'} textAlign={'center'}>
@@ -35,10 +15,7 @@ function App() {
                 </Heading>
                 <PostList />
             </Box>
-
         </>
-
-
     );
 }
 

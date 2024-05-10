@@ -28,11 +28,10 @@ const Post = forwardRef((props, ref) => {
                 const base64DecodedData = Buffer.from(props.authorProfilePic, 'base64');
                 let processedData;
 
-                // Check if data is gzipped by checking the magic number
                 if (base64DecodedData[0] === 0x1f && base64DecodedData[1] === 0x8b) {
-                    processedData = ungzip(base64DecodedData);  // If gzipped, decompress
+                    processedData = ungzip(base64DecodedData); 
                 } else {
-                    processedData = base64DecodedData;         // If not gzipped, use as is
+                    processedData = base64DecodedData;         
                 }
 
                 const mimeType = props.authorProfilePic.type || 'application/octet-stream';
@@ -43,7 +42,7 @@ const Post = forwardRef((props, ref) => {
                 setProfilePicUrl(null);
             }
         }
-    }, [props.authorProfilePic]); // Effect runs whenever the profile picture prop changes
+    }, [props.authorProfilePic]);
 
     return (
         <Card ref={ref} key={props.contentID} w={[0.88, 0.9, 0.8]} maxW={550} m='2'>
