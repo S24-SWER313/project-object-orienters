@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react'
-import axios from 'axios';
 
 function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
     const [loading, setLoading] = useState(true);
@@ -20,27 +19,21 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
         if(!hasMore) return;
         setLoading(true);
         setError(false);
-        axios({
-            method: 'GET',
-            url: `http://localhost:8080/feed`,
-            params: {
-                feedType: feedType,
-                value: feedValue,
-                offset: offset,
-                limit: limit,
-                clientUsername: clientUsername
-            }
-        }).then((response) => {
+        fetch(`http://localhost:8080/feed?feedType=${feedType}&value=${feedValue}&offset=${offset}&limit=${limit}&clientUsername=${clientUsername}`, {
+            method: 'GET'
+        }).then(response => response.json())
+          .then(data => {
             setPosts(prevPosts => {
-                return [...prevPosts, ...response.data.data];
+                return [...prevPosts, ...data.data];
             });
-            setHasMore(response.data.total > offset + limit);
+            setHasMore(data.total > offset + limit);
             setLoading(false);
-            console.log(response.data);
-        }).catch((error) => {
+            console.log(data);
+          }).catch(error => {
             setError(true);
             console.log(error);
         })
+        
 
     }, [feedType, feedValue, offset, limit])
 
