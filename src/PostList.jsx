@@ -15,7 +15,7 @@ function PostList() {
     //     })
     //     .then(res => res.json())
     //     .then(data => {
-    //         setPosts(data);    
+    //         setPosts(data);
     //     })
     //     .catch(error => console.error('Error fetching posts:', error));
     // }, []);
@@ -30,7 +30,7 @@ function PostList() {
         loading,
         error,
         hasMore
-    } = useFeedLoading(feedType, feedValue, offset, limit, "Husam");
+    } = useFeedLoading(feedType, feedValue, offset, limit, "hello");
 
     const observer = useRef();
     const lastPostElementRef = useCallback(node => {
