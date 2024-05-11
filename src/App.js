@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   Avatar,
@@ -18,31 +19,19 @@ import { BiChat, BiLike, BiShare } from "react-icons/bi";
 import "./App.css";
 import PostList from "./PostList";
 import AddPost from "./AddPost";
+import Trending from './Trending';
+import Header from './Header';
+
 
 function App() {
-  return (
-
-    <>
-
-
-      <Heading
-        p={4}
-        bg={"white"}
-        as="h1"
-        size="4xl"
-        noOfLines={1}
-        w={"99vw"}
-        textAlign={"center"}
-      >
-        TechSpot
-      </Heading>
-
-
-
-
-
-
-      <AddPost />
+    return (
+        <>
+            <Header/>
+            <Box display='flex' flexDirection="row" alignItems="flex-start" background={"lightblue"} width="100%">
+                <Box width="30%" paddingTop="6" paddingRight="5" paddingLeft="4">
+                    <Trending/>
+                </Box>
+ <AddPost />
 
 
 
@@ -163,35 +152,15 @@ function App() {
           </CardFooter>
         </Card>
       </Box>  */}
+                <Box width="75%" paddingTop="4" display="flex" justifyContent="center">
+                    <Box width="100%" maxWidth="960px"> 
+                        <PostList />
+                    </Box>
+                </Box>
+            </Box>
+        </>
+    );
 
-
-      
-
-
-
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        background={"lightblue"}
-      >
-        <PostList />
-      </Box>
-
-
-
-
-      
-
-
-
-
-
-
-
-
-    </>
-  );
 }
 
 export default App;
