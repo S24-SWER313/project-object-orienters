@@ -63,7 +63,7 @@ function AddPost() {
     }, [postText]);  // Dependency on postText to run effect whenever it changes
 
     return (
-        // <Box display="flex" flexDirection="column" alignItems="center" m={5} background={"lightblue"}>
+        // <Box display="flex" flexDirection="column" alignItems="center" m§={5} background={"lightblue"}>
             <Card
                 // w="70%"
 

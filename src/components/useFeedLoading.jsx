@@ -12,30 +12,28 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
     }, [feedType, feedValue])
 
     useEffect(() => {
-        // if (isInitialMount.current) {
-        //     isInitialMount.current = false;
-        //     return;
-        // }
-        if(!hasMore) return;
+        if (!hasMore) return;
         setLoading(true);
         setError(false);
         fetch(`http://localhost:8080/feed?feedType=${feedType}&value=${feedValue}&offset=${offset}&limit=${limit}&clientUsername=${clientUsername}`, {
             method: 'GET'
         }).then(response => response.json())
-          .then(data => {
-            setPosts(prevPosts => {
-                return [...prevPosts, ...data.data];
-            });
-            setHasMore(data.total > offset + limit);
-            setLoading(false);
-            console.log(data);
-          }).catch(error => {
+            .then(data => {
+                if (Array.isArray(data.data)) {  // Check if data.data is an array
+                    setPosts(prevPosts => {
+                        return [...prevPosts, ...data.data];
+                    });
+                    setHasMore(data.total > offset + limit);
+                } else {
+                    console.error('Expected data.data to be an array but received:', data.data);
+                }
+                setLoading(false);
+            }).catch(error => {
             setError(true);
-            console.log(error);
+            console.error('Failed to fetch posts:', error);
         })
-        
-
     }, [feedType, feedValue, offset, limit])
+
 
 
     return { loading, error, posts, hasMore }
