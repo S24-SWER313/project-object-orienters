@@ -42,14 +42,16 @@ function Header() {
     return (
         <React.Fragment>
             <chakra.header
+
                 bg={bg}
                 w="full"
                 px={{
                     base: 2,
                     sm: 4,
                 }}
-                py={4}
+
                 shadow="md"
+
             >
                 <Flex alignItems="center" justifyContent="space-between" mx="auto">
                     <HStack display="flex" spacing={3} alignItems="center">
