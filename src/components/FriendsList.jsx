@@ -1,75 +1,101 @@
-import React, {useCallback, useState} from 'react';
-import {Box, Flex, Heading, IconButton} from '@chakra-ui/react';
-import {ChevronLeftIcon, ChevronRightIcon} from '@chakra-ui/icons';
-import FriendCard from './FriendCard'; // Import the new component
+import React, { useRef } from 'react';
+import { Box, Heading, Flex, IconButton } from '@chakra-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { ScrollMenu } from 'react-horizontal-scrolling-menu';
+import 'react-horizontal-scrolling-menu/dist/styles.css';
+import FriendCard from './FriendCard';
 
-function FriendsList({users}) {
-    const [currentSlide, setCurrentSlide] = useState(0);
-    const cardsPerSlide = 3;
-    const slidesCount = Math.ceil(users.length / cardsPerSlide);
+// Arrow component for fixed positioning
+const Arrow = ({ direction, onClick, disabled }) => {
+    const icon = direction === 'left' ? <ChevronLeftIcon /> : <ChevronRightIcon />;
+    const position = direction === 'left' ? { left: '1px' } : { right: '1px' };
 
-    const handleSlideChange = useCallback((direction) => {
-        setCurrentSlide(prev => {
-            if (direction === 'next') {
-                return Math.min(slidesCount - 1, prev + 1);
-            } else {
-                return Math.max(0, prev - 1);
-            }
-        });
-    }, [slidesCount]);
+    return (
+        <IconButton
+            icon={icon}
+            onClick={onClick}
+            disabled={disabled}
+            isRound
+            m="2"
+            aria-label={`Scroll ${direction}`}
+            position="absolute"
+            {...position}
+            top="50%"
+            transform="translateY(-50%)"
+            zIndex="2"
+        />
+    );
+};
 
-    const getSlideTransform = () => {
-        if (currentSlide === slidesCount - 1 && users.length % cardsPerSlide !== 0) {
-            const remainingCards = users.length % cardsPerSlide;
-            const lastSlideOffset = 100 - (remainingCards / cardsPerSlide * 100);
-            return `translateX(-${100 * (slidesCount - 1) - lastSlideOffset}%)`;
+const LeftArrow = ({ onClick }) => (
+    <Arrow direction="left" onClick={onClick} />
+);
+
+const RightArrow = ({ onClick }) => (
+    <Arrow direction="right" onClick={onClick} />
+);
+
+function FriendsList({ users }) {
+    const menuRef = useRef(null);
+
+    const scrollLeft = () => {
+        if (menuRef.current) {
+            menuRef.current.scrollLeft -= 300;
         }
-        return `translateX(-${currentSlide * 100}%)`;
     };
 
-    const carouselStyle = {
-        transition: "transform 0.6s ease", transform: getSlideTransform(),
+    const scrollRight = () => {
+        if (menuRef.current) {
+            menuRef.current.scrollLeft += 300;
+        }
     };
 
-    return (<>
-        <Box position="relative" display="flex" flexDirection="column" alignItems="center" justifyContent="center"
-             bg="white" boxShadow="lg" rounded="lg" m="2" w={[0.88, 0.9, 0.8]} maxW="550px" p="4" h={"400px"}>
-            <Heading size='md' alignSelf="flex-start" mb="4">Friends Suggestions</Heading>
-            <IconButton
-                icon={<ChevronLeftIcon/>}
-                position="absolute"
-                left="10px"
-                top="50%"
-                transform="translateY(-50%)"
-                zIndex="2"
-                onClick={() => handleSlideChange('prev')}
-                isRound
-                m="2"
-                isDisabled={currentSlide === 0}
-            />
-            <Flex w="full" h="360px" overflow="hidden" alignItems="center" justifyContent="center">
-                <Flex h="360px" w="full" style={carouselStyle} alignItems="center" justifyContent="flex-start">
-                    {users.map((user, index) => (
-                        <Box key={`profile-${index}`} w={`${100 / cardsPerSlide}%`} p="2" display="flex"
-                             justifyContent="center" mx="4">>>
-                            <FriendCard {...user} />
-                        </Box>))}
-                </Flex>
-            </Flex>
-            <IconButton
-                icon={<ChevronRightIcon/>}
-                position="absolute"
-                right="10px"
-                top="50%"
-                transform="translateY(-50%)"
-                zIndex="2"
-                onClick={() => handleSlideChange('next')}
-                isRound
-                m="2"
-                isDisabled={currentSlide === slidesCount - 1}
-            />
+    const MenuItem = ({ user, itemId }) => (
+        <Box
+            rounded={'lg'}
+            key={itemId}
+            p={1}
+            mx="2"
+            borderWidth="1px"
+            borderRadius="xl"
+            overflow="hidden"
+            w={'200px'}
+            flex="0 0 auto"
+
+        >
+            <FriendCard {...user} />
         </Box>
-    </>);
+    );
+
+    return (
+        <Box
+            w={[0.88, 0.9, 0.8]} maxW={550}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            bg="white"
+            boxShadow="lg"
+            rounded="lg"
+            m="2"
+            p="4"
+            // maxWidth="600px"
+            h= '301px'
+            overflow="hidden"
+            position="relative"
+        >
+            <Heading size="md" alignSelf="flex-start" mb="4">Friends Suggestions</Heading>
+            <Flex alignItems="center" justifyContent="center" w="full" position="relative" overflowX="hidden">
+                <LeftArrow onClick={scrollLeft} />
+                <Box ref={menuRef} style={{ display: 'flex', overflowX: 'auto', scrollBehavior: 'smooth', width: '100%' }}>
+                    {users.map((user, index) => (
+                        <MenuItem user={user} itemId={`user-${index}`} key={index} />
+                    ))}
+                </Box>
+                <RightArrow onClick={scrollRight} />
+            </Flex>
+        </Box>
+    );
 }
 
 export default FriendsList;
