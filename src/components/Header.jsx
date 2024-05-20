@@ -1,5 +1,5 @@
-import React from 'react'
-// Chakra UI components
+import React from 'react';
+import { useNavigate } from 'react-router-dom'; // Added useNavigate import
 import {
     useColorModeValue,
     useDisclosure,
@@ -14,33 +14,20 @@ import {
     InputLeftElement,
     Input,
     Avatar,
-    Heading
+    Heading,
+    chakra
 } from '@chakra-ui/react';
-
-// Chakra UI utility for visually hidden components
 import { VisuallyHidden } from '@chakra-ui/visually-hidden';
-
-// React Icons
 import { AiOutlineMenu, AiFillHome, AiOutlineInbox, AiOutlineSearch, AiFillBell } from 'react-icons/ai';
 import { BsFillCameraVideoFill } from 'react-icons/bs';
 
-// If you are using a custom Logo component, ensure it is imported
-// import Logo from './path/to/Logo';
-
-// If you are using a custom chakra factory function and it's not defined, make sure to import it
-// import { chakra } from '@chakra-ui/system';
-// Importing the chakra factory function
-import { chakra } from '@chakra-ui/system';
-
-
-// Import your custom Logo component if it's defined in another file
 function Header() {
-
-
+    const navigate = useNavigate();  // Initialize the navigate function
     const bg = useColorModeValue("white", "gray.800");
     const mobileNav = useDisclosure();
+
     return (
-        <React.Fragment>
+        <>
             <chakra.header
 
                 bg={bg}
@@ -49,9 +36,7 @@ function Header() {
                     base: 2,
                     sm: 4,
                 }}
-
                 shadow="md"
-
             >
                 <Flex alignItems="center" justifyContent="space-between" mx="auto">
                     <HStack display="flex" spacing={3} alignItems="center">
@@ -121,12 +106,10 @@ function Header() {
                             display="flex"
                             alignItems="center"
                         >
-                            {/* <Logo /> */}
                             <Heading p={4} bg={'white'} as='h1' size='md' noOfLines={1} textAlign={'center'}>
                                 TechSpot
                             </Heading>
                         </chakra.a>
-
                         <HStack
                             spacing={3}
                             display={{
@@ -185,6 +168,7 @@ function Header() {
                         </chakra.a>
 
                         <Avatar
+                            onClick={() => navigate('/profile')}
                             size="sm"
                             name="Dan Abrahmov"
                             src="https://bit.ly/dan-abramov"
@@ -192,10 +176,8 @@ function Header() {
                     </HStack>
                 </Flex>
             </chakra.header>
-        </React.Fragment>
+        </>
     );
-
-
 }
 
-export default Header
+export default Header;
