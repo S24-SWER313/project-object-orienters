@@ -28,7 +28,7 @@ import {
     CardBody,
     CardFooter,
     Flex,
-    
+
 
 } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
@@ -46,17 +46,17 @@ function CallerAddPost() {
 
     return (
         <>
-        
+
             <Box display="flex" flexDirection="column"  cursor="pointer"  w={[0.88, 0.9, 0.8]} maxW={550} m='2' onClick={handleOpen}>
-            <Card border={'1px'} height="250px">
+            <Card border={'1px'} height="190px">
 
                 <CardHeader>
                     <Flex alignItems="center" gap="4">
-                        <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' size='lg' />
+                        <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' size='md' />
                         <Box>
-                            <Text fontWeight="bold" fontSize="lg">Dan Abrahmov</Text>
+                            <Text fontWeight="bold" fontSize="md">Dan Abrahmov</Text>
                             <Menu>
-                                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                                <MenuButton h={'30px'} fontSize="xs" as={Button} rightIcon={<ChevronDownIcon />}>
                                     {privacy}
                                 </MenuButton>
                                 <MenuList>
@@ -85,23 +85,23 @@ function CallerAddPost() {
                         </VStack>
                     </Flex>
                     <FormControl>
-                        <FormLabel >Attach media</FormLabel>
+                        {/*<FormLabel fontSize={'sm'}>Attach media</FormLabel>*/}
                         <InputGroup>
                             <Input
                                 style={{ display: 'none' }}  // Hide the default input
                             />
-                            <Button readOnly variant='outline' colorScheme='blue' leftIcon={<Icon as={AiOutlinePaperClip} />} >Choose File</Button>
+                            <Button size={'xs'} readOnly variant='outline' colorScheme='blue' leftIcon={<Icon as={AiOutlinePaperClip} />} >Choose File</Button>
                         </InputGroup>
-                        
+
                     </FormControl>
                 </CardHeader>
 
                 <CardBody>
-                    
+
                 </CardBody>
 
                 <CardFooter>
-                    
+
                 </CardFooter>
             </Card>
             </Box>
@@ -123,7 +123,7 @@ function CallerAddPost() {
 
 
 
-            
+
 
 
 
