@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 
@@ -10,28 +11,26 @@ import Home from './components/Home';
 import MainLayout from './components/MainLayout';
 import TrendPage from './components/Treand/TrendPage';
 
-
-
 function App() {
 
     const users = [
         {
 
-        name: "Christian Buehner",
-        jobTitle: "Photographer",
-        email: "chris@buehner.com",
-        avatarImageUrl: "https://images.unsplash.com/photo-1623930154261-37f8b293c059?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1pYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
-        backgroundImage: "https://images.unsplash.com/photo-1666795599746-0f62dfa29a07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1pYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        followers: "15k",
-        following: "20k",
-    }, {
-        name: "Christian Buehner",
-        jobTitle: "Photographer",
-        email: "chris@buehner.com",
-        backgroundImage: "https://images.unsplash.com/photo-1666795599746-0f62dfa29a07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1pYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-        followers: "15k",
-        following: "20k",
-    },
+            name: "Christian Buehner",
+            jobTitle: "Photographer",
+            email: "chris@buehner.com",
+            avatarImageUrl: "https://images.unsplash.com/photo-1623930154261-37f8b293c059?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1pYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80",
+            backgroundImage: "https://images.unsplash.com/photo-1666795599746-0f62dfa29a07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1pYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+            followers: "15k",
+            following: "20k",
+        }, {
+            name: "Christian Buehner",
+            jobTitle: "Photographer",
+            email: "chris@buehner.com",
+            backgroundImage: "https://images.unsplash.com/photo-1666795599746-0f62dfa29a07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1pYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+            followers: "15k",
+            following: "20k",
+        },
 
         {
             name: "Christian Buehner",
@@ -42,6 +41,7 @@ function App() {
             followers: "15k",
             following: "20k",
         },
+
 
         {
             name: "Christian Buehner",
@@ -90,6 +90,7 @@ function App() {
     ];
 
     return (
+
     
         <Router>
             <Header />
@@ -113,6 +114,7 @@ function App() {
             </MainLayout>
             <Footer />
         </Router>
+
     );
 }
 
