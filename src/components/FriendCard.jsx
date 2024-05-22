@@ -12,7 +12,6 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 
-// Update the component to accept more props
 export default function FriendCard({name, jobTitle, avatarImageUrl, backgroundImage, followers, following}) {
     return (
         <Center>
@@ -27,7 +26,7 @@ export default function FriendCard({name, jobTitle, avatarImageUrl, backgroundIm
                     alt={'Profile background'}
                     h={'50px'}
                     w={'full'}
-                    src={backgroundImage} // Use backgroundImage prop
+                    src={backgroundImage} 
                     objectFit={'cover'}
                 />
                 <Flex justify={'center'} mt={-10} mb={-5}>

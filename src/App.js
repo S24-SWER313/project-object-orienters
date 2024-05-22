@@ -8,8 +8,7 @@ import ProfilePage from './components/ProfilePage';
 import PostFollowersFollowingTabs from './components/PostFollowersFollowingTabs';
 import Home from './components/Home';
 import MainLayout from './components/MainLayout';
-import FriendsList from './components/FriendsList';
-import {Box} from "@chakra-ui/react";
+import TrendPage from './components/Treand/TrendPage';
 
 
 
@@ -91,12 +90,7 @@ function App() {
     ];
 
     return (
-        // <>
-        //
-        //         <FriendsList users={users} />
-        //
-        // </>
-
+    
         <Router>
             <Header />
             <MainLayout>
@@ -112,7 +106,9 @@ function App() {
                         posts="10"
                     />} />
                     <Route path="/posts-followers-following" element={<PostFollowersFollowingTabs />} />
-                    <Route path="/" element={<Home/>} />  // Pass the users to the Home component
+                    <Route path="/" element={<Home/>} />
+                    <Route path="/trends" element={<TrendPage/>} />
+
                 </Routes>
             </MainLayout>
             <Footer />
