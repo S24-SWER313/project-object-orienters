@@ -242,10 +242,10 @@ export default function LogIn() {
               Login
             </Button>
             <Stack isInline justifyContent='space-between' mt={4}>
-              <Box>
-                <Link color={`${VARIANT_COLOR}.500`}>New here? Join us now!</Link>
-              </Box>
-            </Stack>
+            <Box>
+              <Link color={`${VARIANT_COLOR}.500`} href='/signup'>New here? Join us now!</Link>
+            </Box>
+        </Stack>
           </Box>
         </Stack>
       </Container>
