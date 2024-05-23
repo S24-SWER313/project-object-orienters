@@ -68,7 +68,7 @@ const Post = forwardRef((props, ref) => {
                 <Text marginBottom='4'>
                     {props.textData}
                 </Text>
-                {props.mediaData !="AAAAAAAAAAAAAA==" && <MediaContentData style={{ margin: "auto"}} objectFit='cover' mediaData={props.mediaData}  />}
+                {props.mediaData !=[] && <MediaContentData style={{ margin: "auto"}} objectFit='cover' mediaData={props.mediaData}  />}
             </CardBody>
             <CardFooter
                 marginTop='-9'

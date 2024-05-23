@@ -9,7 +9,9 @@ import ProfilePage from './components/ProfilePage';
 import PostFollowersFollowingTabs from './components/PostFollowersFollowingTabs';
 import Home from './components/Home';
 import MainLayout from './components/MainLayout';
-import TrendPage from './components/Treand/TrendPage';
+import TrendPage from './components/Trend/TrendPage';
+import LogIn from './components/LogIn';
+import SignUp from './components/SignUp';
 
 function App() {
 
@@ -91,6 +93,9 @@ function App() {
 
     return (
 
+    //  <LogIn />
+
+    //    <SignUp />
     
         <Router>
             <Header />
@@ -108,7 +113,7 @@ function App() {
                     />} />
                     <Route path="/posts-followers-following" element={<PostFollowersFollowingTabs />} />
                     <Route path="/" element={<Home/>} />
-                    <Route path="/trends" element={<TrendPage/>} />
+                    <Route path="/TrendPage:value" Component={TrendPage} />
 
                 </Routes>
             </MainLayout>

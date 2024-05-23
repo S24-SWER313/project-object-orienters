@@ -1,5 +1,5 @@
 import {Box} from "@chakra-ui/react";
-import TrendCard from "./Treand/TrendCard";
+import TrendCard from "./Trend/TrendCard";
 import React from "react";
 
 function MainLayout({ children }) {

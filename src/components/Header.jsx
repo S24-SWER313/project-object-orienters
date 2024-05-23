@@ -26,6 +26,12 @@ function Header() {
     const bg = useColorModeValue("white", "gray.800");
     const mobileNav = useDisclosure();
 
+    const handleKeyPress = (e) =>{
+        if (e.key === 'Enter') {
+            this.search();
+        }
+    }
+
     return (
         <>
             <chakra.header
@@ -146,7 +152,11 @@ function Header() {
                             <InputLeftElement pointerEvents="none">
                                 <AiOutlineSearch />
                             </InputLeftElement>
-                            <Input type="tel" placeholder="Search..." />
+                            <Input type="tel" placeholder="Search..."
+                            
+                            //onKeyUp={this.handleKeyPress.bind(this)} 
+                            />
+
                         </InputGroup>
 
                         <chakra.a

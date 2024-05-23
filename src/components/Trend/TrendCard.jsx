@@ -40,7 +40,7 @@ function TrendCard() {
                     {trends.map(trend => (
                         <Box key={trend.tagName}>
                             <Link
-                                to={`trends/${trend.tagName}`}
+                                to={`TrendPage/${trend.tagName}`}
                             >
                                 #{trend.tagName}
                             </Link>

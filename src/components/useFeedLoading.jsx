@@ -19,13 +19,13 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
             method: 'GET'
         }).then(response => response.json())
             .then(data => {
-                if (Array.isArray(data.data)) {  // Check if data.data is an array
+                if (Array.isArray(data._embedded.postList)) {
                     setPosts(prevPosts => {
-                        return [...prevPosts, ...data.data];
+                        return [...prevPosts, ...data._embedded.postList];
                     });
                     setHasMore(data.total > offset + limit);
                 } else {
-                    console.error('Expected data.data to be an array but received:', data.data);
+                    console.error('Expected data.data to be an array but received:', data._embedded.postList);
                 }
                 setLoading(false);
             }).catch(error => {

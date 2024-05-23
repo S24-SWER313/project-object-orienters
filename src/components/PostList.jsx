@@ -30,7 +30,9 @@ function PostList() {
         loading,
         error,
         hasMore
-    } = useFeedLoading(feedType, feedValue, offset, limit, "hello");
+    } = useFeedLoading(feedType, feedValue, offset, limit, "Yousef");
+
+    console.log(posts);
 
     const observer = useRef();
     const lastPostElementRef = useCallback(node => {
