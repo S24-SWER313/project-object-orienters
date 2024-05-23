@@ -7,8 +7,12 @@ import {
     Text,
     useBreakpointValue,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 
-export default function MainPage() {
+
+export default function Landing() {
+    const navigate = useNavigate();
+
     return (
         <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
             <Flex p={8} flex={1} align={'center'} justify={'center'}>
@@ -43,18 +47,24 @@ export default function MainPage() {
                             bg={'blue.400'}
                             color={'white'}
                             fontSize="lg"
-                            px={8} 
-                            py={6} 
+                            px={8}
+                            py={6}
                             _hover={{
                                 bg: 'blue.500',
-                            }}>
+                            }}
+                            onClick={() => navigate('/login')}
+                        >
                             LOG IN
                         </Button>
-                        <Button rounded={'full'}
-                        fontSize="lg"
-                        px={8} 
-                        py={6} 
-                        >SIGN UP</Button>
+                        <Button
+                            rounded={'full'}
+                            fontSize="lg"
+                            px={8}
+                            py={6}
+                            onClick={() => navigate('/signup')}
+                        >
+                            SIGN UP
+                        </Button>
                     </Stack>
                 </Stack>
             </Flex>
