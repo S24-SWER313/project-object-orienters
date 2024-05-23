@@ -202,7 +202,7 @@ export default function LogIn() {
             </Box>
         </Stack>
             <Button
-            h={'57'}
+            size={'lg'}
               fontFamily={'heading'}
               mt={8}
               w={'full'}
@@ -216,7 +216,7 @@ export default function LogIn() {
             </Button>
             <Stack isInline justifyContent='space-between' mt={4}>
             <Box>
-              <Link color={`${VARIANT_COLOR}.500`}>New here? Join us now!</Link>
+              <Link color={`${VARIANT_COLOR}.500`} href='/signup'>New here? Join us now!</Link>
             </Box>
         </Stack>
           </Box>

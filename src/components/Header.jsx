@@ -101,7 +101,7 @@ function Header() {
                             </VStack>
                         </Box>
                         <chakra.a
-                            href="/"
+                            href="/home"
                             title="TechSpot Home Page"
                             display="flex"
                             alignItems="center"
