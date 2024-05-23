@@ -72,7 +72,7 @@ export default function SignUp() {
   const [username, setUsername] = React.useState('');
 
   async function signup() {
-
+    handleSubmitEvent();
     await fetch('http://localhost:8080/auth/signup', {
       method: 'POST',
       headers: {
@@ -90,6 +90,12 @@ export default function SignUp() {
 
 
   }
+
+  const handleSubmitEvent = () => {
+    if (username == "" || password == "" || name == "" || email == "") {
+      alert("please provide a valid input");
+    }
+  };
 
   return (
     <Box position={'relative'} bgGradient='linear(red.100 0%, orange.100 25%, yellow.100 50%)'>

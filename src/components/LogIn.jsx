@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Flex,
@@ -16,6 +16,8 @@ import {
   Link,
   Checkbox
 } from '@chakra-ui/react';
+import { AuthContext, useAuth } from './AuthProvider'; // adjust the path as needed
+
 
 
 const VARIANT_COLOR = 'red';
@@ -67,10 +69,27 @@ export const Blur = (props) => {
 };
 
 export default function LogIn() {
+
   const avatarSize = useBreakpointValue({ base: 'md', md: 'lg' });
   const iconSize = useBreakpointValue({ base: '44px', md: '60px' });
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { loginAction } = useAuth();
+
+  
+  const handleSubmitEvent = () => {
+    if (username === "" || password === "") {
+      alert("please provide a valid input");
+      return false;
+    }
+    return true;
+  };
+
+  const handleLogin = () => {
+    if (handleSubmitEvent()) {
+      loginAction({ username, password });
+    }
+  };
 
   return (
     <Box position={'relative'} bgGradient='linear(red.100 0%, orange.100 25%, yellow.100 50%)'>
@@ -186,7 +205,9 @@ export default function LogIn() {
                   color: 'gray.500',
                 }
               }
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                }}
                                       
               />
               <Input
@@ -199,7 +220,9 @@ export default function LogIn() {
                   color: 'gray.500',
                 }}
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
               />
             </Stack>
             <Stack isInline justifyContent='space-between' mt={4}>
@@ -221,24 +244,7 @@ export default function LogIn() {
                 bgGradient: 'linear(to-r, red.400,pink.400)',
                 boxShadow: 'xl',
               }}
-              onClick={() => {
-                fetch('http://localhost:8080/auth/login', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify({ username: username, password: password }),
-                })
-                  .then((response) => response.json())
-                  .then((data) => {
-                    console.log('Success:', data);
-                  })
-                  .catch((error) => {
-                    console.error('Error:', error);
-                  }
-                  );
-
-              }}>
+              onClick={handleLogin}>
               Login
             </Button>
             <Stack isInline justifyContent='space-between' mt={4}>
