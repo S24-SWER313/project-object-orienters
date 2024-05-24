@@ -39,9 +39,12 @@ function PostList() {
         if (loading) return;
         if (observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver(entries => {
+            console.log(entries);
+            console.log("is interset" + entries[0].isIntersecting);
+            console.log("hasMore" + hasMore);
             if (entries[0].isIntersecting && hasMore) {
                 console.log('Visible');
-                setOffset(prevOffset => prevOffset + limit);
+                setOffset(prevOffset => prevOffset + 1);
             }
         });
         if (node) observer.current.observe(node);

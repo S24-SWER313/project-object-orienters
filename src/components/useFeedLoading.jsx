@@ -6,7 +6,6 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
     const [posts, setPosts] = useState([]);
     const [hasMore, setHasMore] = useState(true);
 
-    const isInitialMount = useRef(true);
     useEffect(() => {
         setPosts([]);
     }, [feedType, feedValue])
@@ -23,7 +22,8 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
                     setPosts(prevPosts => {
                         return [...prevPosts, ...data._embedded.postList];
                     });
-                    setHasMore(data.total > offset + limit);
+                    
+                    setHasMore(data.page.totalPages > offset + 1);
                 } else {
                     console.error('Expected data.data to be an array but received:', data._embedded.postList);
                 }

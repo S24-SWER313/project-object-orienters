@@ -59,7 +59,7 @@ function MediaContentData({ mediaData }) {
         };
     }, [mediaData]);
 
-    console.log('MediaContentData:', mediaContent);
+    // console.log('MediaContentData:', mediaContent);
 
     return (
         <div>
