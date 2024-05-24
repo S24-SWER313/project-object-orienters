@@ -3,45 +3,46 @@ import { ungzip } from 'pako';
 import { Buffer } from 'buffer';
 
 function MediaContentData({ mediaData }) {
-    const [mediaContent, setMediaContent] = useState(null);
+    const [mediaContent, setMediaContent] = useState([]);
     const [loadError, setLoadError] = useState(false);
+
+    const mediaContentSetter = (data) =>{
+        setMediaContent(prev => [...prev, data]);
+    };
 
     useEffect(() => {
         let objectUrl = null;
 
-        if (mediaData && mediaData.data) {
+        if (mediaData) {
             try {
-                const base64DecodedData = Buffer.from(mediaData.data, 'base64');
-                let processedData;
+                let l = mediaData.length;
+                for (let i = 0; i < l; i++) {
+                    const mimeType = mediaData[i].type || 'application/octet-stream';
+                    objectUrl = mediaData[i].fileUrl;
 
-                // Check if data is gzipped by checking the magic number
-                if (base64DecodedData[0] === 0x1f && base64DecodedData[1] === 0x8b) {
-                    processedData = ungzip(base64DecodedData);  // If gzipped, decompress
-                } else {
-                    processedData = base64DecodedData;         // If not gzipped, use as is
+                    // Determine the media type and render appropriate content
+                    switch (mimeType.split('/')[0]) {
+                        case 'image':
+                                                       
+                            console.log('Image:', objectUrl);
+                            mediaContentSetter(<img src={objectUrl} alt={mediaData[i].fileName} />);
+                            break;
+                        case 'video':
+                            mediaContentSetter(<video controls>
+                                <source src={objectUrl} type={mimeType} alt={mediaData[i].fileName}/>
+                            </video>);
+                            break;
+                        case 'audio':
+                            mediaContentSetter(<audio controls>
+                                <source src={objectUrl} type={mimeType} alt={mediaData[i].fileName}/>
+                            </audio>);
+                            break;
+                        default:
+                            console.error('Unsupported media type:', mimeType);
+
+                    }
+                    setLoadError(false);
                 }
-
-                const mimeType = mediaData.type || 'application/octet-stream';
-                objectUrl = URL.createObjectURL(new Blob([processedData], { type: mimeType }));
-
-                // Determine the media type and render appropriate content
-                switch (mimeType.split('/')[0]) {
-                    case 'image':
-                        setMediaContent(<img src={objectUrl} alt="Media" />);
-                        break;
-                    case 'video':
-                        setMediaContent(<video controls>
-                            <source src={objectUrl} type={mimeType} />
-                        </video>);
-                        break;
-                    case 'audio':
-                        setMediaContent(<audio controls>
-                            <source src={objectUrl} type={mimeType} />
-                        </audio>);
-                        break;
-                    
-                }
-                setLoadError(false);
             } catch (error) {
                 console.error('Error processing media data:', error);
                 setMediaContent(null);
@@ -57,6 +58,8 @@ function MediaContentData({ mediaData }) {
             }
         };
     }, [mediaData]);
+
+    // console.log('MediaContentData:', mediaContent);
 
     return (
         <div>

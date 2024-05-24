@@ -66,6 +66,37 @@ export default function SignUp() {
   const avatarSize = useBreakpointValue({ base: 'md', md: 'lg' });
   const iconSize = useBreakpointValue({ base: '44px', md: '60px' });
 
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [username, setUsername] = React.useState('');
+
+  async function signup() {
+    handleSubmitEvent();
+    await fetch('http://localhost:8080/auth/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username: username, name: name, email: email, password: password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+
+  }
+
+  const handleSubmitEvent = () => {
+    if (username == "" || password == "" || name == "" || email == "") {
+      alert("please provide a valid input");
+    }
+  };
+
   return (
     <Box position={'relative'} bgGradient='linear(red.100 0%, orange.100 25%, yellow.100 50%)'>
       <Container
@@ -74,7 +105,7 @@ export default function SignUp() {
         columns={{ base: 1, md: 2 }}
         spacing={{ base: 10, lg: 32 }}
         py={{ base: 10, sm: 20, lg: 32 }}
-        //marginLeft={{ base: '100%', sm: '50%'}}
+      //marginLeft={{ base: '100%', sm: '50%'}}
       >
         <Stack spacing={{ base: 10, md: 20 }} >
           <Heading
@@ -149,9 +180,9 @@ export default function SignUp() {
           rounded={'xl'}
           p={{ base: 4, sm: 6, md: 8 }}
           spacing={{ base: 8 }}
-          w={'600px'} 
-          ml={'5%'}  
-         >
+          w={'600px'}
+          ml={'5%'}
+        >
 
           <Stack spacing={4}>
             <Heading
@@ -173,7 +204,7 @@ export default function SignUp() {
                 !
               </Text>
             </Heading>
-            <Text color={'gray.500'} fontSize={{ base: 'lg', sm: 'md', md: 'lg'}}>
+            <Text color={'gray.500'} fontSize={{ base: 'lg', sm: 'md', md: 'lg' }}>
               Join TechSpot, where technology enthusiasts and experts unite to shape the future.
             </Text>
           </Stack>
@@ -188,6 +219,7 @@ export default function SignUp() {
                 _placeholder={{
                   color: 'gray.500',
                 }}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <Input
                 h={'57'}
@@ -198,6 +230,7 @@ export default function SignUp() {
                 _placeholder={{
                   color: 'gray.500',
                 }}
+                onChange={(e) => setName(e.target.value)}
               />
               <Input
                 h={'57'}
@@ -208,6 +241,7 @@ export default function SignUp() {
                 _placeholder={{
                   color: 'gray.500',
                 }}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <Input
                 h={'57'}
@@ -218,6 +252,8 @@ export default function SignUp() {
                 _placeholder={{
                   color: 'gray.500',
                 }}
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
               />
             </Stack>
             <Button
@@ -230,7 +266,11 @@ export default function SignUp() {
               _hover={{
                 bgGradient: 'linear(to-r, red.400,pink.400)',
                 boxShadow: 'xl',
-              }}>
+              }}
+              onClick={
+                signup
+              }
+            >
               Signup
             </Button>
             <Stack isInline justifyContent='space-between' mt={4}>
