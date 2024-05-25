@@ -1,36 +1,23 @@
 import React, { useRef, useState, useCallback } from 'react';
 import Post from './Post';
 import useFeedLoading from './useFeedLoading'
+import {useAuth } from './AuthProvider';
 
 function PostList() {
-    //const [posts, setPosts] = useState([]);
-
-
-    // useEffect(() => {
-    //     fetch('http://localhost:8080/feed?ClientUsername=hello', {
-    //         method: 'GET',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         }
-    //     })
-    //     .then(res => res.json())
-    //     .then(data => {
-    //         setPosts(data);
-    //     })
-    //     .catch(error => console.error('Error fetching posts:', error));
-    // }, []);
+    
 
     const [feedType, setFeedType] = useState('ALL_USERS');
     const [feedValue, setFeedValue] = useState('following');
     const [offset, setOffset] = useState(0);
     const [limit, setLimit] = useState(5);
+    const { user } = useAuth();
 
     const {
         posts,
         loading,
         error,
         hasMore
-    } = useFeedLoading(feedType, feedValue, offset, limit, "Yousef");
+    } = useFeedLoading(feedType, feedValue, offset, limit, user);
 
     console.log(posts);
 
