@@ -25,7 +25,7 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
             if (response.status === 401 || response.status === 403) {
                 console.log(response.status);
                 localStorage.removeItem('token');
-                window.location.href = '/login';
+               // window.location.href = '/login';
             }
         })
             .then(data => {
