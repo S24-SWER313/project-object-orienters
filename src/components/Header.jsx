@@ -20,13 +20,18 @@ import {
 import { VisuallyHidden } from '@chakra-ui/visually-hidden';
 import { AiOutlineMenu, AiFillHome, AiOutlineInbox, AiOutlineSearch, AiFillBell } from 'react-icons/ai';
 import { BsFillCameraVideoFill } from 'react-icons/bs';
+import { AuthContext, useAuth } from './AuthProvider';
+import useProfileLoading from './useProfileLoading';
+
 
 function Header() {
     const navigate = useNavigate();  // Initialize the navigate function
     const bg = useColorModeValue("white", "gray.800");
     const mobileNav = useDisclosure();
+    const { logOut } = useAuth();
+    const { profileData } = useProfileLoading();
 
-    const handleKeyPress = (e) =>{
+    const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             this.search();
         }
@@ -153,7 +158,7 @@ function Header() {
                                 <AiOutlineSearch />
                             </InputLeftElement>
                             <Input type="tel" placeholder="Search..."
-                            
+
                             //onKeyUp={this.handleKeyPress.bind(this)} 
                             />
 
@@ -180,9 +185,12 @@ function Header() {
                         <Avatar
                             onClick={() => navigate('/profile')}
                             size="sm"
-                            name="Dan Abrahmov"
-                            src="https://bit.ly/dan-abramov"
+                            name={profileData ? profileData.name : 'No Name'}
+                            src={profileData ? profileData.profilePic.fileUrl : 'path/to/default/avatar.png'}
                         />
+
+                        <Button colorScheme='blue' onClick={logOut}>Logout</Button>
+
                     </HStack>
                 </Flex>
             </chakra.header>
