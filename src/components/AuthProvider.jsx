@@ -1,4 +1,4 @@
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
@@ -7,12 +7,12 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(localStorage.getItem("token") || "");
     const navigate = useNavigate();
-    const loginAction = async ({username, password}) => {
+    const loginAction = async ({ username, password }) => {
         try {
             fetch('http://localhost:8080/auth/login', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ username: username, password: password }),
             })
@@ -20,7 +20,9 @@ const AuthProvider = ({ children }) => {
                 .then((data) => {
                     setUser(data.username);
                     setToken(data.token);
-                    localStorage.setItem("site", data.token); //TODO: save to cookies
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("refreshToken", data.refreshToken);
+                    localStorage.setItem("user", data.username);
                     navigate("/home");
                     return;
                 })
@@ -35,11 +37,33 @@ const AuthProvider = ({ children }) => {
         }
     };
 
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(localStorage.getItem('user'));
+        }
+    }, []);
+
+
     const logOut = () => {
-        setUser(null);
-        setToken("");
-        localStorage.removeItem("site");
-        navigate("/login");
+
+        fetch('http://localhost:8080/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', "Authorization": `Bearer ${localStorage.getItem("token")}`
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                setUser(null);
+                setToken("");
+                localStorage.removeItem("token");
+                navigate("/login");
+                return;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     };
 
     return (

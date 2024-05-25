@@ -1,23 +1,23 @@
 import React, { useState } from "react";
 import {
-  Avatar,
-  Box,
-  Button,
-  Textarea,
-  Icon,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Text,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
+    Avatar,
+    Box,
+    Button,
+    Textarea,
+    Icon,
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    Text,
+    useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton,
     FormControl,
     VStack,
     InputGroup,
@@ -34,10 +34,13 @@ import {
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { AiOutlinePaperClip } from "react-icons/ai";
 import AddPost from "./AddPost";
+import useProfileLoading from './useProfileLoading';
+
 
 function CallerAddPost() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [privacy, setPrivacy] = useState('Public');
+    const { profileData } = useProfileLoading();
 
     const handleOpen = (e) => {
         e.stopPropagation();
@@ -47,63 +50,64 @@ function CallerAddPost() {
     return (
         <>
 
-            <Box display="flex" flexDirection="column"  cursor="pointer"  w={[0.88, 0.9, 0.8]} maxW={550} m='2' onClick={handleOpen}>
-            <Card border={'1px'} height="190px">
+            <Box display="flex" flexDirection="column" cursor="pointer" w={[0.88, 0.9, 0.8]} maxW={550} m='2' onClick={handleOpen}>
+                <Card border={'1px'} height="190px">
 
-                <CardHeader>
-                    <Flex alignItems="center" gap="4">
-                        <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' size='md' />
-                        <Box>
-                            <Text fontWeight="bold" fontSize="md">Dan Abrahmov</Text>
-                            <Menu>
-                                <MenuButton h={'30px'} fontSize="xs" as={Button} rightIcon={<ChevronDownIcon />}>
-                                    {privacy}
-                                </MenuButton>
-                                <MenuList>
-                                    <MenuItem>Public</MenuItem>
-                                    <MenuItem >Private</MenuItem>
-                                    <MenuItem >With Followers</MenuItem>
-                                </MenuList>
-                            </Menu>
-                        </Box>
-                    </Flex>
+                    <CardHeader>
+                        <Flex alignItems="center" gap="4">
+                            <Avatar name={profileData ? profileData.name : 'No Name'}
+                                src={profileData ? profileData.profilePic.fileUrl : 'path/to/default/avatar.png'} size='md' />
+                            <Box>
+                                <Text fontWeight="bold" fontSize="md">{profileData ? profileData.name : 'No Name'}</Text>
+                                <Menu>
+                                    <MenuButton h={'30px'} fontSize="xs" as={Button} rightIcon={<ChevronDownIcon />}>
+                                        {privacy}
+                                    </MenuButton>
+                                    <MenuList>
+                                        <MenuItem>Public</MenuItem>
+                                        <MenuItem >Private</MenuItem>
+                                        <MenuItem >With Followers</MenuItem>
+                                    </MenuList>
+                                </Menu>
+                            </Box>
+                        </Flex>
 
-                    <Flex alignItems="start" gap="4">
-                        <VStack spacing={4} flex="1">
-                            <FormControl isRequired>
-                                <Textarea
-                                    readOnly
-                                    id='post-text'
-                                    placeholder='Write something...'
-                                    size='sm'
-                                    minHeight="40px"  // Minimum height to start with
-                                    height='auto'  // Set height to auto to allow resize
-                                    overflow='hidden'  // Hide the scrollbar
-                                    margin={2}
+                        <Flex alignItems="start" gap="4">
+                            <VStack spacing={4} flex="1">
+                                <FormControl isRequired>
+                                    <Textarea
+                                        readOnly
+                                        id='post-text'
+                                        placeholder='Write something...'
+                                        size='sm'
+                                        minHeight="40px"  // Minimum height to start with
+                                        height='auto'  // Set height to auto to allow resize
+                                        overflow='hidden'  // Hide the scrollbar
+                                        margin={2}
+                                    />
+                                </FormControl>
+                            </VStack>
+                        </Flex>
+                        <FormControl>
+                            {/*<FormLabel fontSize={'sm'}>Attach media</FormLabel>*/}
+                            <InputGroup>
+                                <Input
+                                    style={{ display: 'none' }}  // Hide the default input
                                 />
-                            </FormControl>
-                        </VStack>
-                    </Flex>
-                    <FormControl>
-                        {/*<FormLabel fontSize={'sm'}>Attach media</FormLabel>*/}
-                        <InputGroup>
-                            <Input
-                                style={{ display: 'none' }}  // Hide the default input
-                            />
-                            <Button size={'xs'} readOnly variant='outline' colorScheme='blue' leftIcon={<Icon as={AiOutlinePaperClip} />} >Choose File</Button>
-                        </InputGroup>
+                                <Button size={'xs'} readOnly variant='outline' colorScheme='blue' leftIcon={<Icon as={AiOutlinePaperClip} />} >Choose File</Button>
+                            </InputGroup>
 
-                    </FormControl>
-                </CardHeader>
+                        </FormControl>
+                    </CardHeader>
 
-                <CardBody>
+                    <CardBody>
 
-                </CardBody>
+                    </CardBody>
 
-                <CardFooter>
+                    <CardFooter>
 
-                </CardFooter>
-            </Card>
+                    </CardFooter>
+                </Card>
             </Box>
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered>

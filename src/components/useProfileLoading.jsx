@@ -4,22 +4,45 @@ import { AuthContext, useAuth } from './AuthProvider';
 function useProfileLoading() {
     const { user } = useAuth();
     const [profileData, setProfileData] = useState(null);
-    const token = useAuth();
+    // <<<<<<< HEAD
+    // const token = localStorage.getItem("token");
 
-    const memoizedProfileData = useMemo(() => fetch(`http://localhost:8080/profiles/${user}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
-    }).then(response => {
+    // const memoizedProfileData = useMemo(() => fetch(`http://localhost:8080/profiles/${user}`, {
+    //     method: 'GET',
+    //     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+    // }).then(response => {
+    //     console.log(user);
+    //     if (response.ok) {
+    //         return response.json();
+    //     }
+    // })
+    //     .then(data => {
+    //         setProfileData(data);
+    //         return profileData;
+    //     }), [token, user]);
+    // console.log(memoizedProfileData);
+    // return { memoizedProfileData };
+    // =======
+
+    useEffect(() => {
+        console.log('fetching posts');
+        console.log(localStorage.getItem("token"));
         console.log(user);
-        if (response.ok) {
-        return response.json();
-        }
-    })
-        .then(data => {
-            setProfileData(data);
-        }), [token, user]);
+        fetch(`http://localhost:8080/profiles/${user}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem("token")}` }
+        }).then(response => {
+            console.log(user);
+            if (response.ok) {
+            return response.json();
+            }
+        })
+            .then(data => {
+                setProfileData(data);
+            });
+    }, []);
 
-    return { memoizedProfileData };
+    return { profileData };
 }
 
 export default useProfileLoading;

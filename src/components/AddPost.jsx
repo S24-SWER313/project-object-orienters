@@ -7,6 +7,8 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import useProfileLoading from './useProfileLoading';
+
 
 function AddPost() {
     const [postText, setPostText] = useState('');
@@ -15,6 +17,8 @@ function AddPost() {
     const textAreaRef = useRef(null);  // Ensure this useRef is declared for textAreaRef
     const toast = useToast();
     const [privacy, setPrivacy] = useState('Public');  // Default privacy setting
+    const { profileData } = useProfileLoading();
+
 
     const handlePostTextChange = (event) => {
         setPostText(event.target.value);
@@ -76,9 +80,11 @@ function AddPost() {
 
                 <CardHeader>
                     <Flex alignItems="center" gap="4">
-                        <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' size='lg' />
+                        <Avatar  name={profileData ? profileData.name : 'No Name'}
+                            src={profileData ? profileData.profilePic.fileUrl : 'path/to/default/avatar.png'}
+                            size='lg' />
                         <Box>
-                            <Text fontWeight="bold" fontSize="lg">Dan Abrahmov</Text>
+                            <Text fontWeight="bold" fontSize="lg">{profileData ? profileData.name : 'No Name'}</Text>
                             <Menu>
                                 <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
                                     {privacy}

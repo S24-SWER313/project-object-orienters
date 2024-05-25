@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -12,12 +12,23 @@ import {
   Image,
 } from '@chakra-ui/react';
 import { AuthContext, useAuth } from './AuthProvider';
+import { useNavigate } from "react-router-dom";
 
 
 export default function LogIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { loginAction } = useAuth();
+  const navigate = useNavigate();
+
+  const handleIsSignedIn = () => {
+    if (localStorage.getItem("token") != null) {
+      navigate("/home");
+    }
+  }
+  useEffect(() => {
+    handleIsSignedIn();
+  }, []);
 
 
   const handleSubmitEvent = () => {
@@ -96,9 +107,6 @@ export default function LogIn() {
               align={'start'}
               justify={'space-between'}
               mt={4}>
-              <Box>
-                <Checkbox>Remember Me</Checkbox>
-              </Box>
               <Box>
                 <Link color={'blue.400'} fontSize={{ base: 'sm', sm: 'md', md: 'lg' }}>Forgot your password?</Link>
               </Box>
