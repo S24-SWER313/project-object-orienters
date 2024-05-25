@@ -20,7 +20,7 @@ const AuthProvider = ({ children }) => {
                 .then((data) => {
                     setUser(data.username);
                     setToken(data.token);
-                    localStorage.setItem("site", data.token); //TODO: save to cookies
+                    localStorage.setItem("token", data.token);
                     navigate("/home");
                     return;
                 })

@@ -11,10 +11,12 @@ import {
   Stack,
   Image,
 } from '@chakra-ui/react';
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   
@@ -29,6 +31,7 @@ export default function SignUp() {
     })
       .then((response) => response.json())
       .then((data) => {
+        navigate("/login");
         console.log('Success:', data);
       })
       .catch((error) => {

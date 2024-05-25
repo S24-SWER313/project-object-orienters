@@ -18,9 +18,19 @@ function TrendCard() {
     useEffect(() => {
         const fetchTrends = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/feed?clientUsername=hello&feedType=TAGS&limit=10&offset=0');
-                const trendsData = response.data._embedded.tagList;
-                setTrends(trendsData);
+                const response = await fetch('http://localhost:8080/tags',
+                    {
+                        method: 'GET',
+                        headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${localStorage.getItem("token")}` }
+                    });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                const trendsData = data._embedded?.tagList;
+                if (trendsData && trendsData.length !== 0) {
+                    setTrends(trendsData);
+                }
             } catch (error) {
                 console.error('Error fetching trends:', error);
             }
@@ -28,6 +38,9 @@ function TrendCard() {
 
         fetchTrends();
     }, []);
+
+
+
 
 
     return (
