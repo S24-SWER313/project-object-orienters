@@ -16,7 +16,7 @@ import {
   Link,
   Checkbox
 } from '@chakra-ui/react';
-import { AuthContext, useAuth } from './AuthProvider'; // adjust the path as needed
+import { AuthContext, useAuth } from './AuthProvider';
 
 
 
@@ -113,58 +113,6 @@ export default function LogIn() {
             pot, where your tech journey continues!
           </Heading>
           <Stack direction={'row'} spacing={4} align={'center'}>
-            {/* <AvatarGroup>
-              {avatars.map((avatar) => (
-                <Avatar
-                  key={avatar.name}
-                  name={avatar.name}
-                  src={avatar.url}
-                  size={avatarSize}
-                  position={'relative'}
-                  zIndex={2}
-                  _before={{
-                    content: '""',
-                    width: 'full',
-                    height: 'full',
-                    rounded: 'full',
-                    transform: 'scale(1.125)',
-                    bgGradient: 'linear(to-bl, red.400,pink.400)',
-                    position: 'absolute',
-                    zIndex: -1,
-                    top: 0,
-                    left: 0,
-                  }}
-                />
-              ))}
-            </AvatarGroup> */}
-            {/* <Text fontFamily={'heading'} fontSize={{ base: '4xl', md: '6xl' }}>
-              +
-            </Text>
-            <Flex
-              align={'center'}
-              justify={'center'}
-              fontFamily={'heading'}
-              fontSize={{ base: 'sm', md: 'lg' }}
-              bg={'gray.800'}
-              color={'white'}
-              rounded={'full'}
-              minWidth={iconSize}
-              minHeight={iconSize}
-              position={'relative'}
-              _before={{
-                content: '""',
-                width: 'full',
-                height: 'full',
-                rounded: 'full',
-                transform: 'scale(1.125)',
-                bgGradient: 'linear(to-bl, orange.400,yellow.400)',
-                position: 'absolute',
-                zIndex: -1,
-                top: 0,
-                left: 0,
-              }}>
-              YOU
-            </Flex> */}
           </Stack>
         </Stack>
         <Stack
