@@ -14,18 +14,17 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
         if (!hasMore) return;
         setLoading(true);
         setError(false);
-        fetch(`http://localhost:8080/feed?feedType=${feedType}&value=${feedValue}&offset=${offset}&limit=${limit}&clientUsername=${clientUsername}`, {
-            method: 'GET'
+        fetch(`http://localhost:8080/feed?feedType=${feedType}&value=${feedValue}&offset=${offset}&limit=${limit}`, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem("token")}` }
         }).then(response => {
             if (response.ok) {
                 return response.json();
             }
-
-
             if (response.status === 401 || response.status === 403) {
                 console.log(response.status);
                 localStorage.removeItem('token');
-               // window.location.href = '/login';
+                //window.location.href = '/login';
             }
         })
             .then(data => {
@@ -38,8 +37,8 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
                 setLoading(false);
             }).catch(error => {
                 setError(true);
-                console.error('Failed to fetch posts:', error);
-                throw new Error('Failed to fetch posts');
+                // console.error('Failed to fetch posts:', error);
+                //throw new Error('Failed to fetch posts');
             });
     }, [feedType, feedValue, offset, limit]);
 

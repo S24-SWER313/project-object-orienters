@@ -1,7 +1,7 @@
 import React, { useRef, useState, useCallback } from 'react';
 import Post from './Post';
 import useFeedLoading from './useFeedLoading'
-import {useAuth } from './AuthProvider';
+
 
 function PostList() {
     
@@ -10,14 +10,14 @@ function PostList() {
     const [feedValue, setFeedValue] = useState('following');
     const [offset, setOffset] = useState(0);
     const [limit, setLimit] = useState(5);
-    const { user } = useAuth();
+    
 
     const {
         posts,
         loading,
         error,
         hasMore
-    } = useFeedLoading(feedType, feedValue, offset, limit, user);
+    } = useFeedLoading(feedType, feedValue, offset, limit);
 
     console.log(posts);
 
@@ -26,11 +26,8 @@ function PostList() {
         if (loading) return;
         if (observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver(entries => {
-            console.log(entries);
-            console.log("is interset" + entries[0].isIntersecting);
-            console.log("hasMore" + hasMore);
+            
             if (entries[0].isIntersecting && hasMore) {
-                console.log('Visible');
                 setOffset(prevOffset => prevOffset + 1);
             }
         });
