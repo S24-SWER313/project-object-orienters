@@ -1,11 +1,11 @@
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [token, setToken] = useState(localStorage.getItem("site") || "");
+    const [token, setToken] = useState(localStorage.getItem("token") || "");
     const navigate = useNavigate();
     const loginAction = async ({ username, password }) => {
         try {
@@ -22,6 +22,7 @@ const AuthProvider = ({ children }) => {
                     setToken(data.token);
                     localStorage.setItem("token", data.token);
                     localStorage.setItem("refreshToken", data.refreshToken);
+                    localStorage.setItem("user", data.username);
                     navigate("/home");
                     return;
                 })
@@ -35,6 +36,14 @@ const AuthProvider = ({ children }) => {
             console.error(err);
         }
     };
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            setUser(localStorage.getItem('user'));
+        }
+    }, []);
+
 
     const logOut = () => {
 

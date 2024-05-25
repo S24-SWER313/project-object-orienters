@@ -16,11 +16,14 @@ import {
     VStack
 } from "@chakra-ui/react";
 import {useNavigate} from 'react-router-dom';
+import useProfileLoading from './useProfileLoading';
 
 
-function ProfilePage({name, jobTitle, avatarImageUrl, backgroundImage, followers, following, posts}) {
+
+function ProfilePage({backgroundImage, followers, following, posts}) {
     const navigate = useNavigate();
     console.log("Profile Page is rendering");
+    const { profileData } = useProfileLoading();
 
     return (
 
@@ -42,7 +45,8 @@ function ProfilePage({name, jobTitle, avatarImageUrl, backgroundImage, followers
                     <Flex justify={'left'} mt={-10} ml={2}>
                         <Avatar
                             size={'2xl'}
-                            src={avatarImageUrl}
+                            name={profileData ? profileData.name : 'No Name'}
+                            src={profileData ? profileData.profilePic.fileUrl : 'path/to/default/avatar.png'}
                             alt={'Profile picture'}
                             css={{
                                 border: '2px solid white',
@@ -51,10 +55,10 @@ function ProfilePage({name, jobTitle, avatarImageUrl, backgroundImage, followers
                     </Flex>
                     <VStack align="left" p={6} spacing={4}>
                         <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
-                            {name}
+                            {profileData ? profileData.name : 'No Name'}
                         </Heading>
                         <Text fontSize={'xl'} color={'gray.500'}>
-                            {jobTitle}
+                            {profileData && profileData.profession ? profileData.profession : 'No Profession'}
                         </Text>
 
 
@@ -119,7 +123,7 @@ function ProfilePage({name, jobTitle, avatarImageUrl, backgroundImage, followers
                                 About
                             </Heading>
                             <Text fontSize={'sm'}>
-                                {jobTitle}
+                            {profileData  && profileData.profession  ? profileData.profession : 'No Profession'}
                             </Text>
                         </Stack>
                     </VStack>
