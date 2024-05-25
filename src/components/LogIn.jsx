@@ -1,171 +1,43 @@
 import React, { useState } from 'react';
 import {
-  Box,
-  Flex,
-  Stack,
-  Heading,
-  Text,
-  Container,
-  Input,
   Button,
-  SimpleGrid,
-  Avatar,
-  AvatarGroup,
-  useBreakpointValue,
-  Icon,
+  Checkbox,
+  Flex,
+  Text,
+  Box,
+  Heading,
+  Input,
   Link,
-  Checkbox
+  Stack,
+  Image,
 } from '@chakra-ui/react';
 
-
-const VARIANT_COLOR = 'red';
-
-const avatars = [
-  {
-    name: 'Ryan Florence',
-    url: 'https://bit.ly/ryan-florence',
-  },
-  {
-    name: 'Segun Adebayo',
-    url: 'http://localhost:8080/download/1716058187736_AI.jpg',
-  },
-  {
-    name: 'Kent Dodds',
-    url: 'http://localhost:8080/download/1716058187736_AI.jpg',
-  },
-  {
-    name: 'Prosper Otemuyiwa',
-    url: 'https://bit.ly/prosper-baba',
-  },
-  {
-    name: 'Christian Nwamba',
-    url: 'https://bit.ly/code-beast',
-  },
-];
-
-
-export const Blur = (props) => {
-
-  return (
-    <Icon
-      width="100%"
-      zIndex={-1}
-      height="560px"
-      viewBox="0 0 528 560"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      {...props}>
-      <circle cx="71" cy="61" r="111" fill="#F56565" />
-      <circle cx="244" cy="106" r="139" fill="#ED64A6" />
-      <circle cy="291" r="139" fill="#ED64A6" />
-      <circle cx="80.5" cy="189.5" r="101.5" fill="#ED8936" />
-      <circle cx="196.5" cy="317.5" r="101.5" fill="#ECC94B" />
-      <circle cx="70.5" cy="458.5" r="101.5" fill="#48BB78" />
-      <circle cx="426.5" cy="-0.5" r="101.5" fill="#4299E1" />
-    </Icon>
-  );
-};
-
 export default function LogIn() {
-  const avatarSize = useBreakpointValue({ base: 'md', md: 'lg' });
-  const iconSize = useBreakpointValue({ base: '44px', md: '60px' });
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+
   return (
-    <Box position={'relative'} bgGradient='linear(red.100 0%, orange.100 25%, yellow.100 50%)'>
-      <Container
-        as={SimpleGrid}
-        maxW={'8xl'}
-        columns={{ base: 1, md: 2 }}
-        spacing={{ base: 10, lg: 32 }}
-        py={{ base: 10, sm: 20, lg: 32 }}>
-        <Stack spacing={{ base: 10, md: 20 }}>
-          <Heading
-            lineHeight={1.1}
-            fontSize={{ base: '3xl', sm: '4xl', md: '5xl', lg: '6xl' }}>
-            Welcome back to Tech
-            <Text
-              as={'span'}
-              bgGradient="linear(to-r, red.400,pink.400)"
-              bgClip="text">
-              S
-            </Text>
-            pot, where your tech journey continues!
-          </Heading>
-          <Stack direction={'row'} spacing={4} align={'center'}>
-            {/* <AvatarGroup>
-              {avatars.map((avatar) => (
-                <Avatar
-                  key={avatar.name}
-                  name={avatar.name}
-                  src={avatar.url}
-                  size={avatarSize}
-                  position={'relative'}
-                  zIndex={2}
-                  _before={{
-                    content: '""',
-                    width: 'full',
-                    height: 'full',
-                    rounded: 'full',
-                    transform: 'scale(1.125)',
-                    bgGradient: 'linear(to-bl, red.400,pink.400)',
-                    position: 'absolute',
-                    zIndex: -1,
-                    top: 0,
-                    left: 0,
-                  }}
-                />
-              ))}
-            </AvatarGroup> */}
-            {/* <Text fontFamily={'heading'} fontSize={{ base: '4xl', md: '6xl' }}>
-              +
-            </Text>
-            <Flex
-              align={'center'}
-              justify={'center'}
-              fontFamily={'heading'}
-              fontSize={{ base: 'sm', md: 'lg' }}
-              bg={'gray.800'}
-              color={'white'}
-              rounded={'full'}
-              minWidth={iconSize}
-              minHeight={iconSize}
-              position={'relative'}
-              _before={{
-                content: '""',
-                width: 'full',
-                height: 'full',
-                rounded: 'full',
-                transform: 'scale(1.125)',
-                bgGradient: 'linear(to-bl, orange.400,yellow.400)',
-                position: 'absolute',
-                zIndex: -1,
-                top: 0,
-                left: 0,
-              }}>
-              YOU
-            </Flex> */}
-          </Stack>
-        </Stack>
+    <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
+      <Flex p={8} flex={1} align={'center'} justify={'center'}>
         <Stack
-          bg={'gray.50'}
+          bg={'gray.100'}
           rounded={'xl'}
           p={{ base: 4, sm: 6, md: 8 }}
           spacing={{ base: 8 }}
-          w={'600px'}
-          ml={'5%'} >
+          maxW={{ xl: '2xl' }}
+        >
           <Stack spacing={4}>
             <Heading
               color={'gray.800'}
               lineHeight={1.1}
-              fontSize={{ base: '2xl', sm: '3xl', md: '5xl' }}
+              fontSize={{ base: '2xl', sm: '3xl', md: '4xl', lg: '5xl' }}
               mb={'2'}
-              mt={'-5'}>
+            >
               Login into Tech
               <Text
                 as={'span'}
-                bgGradient="linear(to-r, red.400,pink.400)"
+                bg={'blue.400'}
                 bgClip="text">
                 S
               </Text>
@@ -179,49 +51,48 @@ export default function LogIn() {
               <Input
                 h={'57'}
                 placeholder="Username"
-                bg={'gray.100'}
+                bg={'gray.300'}
                 border={0}
                 color={'gray.500'}
                 _placeholder={{
-                  color: 'gray.500',
-                }
-              }
+                  color: 'gray.900',
+                }}
                 onChange={(e) => setUsername(e.target.value)}
-                                      
               />
               <Input
                 h={'57'}
                 placeholder="Password"
-                bg={'gray.100'}
+                bg={'gray.300'}
                 border={0}
                 color={'gray.500'}
                 _placeholder={{
-                  color: 'gray.500',
+                  color: 'gray.900',
                 }}
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Stack>
-            <Stack isInline justifyContent='space-between' mt={4}>
+            <Stack direction={{ base: 'column', sm: 'row' }}
+              align={'start'}
+              justify={'space-between'}
+              mt={4}>
               <Box>
                 <Checkbox>Remember Me</Checkbox>
               </Box>
               <Box>
-                <Link color={`${VARIANT_COLOR}.500`}>Forgot your password?</Link>
+                <Link color={'blue.400'} fontSize={{ base: 'sm', sm: 'md', md: 'lg' }}>Forgot your password?</Link>
               </Box>
             </Stack>
             <Button
-              h={'57'}
+              size={'lg'}
               fontFamily={'heading'}
               mt={8}
               w={'full'}
-              bgGradient="linear(to-r, red.400,pink.400)"
+              bg={'blue.400'}
               color={'white'}
               _hover={{
-                bgGradient: 'linear(to-r, red.400,pink.400)',
-                boxShadow: 'xl',
-              }}
-              onClick={() => {
+                boxShadow: '2xl',
+              }} onClick={() => {
                 fetch('http://localhost:8080/auth/login', {
                   method: 'POST',
                   headers: {
@@ -237,22 +108,34 @@ export default function LogIn() {
                     console.error('Error:', error);
                   }
                   );
-
               }}>
               Login
             </Button>
             <Stack isInline justifyContent='space-between' mt={4}>
-            <Box>
-              <Link color={`${VARIANT_COLOR}.500`} href='/signup'>New here? Join us now!</Link>
-            </Box>
-        </Stack>
+              <Box>
+                <Link color={'blue.400'} href='/signup'>New here? Join us now!</Link>
+              </Box>
+            </Stack>
           </Box>
         </Stack>
-      </Container>
+      </Flex>
+      <Flex
+        display={{ base: 'none', lg: 'block' }}
+        flex={1}
+        align={'center'}
+        justify={'center'}
+        overflow={'hidden'}
+      >
+        <Image
+          alt={'Login Image'}
+          objectFit={'cover'}
+          src={'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80'}
+          w={'full'}
+          h={'full'}
+        />
+      </Flex>
 
 
-    </Box>
+    </Stack>
   );
-
-
 }
