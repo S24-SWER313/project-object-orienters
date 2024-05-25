@@ -2,7 +2,6 @@
 import React from 'react';
 import { Box } from '@chakra-ui/react';
 import TrendCard from './Trend/TrendCard';
-
 import Header from './Header';
 import Footer from './Footer';
 

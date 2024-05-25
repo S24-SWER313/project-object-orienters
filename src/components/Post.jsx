@@ -113,7 +113,7 @@ const Post = forwardRef((props, ref) => {
                             );
                         }
                     }} 
-                    />
+                />
 
 
                 {props.mediaData != [] && <MediaContentData style={{ margin: "auto" }} objectFit='cover' mediaData={props.mediaData} />}
