@@ -56,7 +56,7 @@ function CallerAddPost() {
                     <CardHeader>
                         <Flex alignItems="center" gap="4">
                             <Avatar name={profileData ? profileData.name : 'No Name'}
-                                src={profileData ? profileData.profilePic.fileUrl : 'path/to/default/avatar.png'} size='md' />
+                                src={profileData ? profileData.profilePic?.fileUrl : 'path/to/default/avatar.png'} size='md' />
                             <Box>
                                 <Text fontWeight="bold" fontSize="md">{profileData ? profileData.name : 'No Name'}</Text>
                                 <Menu>

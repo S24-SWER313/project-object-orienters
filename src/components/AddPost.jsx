@@ -62,6 +62,7 @@ function AddPost() {
             status: 'success',
             duration: 5000,
             isClosable: true,
+            position: `top`
         });
 
     };
@@ -107,7 +108,7 @@ function AddPost() {
             <CardHeader>
                 <Flex alignItems="center" gap="4">
                     <Avatar name={profileData ? profileData.name : 'No Name'}
-                        src={profileData ? profileData.profilePic.fileUrl : 'path/to/default/avatar.png'}
+                        src={profileData ? profileData.profilePic?.fileUrl : 'path/to/default/avatar.png'}
                         size='lg' />
                     <Box>
                         <Text fontWeight="bold" fontSize="lg">{profileData ? profileData.name : 'No Name'}</Text>

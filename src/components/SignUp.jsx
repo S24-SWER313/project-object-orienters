@@ -10,7 +10,9 @@ import {
   Link,
   Stack,
   Image,
+  useToast
 } from '@chakra-ui/react';
+
 import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
@@ -19,37 +21,66 @@ export default function SignUp() {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
-  
-  async function signup() {
-    handleSubmitEvent();
-    await fetch('http://localhost:8080/auth/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ username: username, name: name, email: email, password: password }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        navigate("/login");
-        console.log('Success:', data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+  const toast = useToast();
 
+  async function signup() {
+    if (handleSubmitEvent()) {
+      fetch('http://localhost:8080/auth/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: username, name: name, email: email, password: password }),
+      })
+        .then((response) => response.json().then(data => ({
+          status: response.status,
+          data
+        }))
+        )
+        .then(({ status, data }) => {
+          if (status != 200) {
+            throw new Error(data.message || 'An error occurred.');
+          }
+          toast({
+            title: 'Account created.',
+            description: "We've created your account for you.",
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: `top`
+          });
+          navigate("/login");
+        })
+        .catch((error) => {
+          toast({
+            title: 'Signup Error',
+            description: `${error.message}`,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+            position: `top`
+          });
+        });
+    }
 
   }
 
   const handleSubmitEvent = () => {
     if (username == "" || password == "" || name == "" || email == "") {
-      alert("please provide a valid input");
+      toast({
+        title: 'Signup Error',
+        description: "please provide a valid input.",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: `top`
+      });
     }
   };
 
   return (
     <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
-       <Flex
+      <Flex
         display={{ base: 'none', lg: 'block' }}
         flex={1}
         align={'center'}
@@ -59,7 +90,7 @@ export default function SignUp() {
         <Image
           alt={'Signup Image'}
           objectFit={'cover'}
-          src={'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80'}
+          src={'/images/tech.jpg'}
           w={'full'}
           h={'full'}
         />
@@ -89,7 +120,7 @@ export default function SignUp() {
               pot!
             </Heading>
             <Text color={'gray.500'} fontSize={{ base: 'sm', sm: 'md', md: 'lg' }}>
-            Join TechSpot, where technology enthusiasts and experts unite to shape the future.</Text>
+              Join TechSpot, where technology enthusiasts and experts unite to shape the future.</Text>
           </Stack>
           <Box as={'form'} mt={10}>
             <Stack spacing={4}>
@@ -139,7 +170,7 @@ export default function SignUp() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Stack>
-            
+
             <Button
               h={'57'}
               fontFamily={'heading'}

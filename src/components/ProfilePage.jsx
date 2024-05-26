@@ -39,14 +39,14 @@ function ProfilePage({backgroundImage, followers, following, posts}) {
                         alt={'Profile background'}
                         h={'170px'}
                         w={'full'}
-                        src={backgroundImage} // Use backgroundImage prop
+                        src={profileData?.backgroundImg?.fileUrl} 
                         objectFit={'cover'}
                     />
                     <Flex justify={'left'} mt={-10} ml={2}>
                         <Avatar
                             size={'2xl'}
                             name={profileData ? profileData.name : 'No Name'}
-                            src={profileData ? profileData.profilePic.fileUrl : 'path/to/default/avatar.png'}
+                            src={profileData?.profilePic?.fileUrl }
                             alt={'Profile picture'}
                             css={{
                                 border: '2px solid white',

@@ -59,7 +59,7 @@ function PostList() {
                         textData={post.textData}
                         mediaData={post.mediaData}
                         authorName={post.contentAuthor.name}
-                        authorProfilePic={post.contentAuthor.profilePic?.data || '/default-profile.jpg'}
+                        authorProfilePic={post.contentAuthor.profilePic || '/default-profile.jpg'}
                         authorProfession={post.contentAuthor.profession || 'No Profession'}
                         numOfReactions={post.numOfReactions}
                         numOfComments={post.numOfComments}
@@ -78,7 +78,7 @@ function PostList() {
                         textData={post.textData}
                         mediaData={post.mediaData}
                         authorName={post.contentAuthor.name}
-                        authorProfilePic={post.contentAuthor.profilePic?.data || '/default-profile.jpg'}
+                        authorProfilePic={post.contentAuthor.profilePic || '/default-profile.jpg'}
                         authorProfession={post.contentAuthor.profession || 'No Profession'}
                         numOfReactions={post.numOfReactions}
                         numOfComments={post.numOfComments}

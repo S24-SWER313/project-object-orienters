@@ -52,23 +52,9 @@ const Post = forwardRef((props, ref) => {
 
     useEffect(() => {
         if (props.authorProfilePic) {
-            try {
-                const base64DecodedData = Buffer.from(props.authorProfilePic, 'base64');
-                let processedData;
-
-                if (base64DecodedData[0] === 0x1f && base64DecodedData[1] === 0x8b) {
-                    processedData = ungzip(base64DecodedData);
-                } else {
-                    processedData = base64DecodedData;
-                }
-
                 const mimeType = props.authorProfilePic.type || 'application/octet-stream';
-                setProfilePicUrl(URL.createObjectURL(new Blob([processedData], { type: mimeType })));
-
-            } catch (error) {
-                console.error('Error decompressing profile picture:', error);
-                setProfilePicUrl(null);
-            }
+                const url = props.authorProfilePic.fileUrl
+                setProfilePicUrl(url);
         }
     }, [props.authorProfilePic]);
 

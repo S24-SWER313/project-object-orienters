@@ -10,6 +10,7 @@ import {
   Link,
   Stack,
   Image,
+  useToast
 } from '@chakra-ui/react';
 import { AuthContext, useAuth } from './AuthProvider';
 import { useNavigate } from "react-router-dom";
@@ -19,6 +20,7 @@ export default function LogIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const { loginAction } = useAuth();
+  const toast = useToast();
   const navigate = useNavigate();
 
   const handleIsSignedIn = () => {
@@ -33,7 +35,14 @@ export default function LogIn() {
 
   const handleSubmitEvent = () => {
     if (username === "" || password === "") {
-      alert("please provide a valid input");
+      toast({
+        title: 'Login Error',
+        description: "please provide a valid input.",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: `top`
+      });
       return false;
     }
     return true;
