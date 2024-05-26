@@ -1,13 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
-  Box, Button, Input, Textarea, VStack, Flex, FormControl, FormLabel, InputGroup, CloseButton, Avatar, useToast, Icon, Text, List, ListItem, HStack, Card,
-  CardBody,
-  CardFooter,
-  CardHeader, Menu, MenuButton, MenuItem, MenuList
+    Box, Button, Input, Textarea, VStack, Flex, FormControl, FormLabel, InputGroup, CloseButton, Avatar, useToast, Icon, Text, List, ListItem, HStack, Card,
+    CardBody,
+    CardFooter, ModalFooter,
+    CardHeader, Menu, MenuButton, MenuItem, MenuList
 } from '@chakra-ui/react';
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import useProfileLoading from './useProfileLoading';
+import { useAuth } from './AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 
 function AddPost() {
@@ -16,8 +18,10 @@ function AddPost() {
     const fileInputRef = useRef(null);
     const textAreaRef = useRef(null);  // Ensure this useRef is declared for textAreaRef
     const toast = useToast();
-    const [privacy, setPrivacy] = useState('Public');  // Default privacy setting
+    const [privacy, setPrivacy] = useState('PUBLIC');  // Default privacy setting
     const { profileData } = useProfileLoading();
+    const { user, token } = useAuth();
+    const navigate = useNavigate();
 
 
     const handlePostTextChange = (event) => {
@@ -32,7 +36,26 @@ function AddPost() {
         setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        const formData = new FormData();
+        formData.append('text', postText);
+        formData.append('privacy', privacy);
+        files.forEach(file => formData.append('files', file));
+
+        const response = await fetch(`http://localhost:8080/profiles/${user}/posts`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.statusText}`);
+        }
+        const data = await response.json();
+        console.log('Data received:', data);
+
         toast({
             title: 'Post created.',
             description: `${files.length} files uploaded with the post.`,
@@ -40,7 +63,10 @@ function AddPost() {
             duration: 5000,
             isClosable: true,
         });
+
     };
+
+
 
     const triggerFileInput = () => {
         fileInputRef.current.click();
@@ -68,93 +94,94 @@ function AddPost() {
 
     return (
         // <Box display="flex" flexDirection="column" alignItems="center" m§={5} background={"lightblue"}>
-            <Card
-                // w="70%"
+        <Card
+        // w="70%"
 
-                // position="relative"
-                // p={8}
-                // shadow='md'
-                // borderRadius='md'
-            >
-                {/* <CloseButton position="absolute" right="8px" top="-2px" onClick={() => alert('Card close button clicked!')} /> */}
+        // position="relative"
+        // p={8}
+        // shadow='md'
+        // borderRadius='md'
+        >
+            {/* <CloseButton position="absolute" right="8px" top="-2px" onClick={() => alert('Card close button clicked!')} /> */}
 
-                <CardHeader>
-                    <Flex alignItems="center" gap="4">
-                        <Avatar  name={profileData ? profileData.name : 'No Name'}
-                            src={profileData ? profileData.profilePic.fileUrl : 'path/to/default/avatar.png'}
-                            size='lg' />
-                        <Box>
-                            <Text fontWeight="bold" fontSize="lg">{profileData ? profileData.name : 'No Name'}</Text>
-                            <Menu>
-                                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                                    {privacy}
-                                </MenuButton>
-                                <MenuList>
-                                    <MenuItem onClick={() => selectPrivacy('Public')}>Public</MenuItem>
-                                    <MenuItem onClick={() => selectPrivacy('Private')}>Private</MenuItem>
-                                    <MenuItem onClick={() => selectPrivacy('With Followers')}>With Followers</MenuItem>
-                                </MenuList>
-                            </Menu>
-                        </Box>
-                    </Flex>
-                </CardHeader>
+            <CardHeader>
+                <Flex alignItems="center" gap="4">
+                    <Avatar name={profileData ? profileData.name : 'No Name'}
+                        src={profileData ? profileData.profilePic.fileUrl : 'path/to/default/avatar.png'}
+                        size='lg' />
+                    <Box>
+                        <Text fontWeight="bold" fontSize="lg">{profileData ? profileData.name : 'No Name'}</Text>
+                        <Menu>
+                            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                                {privacy}
+                            </MenuButton>
+                            <MenuList>
+                                <MenuItem onClick={() => selectPrivacy('PUBLIC')}>PUBLIC</MenuItem>
+                                <MenuItem onClick={() => selectPrivacy('PRIVATE')}>PRIVATE</MenuItem>
+                                <MenuItem onClick={() => selectPrivacy('With Followers')}>With Followers</MenuItem>
+                            </MenuList>
+                        </Menu>
+                    </Box>
+                </Flex>
+            </CardHeader>
 
-                <CardBody>
-                    <Flex alignItems="start" gap="4">
-                        <VStack spacing={4} flex="1">
-                            <FormControl isRequired>
-                                <Textarea
-                                    ref={textAreaRef}
-                                    id='post-text'
-                                    value={postText}
-                                    onChange={handlePostTextChange}
-                                    placeholder='Write something...'
-                                    size='sm'
-                                    minHeight="100px"  // Minimum height to start with
-                                    height='auto'  // Set height to auto to allow resize
-                                    overflow='hidden'  // Hide the scrollbar
-                                />
-                            </FormControl>
-                        </VStack>
-                    </Flex>
-                </CardBody>
-
-                <CardFooter>
-                    <FormControl>
-                        <FormLabel htmlFor='file'>Attach media</FormLabel>
-                        <InputGroup>
-                            <Input
-                                type='file'
-                                id='file'
-                                ref={fileInputRef}
-                                onChange={handleFileChange}
-                                accept="audio/*,video/*,image/*"
-                                multiple  // Enable selection of multiple files
-                                style={{ display: 'none' }}  // Hide the default input
+            <CardBody>
+                <Flex alignItems="start" gap="4">
+                    <VStack spacing={4} flex="1">
+                        <FormControl isRequired>
+                            <Textarea
+                                ref={textAreaRef}
+                                id='post-text'
+                                value={postText}
+                                onChange={handlePostTextChange}
+                                placeholder='Write something...'
+                                size='sm'
+                                minHeight="100px"  // Minimum height to start with
+                                height='auto'  // Set height to auto to allow resize
+                                overflow='hidden'  // Hide the scrollbar
                             />
-                            <Button variant='outline' colorScheme='blue' leftIcon={<Icon as={AiOutlinePaperClip} />} onClick={triggerFileInput}>Choose File</Button>
-                        </InputGroup>
-                        {files.length > 0 && (
-                            <List mt={2}>
-                                {files.map((file, index) => (
-                                    <ListItem key={index}>
-                                        <HStack spacing={4}>
-                                            <Text flex="1">{file.name}</Text>
-                                            <CloseButton onClick={() => handleRemoveFile(index)} />
-                                        </HStack>
-                                    </ListItem>
-                                ))}
-                            </List>
-                        )}
-                        {/* <Button
-                            marginTop={5}
-                            colorScheme='blue'
-                            onClick={handleSubmit}
-                            disabled={!postText && !files.length}  // Check if files are selected
-                        >Post</Button> */}
-                    </FormControl>
-                </CardFooter>
-            </Card>
+                        </FormControl>
+                    </VStack>
+                </Flex>
+            </CardBody>
+
+            <CardFooter>
+                <FormControl>
+                    <FormLabel htmlFor='file'>Attach media</FormLabel>
+                    <InputGroup>
+                        <Input
+                            type='file'
+                            id='file'
+                            ref={fileInputRef}
+                            onChange={handleFileChange}
+                            accept="audio/*,video/*,image/*"
+                            multiple  // Enable selection of multiple files
+                            style={{ display: 'none' }}  // Hide the default input
+                        />
+                        <Button variant='outline' colorScheme='blue' leftIcon={<Icon as={AiOutlinePaperClip} />} onClick={triggerFileInput}>Choose File</Button>
+                    </InputGroup>
+                    {files.length > 0 && (
+                        <List mt={2}>
+                            {files.map((file, index) => (
+                                <ListItem key={index}>
+                                    <HStack spacing={4}>
+                                        <Text flex="1">{file.name}</Text>
+                                        <CloseButton onClick={() => handleRemoveFile(index)} />
+                                    </HStack>
+                                </ListItem>
+                            ))}
+                        </List>
+                    )}
+                    <ModalFooter>
+                        <Button
+                            colorScheme="blue" mr={-7} mb={-5} onClick={() => {
+                                handleSubmit();
+                                navigate("/home");
+                            }}>POST</Button>
+                    </ModalFooter>
+                </FormControl>
+            </CardFooter>
+        </Card>
         // </Box>
     );
 }

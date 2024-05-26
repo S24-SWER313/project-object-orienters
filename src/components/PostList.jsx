@@ -61,6 +61,13 @@ function PostList() {
                         authorName={post.contentAuthor.name}
                         authorProfilePic={post.contentAuthor.profilePic?.data || '/default-profile.jpg'}
                         authorProfession={post.contentAuthor.profession || 'No Profession'}
+                        numOfReactions={post.numOfReactions}
+                        numOfComments={post.numOfComments}
+                        numOfShares={post.numOfShares}
+                        reactions={post._links.reactions.href}
+                        comments={post._links.comments.href}
+                        self={post._links.self.href}
+                        author={post._links.author.href}
                     />
 
                 } else {
@@ -73,6 +80,13 @@ function PostList() {
                         authorName={post.contentAuthor.name}
                         authorProfilePic={post.contentAuthor.profilePic?.data || '/default-profile.jpg'}
                         authorProfession={post.contentAuthor.profession || 'No Profession'}
+                        numOfReactions={post.numOfReactions}
+                        numOfComments={post.numOfComments}
+                        numOfShares={post.numOfShares}
+                        reactions={post._links.reactions.href}
+                        comments={post._links.comments.href}
+                        self={post._links.self.href}
+                        author={post._links.author.href}
                     />
 
                     // return <div style={{
