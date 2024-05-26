@@ -1,49 +1,40 @@
-import { useEffect, useState, useRef, useMemo } from 'react';
-import { AuthContext, useAuth } from './AuthProvider';
+import { useEffect, useState, useMemo } from 'react';
+import { useAuth } from './AuthProvider';
 
 function useProfileLoading() {
-    const { user } = useAuth();
+    const { user, token } = useAuth();
     const [profileData, setProfileData] = useState(null);
-    // <<<<<<< HEAD
-    // const token = localStorage.getItem("token");
-
-    // const memoizedProfileData = useMemo(() => fetch(`http://localhost:8080/profiles/${user}`, {
-    //     method: 'GET',
-    //     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
-    // }).then(response => {
-    //     console.log(user);
-    //     if (response.ok) {
-    //         return response.json();
-    //     }
-    // })
-    //     .then(data => {
-    //         setProfileData(data);
-    //         return profileData;
-    //     }), [token, user]);
-    // console.log(memoizedProfileData);
-    // return { memoizedProfileData };
-    // =======
 
     useEffect(() => {
-        console.log('fetching posts');
-        console.log(localStorage.getItem("token"));
-        console.log(user);
-        fetch(`http://localhost:8080/profiles/${user}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem("token")}` }
-        }).then(response => {
-            console.log(user);
-            if (response.ok) {
-            return response.json();
-            }
-        })
+        if (user && token) {
+            console.log('Fetching profile data for', user);
+            fetch(`http://localhost:8080/profiles/${user}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to fetch profile data');
+                }
+                return response.json();
+            })
             .then(data => {
                 setProfileData(data);
+            })
+            .catch(error => {
+                console.error('Error fetching profile data:', error);
             });
-    }, []);
+        }
+    }, [user, token]);
 
-    return { profileData };
+    const memoizedProfileData = useMemo(() => ({
+        profileData: profileData
+    }), [profileData]);
+
+    return memoizedProfileData;
 }
 
 export default useProfileLoading;
-
