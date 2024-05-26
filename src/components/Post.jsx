@@ -17,7 +17,7 @@ import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlig
 import { dark, docco, dracula, gruvboxDark, lightfair, solarizedDark, solarizedLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { Light } from 'react-syntax-highlighter';
 import { coldarkCold, lucario, materialDark, solarizedlight, twilight } from 'react-syntax-highlighter/dist/esm/styles/prism';
-
+import { useAuth } from './AuthProvider';
 
 
 
@@ -28,6 +28,7 @@ const Post = forwardRef((props, ref) => {
     const specificDateTime = moment(props.timestamp, 'YYYY-MM-DD HH:mm:ss.SSS');
     const duration = moment(specificDateTime).fromNow();
     const [isReacting, setIsReacting] = useState(false);
+    const { user, token } = useAuth();
 
 
     const toProperCase = (str) => {
@@ -71,6 +72,51 @@ const Post = forwardRef((props, ref) => {
         }
     }, [props.authorProfilePic]);
 
+
+    const addReaction = () => {
+        console.log(props.reactionsUrl)
+        fetch(props.reactionsUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                reactorID: user,
+                reactionType: "LIKE"
+            })
+        })
+            .then(response => response.json()) 
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+
+    //TODO: TODO AFTER ADDING COMMENTS GUI
+    const addComment = () => {
+        console.log(props.reactionsUrl)
+        fetch(props.commentsUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({              
+                
+            })
+        })
+            .then(response => response.json()) 
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+    
     return (
         <Card ref={ref} key={props.contentID} w={[0.88, 0.9, 0.8]} maxW={550} m='2'>
             <CardHeader marginBottom='-6'>
@@ -112,7 +158,7 @@ const Post = forwardRef((props, ref) => {
                                 </code>
                             );
                         }
-                    }} 
+                    }}
                 />
 
 
@@ -131,8 +177,8 @@ const Post = forwardRef((props, ref) => {
             // width='100%'
             >
                 <Popup trigger={
-                    <Button flex='1' variant='ghost' leftIcon={<BiLike />} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-                       <Box as="span" mr="2">{props.numOfReactions}</Box> Like
+                    <Button flex='1' variant='ghost' leftIcon={<BiLike />} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} onClick={addReaction}>
+                        <Box as="span" mr="2">{props.numOfReactions}</Box> Like
                     </Button>}
                     position='top center'
                     on='hover'
@@ -145,10 +191,10 @@ const Post = forwardRef((props, ref) => {
                     <GithubSelector />
                 </Popup>
                 <Button flex='1' variant='ghost' leftIcon={<BiChat />}>
-                <Box as="span" mr="2">{props.numOfComments}</Box> Comment
+                    <Box as="span" mr="2">{props.numOfComments}</Box> Comment
                 </Button>
                 <Button flex='1' variant='ghost' leftIcon={<BiShare />}>
-                <Box as="span" mr="2">{props.numOfShares}</Box> Share
+                    <Box as="span" mr="2">{props.numOfShares}</Box> Share
                 </Button>
 
 
@@ -179,6 +225,7 @@ const Post = forwardRef((props, ref) => {
         </Card >
 
     );
+
 });
 
 export default Post;
