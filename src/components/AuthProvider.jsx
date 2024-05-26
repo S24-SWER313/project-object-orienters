@@ -1,5 +1,6 @@
 import { useContext, createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useToast } from '@chakra-ui/react';
 
 const AuthContext = createContext();
 
@@ -7,6 +8,7 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
     const navigate = useNavigate();
+    const toast = useToast();
 
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
@@ -27,14 +29,33 @@ const AuthProvider = ({ children }) => {
                 body: JSON.stringify({ username, password }),
             });
             const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.errors || 'Failed to log in'); 
+            }
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", data.username);
-            localStorage.setItem("refreshToken", data.refreshToken);
+            localStorage.setItem("refreshToken", data.refreshPayment);
             setUser(data.username);
             setToken(data.token);
+            toast({
+                title: 'Login Success',
+                description: "Welcome Back!",
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+                position: `top`
+              });
             navigate("/home");
         } catch (error) {
             console.error('Login Error:', error);
+            toast({
+                title: "Login Error",
+                description: error.message,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: `top`
+            });
         }
     };
 
@@ -51,6 +72,14 @@ const AuthProvider = ({ children }) => {
             localStorage.removeItem("user");
             setUser(null);
             setToken(null);
+            toast({
+                title: 'Logout Success',
+                description: "See you soon!",
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+                position: `top`
+              });
             navigate("/login");
         } catch (error) {
             console.error('Logout Error:', error);

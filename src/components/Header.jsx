@@ -186,7 +186,7 @@ function Header() {
                             onClick={() => navigate('/profile')}
                             size="sm"
                             name={profileData ? profileData.name : 'No Name'}
-                            src={profileData ? profileData.profilePic.fileUrl : 'path/to/default/avatar.png'}
+                            src={profileData ? profileData.profilePic?.fileUrl : 'path/to/default/avatar.png'}
                         />
 
                         <Button colorScheme='blue' onClick={logOut}>Logout</Button>

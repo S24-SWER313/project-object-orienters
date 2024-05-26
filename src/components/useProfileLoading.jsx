@@ -16,12 +16,14 @@ function useProfileLoading() {
                 }
             })
             .then(response => {
+                console.log("res");
                 if (!response.ok) {
                     throw new Error('Failed to fetch profile data');
                 }
                 return response.json();
             })
             .then(data => {
+                console.log("data");
                 setProfileData(data);
             })
             .catch(error => {
