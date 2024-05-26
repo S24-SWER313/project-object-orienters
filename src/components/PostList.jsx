@@ -64,10 +64,10 @@ function PostList() {
                         numOfReactions={post.numOfReactions}
                         numOfComments={post.numOfComments}
                         numOfShares={post.numOfShares}
-                        reactions={post._links.reactions.href}
-                        comments={post._links.comments.href}
-                        self={post._links.self.href}
-                        author={post._links.author.href}
+                        reactionsUrl={post._links.reactions.href}
+                        commentsUrl={post._links.comments.href}
+                        selfUrl={post._links.self.href}
+                        authorUrl={post._links.author.href}
                     />
 
                 } else {
@@ -83,10 +83,10 @@ function PostList() {
                         numOfReactions={post.numOfReactions}
                         numOfComments={post.numOfComments}
                         numOfShares={post.numOfShares}
-                        reactions={post._links.reactions.href}
-                        comments={post._links.comments.href}
-                        self={post._links.self.href}
-                        author={post._links.author.href}
+                        reactionsUrl={post._links.reactions.href}
+                        commentsUrl={post._links.comments.href}
+                        selfUrl={post._links.self.href}
+                        authorUrl={post._links.author.href}
                     />
 
                     // return <div style={{
