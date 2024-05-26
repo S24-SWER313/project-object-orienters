@@ -28,6 +28,7 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
             }
         })
             .then(data => {
+                console.log(data);
                 if (Array.isArray(data._embedded.postList)) {
                     setPosts(prevPosts => [...prevPosts, ...data._embedded.postList]);
                     setHasMore(data.page.totalPages > offset + 1);

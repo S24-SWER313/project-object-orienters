@@ -132,7 +132,7 @@ const Post = forwardRef((props, ref) => {
             >
                 <Popup trigger={
                     <Button flex='1' variant='ghost' leftIcon={<BiLike />} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-                        Like
+                       <Box as="span" mr="2">{props.numOfReactions}</Box> Like
                     </Button>}
                     position='top center'
                     on='hover'
@@ -145,10 +145,10 @@ const Post = forwardRef((props, ref) => {
                     <GithubSelector />
                 </Popup>
                 <Button flex='1' variant='ghost' leftIcon={<BiChat />}>
-                    Comment
+                <Box as="span" mr="2">{props.numOfComments}</Box> Comment
                 </Button>
                 <Button flex='1' variant='ghost' leftIcon={<BiShare />}>
-                    Share
+                <Box as="span" mr="2">{props.numOfShares}</Box> Share
                 </Button>
 
 

@@ -39,7 +39,7 @@ import useProfileLoading from './useProfileLoading';
 
 function CallerAddPost() {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const [privacy, setPrivacy] = useState('Public');
+    const [privacy, setPrivacy] = useState('PUBLIC');
     const { profileData } = useProfileLoading();
 
     const handleOpen = (e) => {
@@ -64,8 +64,8 @@ function CallerAddPost() {
                                         {privacy}
                                     </MenuButton>
                                     <MenuList>
-                                        <MenuItem>Public</MenuItem>
-                                        <MenuItem >Private</MenuItem>
+                                        <MenuItem>PUBLIC</MenuItem>
+                                        <MenuItem >PRIVATE</MenuItem>
                                         <MenuItem >With Followers</MenuItem>
                                     </MenuList>
                                 </Menu>
@@ -118,41 +118,11 @@ function CallerAddPost() {
                     <ModalBody>
                         <AddPost />
                     </ModalBody>
-                    <ModalFooter>
+                    {/* <ModalFooter>
                         <Button colorScheme="blue" mr={3} onClick={onClose}>POST</Button>
-                    </ModalFooter>
+                    </ModalFooter> */}
                 </ModalContent>
             </Modal>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         </>
     );
 }
