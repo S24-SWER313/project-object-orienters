@@ -11,10 +11,13 @@ import ProfilePage from './components/ProfilePage';
 import PostFollowersFollowingTabs from './components/PostFollowersFollowingTabs';
 import AuthProvider from './components/AuthProvider';
 import PrivateRoute from './components/PrivateRoute';
+import "./style.css";
 
 
 function App() {
     return (
+
+        
 
         <Router>
             <AuthProvider>
@@ -43,5 +46,6 @@ function App() {
         </Router>
     );
 }
+
 
 export default App;
