@@ -196,7 +196,13 @@ export default function SignUp() {
               //color={'white'}
               _hover={{
                 boxShadow: '2xl'
-              }}>
+              }}
+              onClick={
+                () => {
+                  window.location.href = 'http://localhost:8080/oauth2/authorize/google';
+                }
+              }
+            >
               Signup With Google
             </Button>
             <Button
@@ -207,6 +213,9 @@ export default function SignUp() {
               bg='white'
               _hover={{
                 boxShadow: '2xl'
+              }}
+              onClick={()=>{
+                window.location.href = 'https://github.com/login/oauth/authorize';
               }}>
               Signup With Github
             </Button>
@@ -217,7 +226,7 @@ export default function SignUp() {
             </Stack>
           </Box>
         </Stack>
-      </Flex>
-    </Stack>
+      </Flex >
+    </Stack >
   );
 }
