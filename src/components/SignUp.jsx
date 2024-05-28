@@ -22,7 +22,13 @@ export default function SignUp() {
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
   const toast = useToast();
-
+  const client_id = "Ov23liq6SrGiWeOzrddu";
+  const redirect_uri = "http://localhost:8080/oauth2/code/github";
+  const scope = "user";  // Adjust the scope based on what permissions you need (e.g., 'repo', 'user')
+  const state = "random_string_to_prevent_csrf";  // Should be a securely generated random string
+  
+  const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${client_id}`;
+  //&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scope)}&state=${state}`;
   async function signup() {
     if (handleSubmitEvent()) {
       fetch('http://localhost:8080/auth/signup', {
@@ -215,7 +221,7 @@ export default function SignUp() {
                 boxShadow: '2xl'
               }}
               onClick={()=>{
-                window.location.href = 'https://github.com/login/oauth/authorize';
+                window.location.href = githubAuthUrl;
               }}>
               Signup With Github
             </Button>

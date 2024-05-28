@@ -19,8 +19,8 @@ function AddPost() {
     const textAreaRef = useRef(null);  // Ensure this useRef is declared for textAreaRef
     const toast = useToast();
     const [privacy, setPrivacy] = useState('PUBLIC');  // Default privacy setting
-    const { profileData } = useProfileLoading();
     const { user, token } = useAuth();
+    const { profileData } = useProfileLoading({ profile: user });
     const navigate = useNavigate();
 
 

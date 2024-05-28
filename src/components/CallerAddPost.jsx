@@ -35,12 +35,14 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import { AiOutlinePaperClip } from "react-icons/ai";
 import AddPost from "./AddPost";
 import useProfileLoading from './useProfileLoading';
+import { useAuth } from "./AuthProvider";
 
 
 function CallerAddPost() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [privacy, setPrivacy] = useState('PUBLIC');
-    const { profileData } = useProfileLoading();
+    const {user} = useAuth();
+    const { profileData } = useProfileLoading({ profile: user });
 
     const handleOpen = (e) => {
         e.stopPropagation();
