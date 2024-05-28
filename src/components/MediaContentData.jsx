@@ -62,7 +62,7 @@ function MediaContentData({ mediaData }) {
     // console.log('MediaContentData:', mediaContent);
 
     return (
-        <div>
+        <div key={"mediaContent"}>
             {mediaContent}
             {/* {loadError && <p>Error loading media. Please check the format.</p>} */}
         </div>

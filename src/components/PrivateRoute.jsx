@@ -4,9 +4,9 @@ import { useAuth } from "../components/AuthProvider";
 
 
 const PrivateRoute = () => {
-  const user = useAuth();
-  if (!user.token) return <Navigate to="/login" />;
-  return <Outlet />;
+  const token = useAuth();
+  if (token) return <Outlet />;
+  return <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

@@ -27,7 +27,8 @@ export default function SignUp() {
   const scope = "user";  // Adjust the scope based on what permissions you need (e.g., 'repo', 'user')
   const state = "random_string_to_prevent_csrf";  // Should be a securely generated random string
   
-  const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${client_id}&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scope)}&state=${state}`;
+  const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${client_id}`;
+  //&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scope)}&state=${state}`;
   async function signup() {
     if (handleSubmitEvent()) {
       fetch('http://localhost:8080/auth/signup', {
