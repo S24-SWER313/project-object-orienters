@@ -26,8 +26,6 @@ import { useAuth } from './AuthProvider';
 function ProfilePage({ backgroundImage, followers, following, posts }) {
     const { profile } = useParams();
     const navigate = useNavigate();
-    console.log("Profile Page is rendering");
-    console.log("Profile: ppjsx", profile);
     const { profileData } = useProfileLoading({ profile});
     const { user, token } = useAuth();
     const toast = useToast();
@@ -90,6 +88,14 @@ function ProfilePage({ backgroundImage, followers, following, posts }) {
         })
         .catch((error) => {
             console.error('Error:', error);
+            toast({
+                title: 'Error Updating Profile Picture.',
+                //description: 'What a nice picture!',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+                position: 'top',
+            });
         });
     }
     

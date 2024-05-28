@@ -15,19 +15,27 @@ import {
     Input,
     Avatar,
     Heading,
-    chakra
+    chakra,
+    ModalBody,
+    ModalCloseButton,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader
 } from '@chakra-ui/react';
 import { VisuallyHidden } from '@chakra-ui/visually-hidden';
 import { AiOutlineMenu, AiFillHome, AiOutlineInbox, AiOutlineSearch, AiFillBell } from 'react-icons/ai';
 import { BsFillCameraVideoFill } from 'react-icons/bs';
 import { AuthContext, useAuth } from './AuthProvider';
 import useProfileLoading from './useProfileLoading';
+import EditProfile from './EditProfile';
 
 
 function Header() {
     const navigate = useNavigate();  // Initialize the navigate function
     const bg = useColorModeValue("white", "gray.800");
     const mobileNav = useDisclosure();
+    const { isOpen, onOpen, onClose } = useDisclosure();
     const { user, logOut } = useAuth();
     const { profileData } = useProfileLoading({ profile: user});
 
@@ -36,6 +44,11 @@ function Header() {
             this.search();
         }
     }
+
+    const handleOpen = (e) => {     //TAKE THIS AND IMPORTS
+        e.stopPropagation();
+        onOpen();
+    };
 
     return (
         <>
@@ -188,11 +201,26 @@ function Header() {
                             name={profileData ? profileData.name : 'No Name'}
                             src={profileData ? profileData.profilePic?.fileUrl : 'path/to/default/avatar.png'}
                         />
-
+                        <Button colorScheme='blue' onClick={handleOpen}>Update Prof</Button>
                         <Button colorScheme='blue' onClick={logOut}>Logout</Button>
+
 
                     </HStack>
                 </Flex>
+
+                <Modal isOpen={isOpen} onClose={onClose} isCentered >
+                    <ModalOverlay />
+                    <ModalContent maxW="32vw">
+                        {/* <ModalHeader>Update Profile</ModalHeader> */}
+                        <ModalCloseButton mr={'-10px'} mt={'2px'}/>
+                        <ModalBody  m={"10px"} >
+                            <EditProfile />
+                        </ModalBody>
+                        {/* <ModalFooter>
+                        <Button colorScheme="blue" mr={3} onClick={onClose}>POST</Button>
+                    </ModalFooter> */}
+                    </ModalContent>
+                </Modal>
             </chakra.header>
         </>
     );

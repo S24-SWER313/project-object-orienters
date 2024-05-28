@@ -11,6 +11,7 @@ import ProfilePage from './components/ProfilePage';
 import PostFollowersFollowingTabs from './components/PostFollowersFollowingTabs';
 import AuthProvider from './components/AuthProvider';
 import PrivateRoute from './components/PrivateRoute';
+import EditProfile from './components/EditProfile';
 import "./style.css";
 import OAuthRedirect from './components/OAuthRedirect';
 
@@ -18,12 +19,12 @@ import OAuthRedirect from './components/OAuthRedirect';
 function App() {
     return (
 
-
-
         <Router>
             <AuthProvider>
                 <Routes>
-                    <Route path="/" element={<Landing />} />
+                
+                <Route path="/" element={<EditProfile/>} />
+                    {/* <Route path="/" element={<Landing />} /> */}
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
