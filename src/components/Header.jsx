@@ -35,10 +35,9 @@ function Header() {
     const navigate = useNavigate();  // Initialize the navigate function
     const bg = useColorModeValue("white", "gray.800");
     const mobileNav = useDisclosure();
-    const { logOut } = useAuth();
-    const { profileData } = useProfileLoading();
     const { isOpen, onOpen, onClose } = useDisclosure();
-
+    const { user, logOut } = useAuth();
+    const { profileData } = useProfileLoading({ profile: user});
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -197,7 +196,7 @@ function Header() {
                         </chakra.a>
 
                         <Avatar
-                            onClick={() => navigate('/profile')}
+                            onClick={() => navigate('/profiles/' + user)}
                             size="sm"
                             name={profileData ? profileData.name : 'No Name'}
                             src={profileData ? profileData.profilePic?.fileUrl : 'path/to/default/avatar.png'}

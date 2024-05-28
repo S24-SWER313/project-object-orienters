@@ -16,7 +16,7 @@ import {
     useToast,
     VStack
 } from "@chakra-ui/react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import useProfileLoading from './useProfileLoading';
 import { useAuth } from './AuthProvider';
 
@@ -24,10 +24,12 @@ import { useAuth } from './AuthProvider';
 
 
 function ProfilePage({ backgroundImage, followers, following, posts }) {
+    const { profile } = useParams();
     const navigate = useNavigate();
-    const { profileData } = useProfileLoading();
+    const { profileData } = useProfileLoading({ profile});
     const { user, token } = useAuth();
     const toast = useToast();
+  
 
     function handleBackgroundChange(event) {
         const file = event.target.files[0];
@@ -36,7 +38,7 @@ function ProfilePage({ backgroundImage, followers, following, posts }) {
         const formData = new FormData();
         formData.append('file', file);
     
-        fetch(`http://localhost:8080/profiles/${user}/backgroundImg`, {
+        fetch(`http://localhost:8080/profiles/${profile}/backgroundImg`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -66,7 +68,7 @@ function ProfilePage({ backgroundImage, followers, following, posts }) {
         const formData = new FormData();
         formData.append('file', file);
     
-        fetch(`http://localhost:8080/profiles/${user}/profilePic`, {
+        fetch(`http://localhost:8080/profiles/${profile}/profilePic`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
