@@ -1,6 +1,9 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import FollowersTab from './FollowersTab';
+import FollowingTab from './FollowingTab';
+
 
 function PostFollowersFollowingTabs() {
     const navigate = useNavigate();
@@ -31,10 +34,10 @@ function PostFollowersFollowingTabs() {
                     <p>List of Posts</p>
                 </TabPanel>
                 <TabPanel>
-                    <p>List of Followers</p>
+                    <FollowersTab />
                 </TabPanel>
                 <TabPanel>
-                    <p>List of Following</p>
+                    <FollowingTab />
                 </TabPanel>
             </TabPanels>
         </Tabs>

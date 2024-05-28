@@ -23,15 +23,16 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function EditProfile() {
-  const { profileData } = useProfileLoading();
   const { user, token } = useAuth();
-  const [name, setName] = useState('');
-  const [dob, setDob] = useState('');
-  const [gender, setGender] = useState('');
-  const [profession, setProfession] = useState('');
+  const [name, setName] = useState(null);
+  const [dob, setDob] = useState(null);
+  const [gender, setGender] = useState(null);
+  const [profession, setProfession] = useState(null);
+  const [about, setAbout] = useState(null);
   const [password, setPassword] = useState(null);
   const navigate = useNavigate();
   const toast = useToast();
+  const { profileData } = useProfileLoading({ profile: user });
   const fileInputRef = useRef(null);
 
 
@@ -42,7 +43,8 @@ export default function EditProfile() {
       profession,
       gender,
       dob,
-      password
+      password,
+      about
     };
 
     fetch(`http://localhost:8080/profiles/${user}`, {
@@ -74,7 +76,7 @@ export default function EditProfile() {
         console.error('Failed to update profile:', error);
         toast({
           title: 'Error Updating Profile, Please Try Again.',
-          // description: 'What a nice picture!',
+           description: 'What a nice picture!',
           status: 'error',
           duration: 5000,
           isClosable: true,
@@ -127,7 +129,7 @@ export default function EditProfile() {
   return (
     <Flex
       // minH={'90vh'}
-      h={'93vh'}
+      h={'95vh'}
       align={'center'}
       justify={'center'}
       bg={'white'}
@@ -143,7 +145,7 @@ export default function EditProfile() {
         p={6}
         my={12}>
         <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
-          {profileData?.username} Profile Edit
+          {profileData?.username} Profile Update
         </Heading>
         <input
           type="file"
@@ -179,6 +181,16 @@ export default function EditProfile() {
             type="text"
             defaultValue={profileData?.name}
             onChange={e => setName(e.target.value)}
+          />
+        </FormControl>
+        <FormControl id="Name" isRequired>
+          <FormLabel>About</FormLabel>
+          <Input
+            placeholder="About"
+            _placeholder={{ color: 'gray.500' }}
+            type="text"
+            defaultValue={profileData?.about}
+            onChange={e => setAbout(e.target.value)}
           />
         </FormControl>
         <FormControl id="Date of Birth" isRequired>
