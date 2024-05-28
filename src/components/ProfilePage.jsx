@@ -23,21 +23,26 @@ import { useAuth } from './AuthProvider';
 
 
 
-function ProfilePage({ backgroundImage, followers, following, posts }) {
+function ProfilePage({followerNumber}) {
     const { profile } = useParams();
     const navigate = useNavigate();
-    const { profileData } = useProfileLoading({ profile});
+    const { profileData } = useProfileLoading({ profile });
     const { user, token } = useAuth();
     const toast = useToast();
-  
+    const [followers, setFollowers] = useState();
+    const [FollowersNumber, setFollowersNumber] = useState(0);
+    const [following, setFollowing] = useState();
+    const [FollowingNumber, setFollowingNumber] = useState(0);
+    const [posts, setPosts] = useState();
+    const [PostsNumber, setPostsNumber] = useState(0);
 
     function handleBackgroundChange(event) {
         const file = event.target.files[0];
         if (!file) return;
-    
+
         const formData = new FormData();
         formData.append('file', file);
-    
+
         fetch(`http://localhost:8080/profiles/${profile}/backgroundImg`, {
             method: 'POST',
             headers: {
@@ -45,29 +50,29 @@ function ProfilePage({ backgroundImage, followers, following, posts }) {
             },
             body: formData,
         })
-        .then(response => response.json())
-        .then(data => {
-            toast({
-                title: 'Background Image Updated.',
-                description: 'What a nice background!',
-                status: 'success',
-                duration: 5000,
-                isClosable: true,
-                position: 'top',
+            .then(response => response.json())
+            .then(data => {
+                toast({
+                    title: 'Background Image Updated.',
+                    description: 'What a nice background!',
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                    position: 'top',
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
             });
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
     }
-    
+
     function handleProfilePicChange(event) {
         const file = event.target.files[0];
         if (!file) return;
-    
+
         const formData = new FormData();
         formData.append('file', file);
-    
+
         fetch(`http://localhost:8080/profiles/${profile}/profilePic`, {
             method: 'POST',
             headers: {
@@ -75,38 +80,114 @@ function ProfilePage({ backgroundImage, followers, following, posts }) {
             },
             body: formData,
         })
-        .then(response => response.json())
-        .then(data => {
-            toast({
-                title: 'Profile Picture Updated.',
-                description: 'What a nice picture!',
-                status: 'success',
-                duration: 5000,
-                isClosable: true,
-                position: 'top',
+            .then(response => response.json())
+            .then(data => {
+                toast({
+                    title: 'Profile Picture Updated.',
+                    description: 'What a nice picture!',
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                    position: 'top',
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                toast({
+                    title: 'Error Updating Profile Picture.',
+                    //description: 'What a nice picture!',
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                    position: 'top',
+                });
             });
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            toast({
-                title: 'Error Updating Profile Picture.',
-                //description: 'What a nice picture!',
-                status: 'success',
-                duration: 5000,
-                isClosable: true,
-                position: 'top',
-            });
-        });
     }
-    
-    
-    
+
+    useEffect(() => {
+        if (profileData?._links?.followers?.href) {
+            fetch(profileData._links.followers.href, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data._embedded?.profileList) {
+                        setFollowers(data._embedded.profileList);
+                    }
+                    setFollowersNumber(data.page.totalElements);
+                })
+                .catch((error) => {
+                    console.error("Failed to fetch followers:", error);
+                });
+        }
+    }, [user, profileData]);
+
+    useEffect(() => {
+        if (profileData?._links?.Posts?.href) {
+            fetch(profileData._links.Posts.href, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data._embedded?.postList) {
+                        setPosts(data._embedded.postList);
+                    }
+                    setPostsNumber(data.page.totalElements);
+                })
+                .catch((error) => {
+                    console.error("Failed to fetch posts:", error);
+                });
+        }
+    }, [user, profileData]);
+
+
+    useEffect(() => {
+        if (profileData?._links?.following?.href) {
+            fetch(profileData._links.following.href, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data._embedded?.profileList) {
+                        setFollowing(data._embedded.profileList);
+                    }
+                    setFollowingNumber(data.page.totalElements);
+                })
+                .catch((error) => {
+                    console.error("Failed to fetch following:", error);
+                });
+        }
+    }, [user, profileData]);
+
+
 
 
     return (
-
         <Card>
-
             <CardHeader>
                 <Box
                     w={'full'}
@@ -180,7 +261,7 @@ function ProfilePage({ backgroundImage, followers, following, posts }) {
 
 
                             <Stack spacing={0} align={'center'}>
-                                <Text fontSize={'lg'} fontWeight={600}>{posts}</Text>
+                                <Text fontSize={'lg'} fontWeight={600}>{PostsNumber}</Text>
                                 <Button variant='link' color={'gray.500'}
                                     onClick={() => navigate('/posts-followers-following?tab=posts')}>
                                     Posts
@@ -190,7 +271,7 @@ function ProfilePage({ backgroundImage, followers, following, posts }) {
 
 
                             <Stack spacing={0} align={'center'}>
-                                <Text fontSize={'lg'} fontWeight={600}>{followers}</Text>
+                                <Text fontSize={'lg'} fontWeight={600}>{FollowersNumber}</Text>
                                 <Button variant='link'
                                     onClick={() => navigate('/posts-followers-following?tab=followers')}>Followers</Button>
 
@@ -198,7 +279,7 @@ function ProfilePage({ backgroundImage, followers, following, posts }) {
 
 
                             <Stack spacing={0} align={'center'}>
-                                <Text fontSize={'lg'} fontWeight={600}>{following}</Text>
+                                <Text fontSize={'lg'} fontWeight={600}>{FollowingNumber}</Text>
                                 <Button variant='link'
                                     onClick={() => navigate('/posts-followers-following?tab=following')}>Following</Button>
                             </Stack>
@@ -214,7 +295,8 @@ function ProfilePage({ backgroundImage, followers, following, posts }) {
                                 rounded={'full'}
                                 _focus={{
                                     bg: 'gray.200',
-                                }}>
+                                }}
+                                onClick={console.log(FollowersNumber)}>
                                 Message
                             </Button>
                             <Button
@@ -237,17 +319,14 @@ function ProfilePage({ backgroundImage, followers, following, posts }) {
                                 About
                             </Heading>
                             <Text fontSize={'sm'}>
-                                {profileData && profileData.profession ? profileData.profession : 'No Profession'}
+                                {profileData && profileData.about ? profileData.about : ''}
                             </Text>
                         </Stack>
                     </VStack>
                 </Box>
 
             </CardHeader>
-
-
             <CardBody>
-
 
             </CardBody>
 

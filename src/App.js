@@ -13,7 +13,7 @@ import AuthProvider from './components/AuthProvider';
 import PrivateRoute from './components/PrivateRoute';
 import EditProfile from './components/EditProfile';
 import "./style.css";
-import OAuthRedirect from './components/OAuthRedirect';
+//import OAuthRedirect from './components/OAuthRedirect';
 
 
 function App() {
@@ -22,24 +22,20 @@ function App() {
         <Router>
             <AuthProvider>
                 <Routes>
-                
-                <Route path="/" element={<EditProfile/>} />
+
+                    <Route path="/" element={<EditProfile />} />
                     {/* <Route path="/" element={<Landing />} /> */}
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/signup" element={<SignUp />} />
-                    <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
+                    {/* <Route path="/oauth2/redirect" element={<OAuthRedirect />} /> */}
 
 
                     <Route element={<PrivateRoute />}>
 
                         <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
                         <Route path="/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
-                        <Route path="/profiles/:profile" element={<MainLayout><ProfilePage
-                            backgroundImage="https://images.unsplash.com/photo-1666795599746-0f62dfa29a07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90oy1pYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
-                            followers="15k"
-                            following="20k"
-                            posts="10" /></MainLayout>} />
-                          
+                        <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />
+
 
                         <Route path="*" element={<MainLayout><Header /><Footer /></MainLayout>} />
                     </Route>
