@@ -17,34 +17,37 @@ import "./style.css";
 
 function App() {
     return (
-        <EditProfile/>
-        
+        // <AuthProvider>
+        // <EditProfile/>
+        // </AuthProvider>
 
-        // <Router>
-        //     <AuthProvider>
-        //         <Routes>
-        //             <Route path="/" element={<Landing />} />
-        //             <Route path="/login" element={<LogIn />} />
-        //             <Route path="/signup" element={<SignUp />} />
+        <Router>
+            <AuthProvider>
+                <Routes>
+                
+                <Route path="/" element={<EditProfile/>} />
+                    {/* <Route path="/" element={<Landing />} /> */}
+                    <Route path="/login" element={<LogIn />} />
+                    <Route path="/signup" element={<SignUp />} />
 
 
                     
-        //             <Route element={<PrivateRoute />}>
+                    <Route element={<PrivateRoute />}>
 
-        //                 <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
-        //                 <Route path="/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
-        //                 <Route path="/profile" element={<MainLayout><ProfilePage
-        //                     backgroundImage="https://images.unsplash.com/photo-1666795599746-0f62dfa29a07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90oy1pYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
-        //                     followers="15k"
-        //                     following="20k"
-        //                     posts="10" /></MainLayout>} />
-        //                 <Route path="*" element={<MainLayout><Header /><Footer /></MainLayout>} />
-        //             </Route>
+                        <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
+                        <Route path="/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
+                        <Route path="/profile" element={<MainLayout><ProfilePage
+                            backgroundImage="https://images.unsplash.com/photo-1666795599746-0f62dfa29a07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90oy1pYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
+                            followers="15k"
+                            following="20k"
+                            posts="10" /></MainLayout>} />
+                        <Route path="*" element={<MainLayout><Header /><Footer /></MainLayout>} />
+                    </Route>
 
 
-        //         </Routes>
-        //     </AuthProvider>
-        // </Router>
+                </Routes>
+            </AuthProvider>
+        </Router>
     );
 }
 
