@@ -3,13 +3,12 @@ import Post from './Post';
 import useFeedLoading from './useFeedLoading'
 
 
-function PostList() {
+function PostList({feedType, feedValue, offset, limit}) {
     
 
-    const [feedType, setFeedType] = useState('ALL_USERS');
-    const [feedValue, setFeedValue] = useState('following');
-    const [offset, setOffset] = useState(0);
-    const [limit, setLimit] = useState(5);
+    const [feedTypeState, setFeedTypeState] = useState(feedType);
+    const [offsetState, setOffsetState] = useState(offset);
+    const [limitState, setLimitState] = useState(limit);
     
 
     const {
@@ -17,9 +16,7 @@ function PostList() {
         loading,
         error,
         hasMore
-    } = useFeedLoading(feedType, feedValue, offset, limit);
-
-    //console.log(posts);
+    } = useFeedLoading(feedTypeState, feedValue, offsetState, limitState);
 
     const observer = useRef();
     const lastPostElementRef = useCallback(node => {
@@ -28,7 +25,7 @@ function PostList() {
         observer.current = new IntersectionObserver(entries => {
             
             if (entries[0].isIntersecting && hasMore) {
-                setOffset(prevOffset => prevOffset + 1);
+                setOffsetState(prevOffset => prevOffset + 1);
             }
         });
         if (node) observer.current.observe(node);

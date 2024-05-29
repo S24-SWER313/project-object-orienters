@@ -19,7 +19,7 @@ function MainLayout({ children }) {
     return (
         <>
             <Header />
-            <Box display="flex" flexDirection="row" background={"lightblue"}>
+            <Box display="flex" flexDirection="row" background={"gray.300"}>
                 <Box width="30%" paddingTop="6" paddingRight="5" paddingLeft="4" position="sticky" top="0">
                     <TrendCard />
                 </Box>
@@ -27,7 +27,7 @@ function MainLayout({ children }) {
                     {children}
                 </Box>
             </Box>
-            <Footer />
+            <Footer  align={'flex-end'}/>
         </>
     );
 }

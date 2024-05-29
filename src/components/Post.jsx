@@ -81,27 +81,7 @@ const Post = forwardRef((props, ref) => {
             });
     }
 
-    //TODO: TODO AFTER ADDING COMMENTS GUI
-    const addComment = () => {
-        console.log(props.reactionsUrl)
-        fetch(props.commentsUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({              
-                
-            })
-        })
-            .then(response => response.json()) 
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    }
+
     
     return (
         <Card ref={ref} key={props.contentID} w={[0.88, 0.9, 0.8]} maxW={550} m='2'>
