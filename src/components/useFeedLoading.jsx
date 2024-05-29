@@ -22,13 +22,11 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
                 return response.json();
             }
             if (response.status === 401 || response.status === 403) {
-                console.log(response.status);
                 localStorage.removeItem('token');
                 //window.location.href = '/login';
             }
         })
             .then(data => {
-                console.log(data);
                 if (Array.isArray(data._embedded.postList)) {
                     setPosts(prevPosts => [...prevPosts, ...data._embedded.postList]);
                     setHasMore(data.page.totalPages > offset + 1);

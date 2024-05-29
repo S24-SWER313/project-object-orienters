@@ -19,12 +19,10 @@ function MediaContentData({ mediaData }) {
                 for (let i = 0; i < l; i++) {
                     const mimeType = mediaData[i].type || 'application/octet-stream';
                     objectUrl = mediaData[i].fileUrl;
-                    console.log('ObjectUrl:', objectUrl);
                     // Determine the media type and render appropriate content
                     switch (mimeType.split('/')[0]) {
                         case 'image':
-                                                       
-                            console.log('Image:', objectUrl);
+                                                    
                             mediaContentSetter(<img src={objectUrl} alt={mediaData[i].fileName} />);
                             break;
                         case 'video':

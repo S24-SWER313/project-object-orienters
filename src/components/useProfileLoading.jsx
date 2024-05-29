@@ -53,11 +53,7 @@ function useProfileLoading(props) {
     const [profileData, setProfileData] = useState(null);
 
     useEffect(() => {
-        console.log("useProfileLoading useEffect Profile: ", profile);
         if (profile && token) {
-            console.log('Fetching profile data for', profile);
-            
-            console.log('Fetching profile data for', profile);
             fetch(`http://localhost:8080/profiles/${profile}`, {
                 method: 'GET',
                 headers: {
@@ -66,14 +62,12 @@ function useProfileLoading(props) {
                 }
             })
             .then(response => {
-                console.log("res");
                 if (!response.ok) {
                     throw new Error('Failed to fetch profile data');
                 }
                 return response.json();
             })
             .then(data => {
-                console.log("data");
                 setProfileData(data);
             })
             .catch(error => {
