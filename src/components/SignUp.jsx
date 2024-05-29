@@ -30,9 +30,7 @@ export default function SignUp() {
   const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${client_id}`;
   //&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scope)}&state=${state}`;
   async function signup() {
-    console.log("in sing up");
     if (handleSubmitEvent()) {
-      console.log("in if statement");
       fetch('http://localhost:8080/auth/signup', {
         method: 'POST',
         headers: {
@@ -47,7 +45,6 @@ export default function SignUp() {
         }))
         )
         .then(({ status, data }) => {
-          console.log("im in data");
           if (status != 200) {
             throw new Error(data.message || 'An error occurred.');
           }

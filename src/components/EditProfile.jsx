@@ -62,7 +62,6 @@ export default function EditProfile() {
         return response.json();
       })
       .then(data => {
-        console.log('Profile updated successfully:', data);
         toast({
           title: 'Profile Updated.',
           // description: 'What a nice picture!',

@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useParams } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
     Box,
     Heading,
@@ -20,7 +20,7 @@ import { useAuth } from './AuthProvider';
 
 
 const toProperCase = (str) => {
-    if (!str) return ''; 
+    if (!str) return '';
     return str.toLowerCase().replace(/\b\w/g, function (char) {
         return char.toUpperCase();
     });
@@ -28,10 +28,11 @@ const toProperCase = (str) => {
 
 
 function FollowingTab() {
+    const { profile } = useParams();
     const [following, setFollowing] = useState([]);
     const [FollowingNumber, setFollowingNumber] = useState(0);
     const { user, token } = useAuth();
-    const { profileData } = useProfileLoading({ profile: user });
+    const { profileData } = useProfileLoading({ profile });
 
     useEffect(() => {
         if (profileData?._links?.following?.href) {
@@ -72,7 +73,7 @@ function FollowingTab() {
                 <CardBody>
                     <Stack divider={<StackDivider />} spacing='8'>
                         {following.map(user => (
-                            <Flex spacing='4'> {/* Assuming each user has a unique 'id' */}
+                            <Flex key={user.username} spacing='4'> {/* Assuming each user has a unique 'id' */}
                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                                     <Avatar name={user.name} src={user.profilePic || undefined} />
                                     <Box alignItems="left">
@@ -93,9 +94,9 @@ function FollowingTab() {
             </Card>
         </>
     );
-    
+
 }
 
-export default FollowingTab ;
+export default FollowingTab;
 
 
