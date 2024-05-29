@@ -11,7 +11,7 @@ import ProfilePage from './components/ProfilePage';
 import PostFollowersFollowingTabs from './components/PostFollowersFollowingTabs';
 import AuthProvider from './components/AuthProvider';
 import PrivateRoute from './components/PrivateRoute';
-import EditProfile from './components/EditProfile';
+import CommentCard from './components/CommentCard';
 import "./style.css";
 import TrendPage from './components/Trend/TrendPage';
 import ChatApp from './components/Messages/ChatApp';

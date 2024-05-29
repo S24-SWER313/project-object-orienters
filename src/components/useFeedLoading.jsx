@@ -36,7 +36,7 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
                 setLoading(false);
             }).catch(error => {
                 setError(true);
-                // console.error('Failed to fetch posts:', error);
+                console.error('Failed to fetch posts:', error);
                 //throw new Error('Failed to fetch posts');
             });
     }, [feedType, feedValue, offset, limit]);

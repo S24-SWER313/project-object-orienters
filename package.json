@@ -7,6 +7,7 @@
     "@chakra-ui/layout": "^2.3.1",
     "@chakra-ui/react": "^2.8.2",
     "@charkour/react-reactions": "^0.11.0",
+    "@cord-sdk/react": "^1.47.2",
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",

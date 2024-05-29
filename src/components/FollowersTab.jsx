@@ -33,9 +33,7 @@ function FollowersTab() {
     const { profileData } = useProfileLoading({ profile });
 
     useEffect(() => {
-        console.log("Profile Data:", profileData);
         if (profileData?._links?.followers?.href) {
-            console.log("in if");
             fetch(profileData._links.followers.href, {
                 method: 'GET',
                 headers: {
@@ -43,17 +41,15 @@ function FollowersTab() {
                 },
             })
             .then(response => {
-                console.log("in response");
+
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
                 return response.json();
             })
             .then(data => {
-                console.log("in data");
                 if (data._embedded?.profileList) {
                     setFollowers(data._embedded.profileList);
-                    console.log("in if data");
                 }
                 setFollowersNumber(data.page.totalElements);
             })

@@ -257,6 +257,9 @@ function ProfilePage() {
                                 {profileData ? profileData.name : 'No Name'}
                             </Heading>
                             <Text fontSize={'xl'} color={'gray.500'}>
+                                @{profileData && profileData.username ? profileData.username : 'No Profession'}
+                            </Text>
+                            <Text fontSize={'md'} color={'gray.500'}>
                                 {profileData && profileData.profession ? profileData.profession : 'No Profession'}
                             </Text>
 
