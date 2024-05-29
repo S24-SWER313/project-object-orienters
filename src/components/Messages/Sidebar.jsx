@@ -52,3 +52,4 @@ const Sidebar = ({ onSelectChat, selectedChatId }) => {
 }
 
 export default Sidebar;
+  
