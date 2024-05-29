@@ -13,6 +13,8 @@ import AuthProvider from './components/AuthProvider';
 import PrivateRoute from './components/PrivateRoute';
 import EditProfile from './components/EditProfile';
 import "./style.css";
+import TrendPage from './components/Trend/TrendPage';
+import ChatApp from './components/Messages/ChatApp';
 //import OAuthRedirect from './components/OAuthRedirect';
 
 
@@ -23,10 +25,11 @@ function App() {
             <AuthProvider>
                 <Routes>
 
-                    <Route path="/" element={<EditProfile />} />
-                    {/* <Route path="/" element={<Landing />} /> */}
+                    {/* <Route path="/" element={<EditProfile />} /> */}
+                    <Route path="/" element={<Landing />} />
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/signup" element={<SignUp />} />
+                    <Route path="/messages" element={<ChatApp/>} />
                     {/* <Route path="/oauth2/redirect" element={<OAuthRedirect />} /> */}
 
 
@@ -35,9 +38,9 @@ function App() {
                         <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
                         <Route path="/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
                         <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />
+                        <Route path="/trends/:value" element={<MainLayout><TrendPage /></MainLayout>} />
 
-
-                        <Route path="*" element={<MainLayout><Header /><Footer /></MainLayout>} />
+                        <Route path="*" element={<MainLayout></MainLayout>} />
                     </Route>
 
 

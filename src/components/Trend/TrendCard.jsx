@@ -1,15 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import {
-    Box,
-    Heading,
-    Stack,
-    StackDivider,
-    Card,
-    CardHeader,
-    CardBody,
-    useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, Heading, Stack, StackDivider, Card, CardHeader, CardBody } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 function TrendCard() {
@@ -18,11 +8,10 @@ function TrendCard() {
     useEffect(() => {
         const fetchTrends = async () => {
             try {
-                const response = await fetch('http://localhost:8080/tags',
-                    {
-                        method: 'GET',
-                        headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${localStorage.getItem("token")}` }
-                    });
+                const response = await fetch('http://localhost:8080/tags', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${localStorage.getItem("token")}` }
+                });
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -39,10 +28,6 @@ function TrendCard() {
         fetchTrends();
     }, []);
 
-
-
-
-
     return (
         <Card mb={1}>
             <CardHeader>
@@ -52,9 +37,7 @@ function TrendCard() {
                 <Stack divider={<StackDivider />} spacing='8'>
                     {trends.map(trend => (
                         <Box key={trend.tagName}>
-                            <Link
-                                to={`TrendPage/${trend.tagName}`}
-                            >
+                            <Link to={`/trends/${trend.tagName}`}>
                                 #{trend.tagName}
                             </Link>
                         </Box>
