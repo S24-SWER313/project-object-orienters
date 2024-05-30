@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useParams } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
     Box,
     Heading,
@@ -17,10 +17,11 @@ import {
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import useProfileLoading from './useProfileLoading';
 import { useAuth } from './AuthProvider';
+import ApiCalls from './ApiCalls';
 
 
 const toProperCase = (str) => {
-    if (!str) return ''; 
+    if (!str) return '';
     return str.toLowerCase().replace(/\b\w/g, function (char) {
         return char.toUpperCase();
     });
@@ -28,41 +29,31 @@ const toProperCase = (str) => {
 
 
 function FollowingTab() {
+    const { profile } = useParams();
     const [following, setFollowing] = useState([]);
     const [FollowingNumber, setFollowingNumber] = useState(0);
     const { user, token } = useAuth();
-    const { profileData } = useProfileLoading({ profile: user });
+    const { profileData } = useProfileLoading({ profile });
 
     useEffect(() => {
         if (profileData?._links?.following?.href) {
-            fetch(profileData._links.following.href, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
+            async function fetchFollowing() {
+                try {
+                    const response = await ApiCalls.get(profileData._links.following.href);
+                    const data = response.data;
                     if (data._embedded?.profileList) {
                         setFollowing(data._embedded.profileList);
                     }
                     setFollowingNumber(data.page.totalElements);
-                })
-                .catch((error) => {
+                } catch (error) {
                     console.error("Failed to fetch following:", error);
-                });
+                }
+            }
+            fetchFollowing();
         }
     }, [user, profileData]);
 
-
-
-
-
+    
     return (
         <>
             <Card mb={1}>
@@ -72,7 +63,7 @@ function FollowingTab() {
                 <CardBody>
                     <Stack divider={<StackDivider />} spacing='8'>
                         {following.map(user => (
-                            <Flex spacing='4'> {/* Assuming each user has a unique 'id' */}
+                            <Flex key={user.username} spacing='4'> {/* Assuming each user has a unique 'id' */}
                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                                     <Avatar name={user.name} src={user.profilePic || undefined} />
                                     <Box alignItems="left">
@@ -93,9 +84,9 @@ function FollowingTab() {
             </Card>
         </>
     );
-    
+
 }
 
-export default FollowingTab ;
+export default FollowingTab;
 
 

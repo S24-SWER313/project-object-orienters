@@ -5,8 +5,9 @@ import { useToast } from '@chakra-ui/react';
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [token, setToken] = useState(null);
+    const [user, setUser] = useState('');
+    const [token, setToken] = useState('');
+    const [refreshToken, setRefreshToken] = useState('');
     const navigate = useNavigate();
     const toast = useToast();
 
@@ -37,6 +38,7 @@ const AuthProvider = ({ children }) => {
             localStorage.setItem("refreshToken", data.refreshToken);
             setUser(data.username);
             setToken(data.token);
+            setRefreshToken(data.refreshToken);
             toast({
                 title: 'Login Success',
                 description: "Welcome Back!",

@@ -1,15 +1,10 @@
 import { useParams } from "react-router-dom";
+import PostList from '../PostList';
 
 function TrendPage() {
     const { value } = useParams();
-    console.log('Received Value:', value);
     return (
-        <>
-            <h1>Component B</h1>
-            <p>Received Value: {value}</p>
-
-          
-        </>
+         <PostList key={value} feedType='TOPIC' feedValue={value} offset={0} limit={10} />
     );
 }
 

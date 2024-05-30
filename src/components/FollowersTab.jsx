@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useParams } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
     Box,
     Heading,
@@ -8,7 +8,6 @@ import {
     Card,
     CardHeader,
     CardBody,
-    useColorModeValue,
     Flex,
     Avatar,
     Text,
@@ -17,45 +16,43 @@ import {
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import useProfileLoading from './useProfileLoading';
 import { useAuth } from './AuthProvider';
+import ApiCalls from './ApiCalls';
 
 
 const toProperCase = (str) => {
+    if (!str) return '';
     return str.toLowerCase().replace(/\b\w/g, function (char) {
         return char.toUpperCase();
     });
 }
 
 function FollowersTab() {
+    const { profile } = useParams();
     const [followers, setFollowers] = useState([]);
     const [FollowersNumber, setFollowersNumber] = useState(0);
     const { user, token } = useAuth();
-    const { profileData } = useProfileLoading({ profile: user });
+    const { profileData } = useProfileLoading({ profile });
 
     useEffect(() => {
         if (profileData?._links?.followers?.href) {
-            fetch(profileData._links.followers.href, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
+            async function fetchFollowers() {
+                try {
+                    const response = await ApiCalls.get(profileData._links.followers.href);
+                    const data = response.data;
                     if (data._embedded?.profileList) {
                         setFollowers(data._embedded.profileList);
                     }
                     setFollowersNumber(data.page.totalElements);
-                })
-                .catch((error) => {
+                } catch (error) {
                     console.error("Failed to fetch followers:", error);
-                });
+                }
+            }
+            fetchFollowers();
+        } else {
+            console.log("Followers link unavailable");
         }
     }, [user, profileData]);
+
 
 
 
@@ -70,7 +67,7 @@ function FollowersTab() {
                 <CardBody>
                     <Stack divider={<StackDivider />} spacing='8'>
                         {followers.map(follower => (
-                            <Flex spacing='4'>
+                            <Flex key={follower.username} spacing='4'>
                                 <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                                     <Avatar name={follower.name} src={follower.profilePic || undefined} />
                                     <Box alignItems="left">
@@ -93,6 +90,6 @@ function FollowersTab() {
     );
 }
 
-export default FollowersTab ;
+export default FollowersTab;
 
 
