@@ -12,6 +12,8 @@ import PostFollowersFollowingTabs from './components/PostFollowersFollowingTabs'
 import AuthProvider from './components/AuthProvider';
 import PrivateRoute from './components/PrivateRoute';
 import "./style.css";
+import TrendPage from './components/Trend/TrendPage';
+// import ChatApp from './components/Messages/ChatApp';
 import OAuthRedirect from './components/OAuthRedirect';
 
 
@@ -26,6 +28,8 @@ function App() {
                     <Route path="/" element={<Landing />} />
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/signup" element={<SignUp />} />
+                    {/* <Route path="/messages" element={<ChatApp/>} /> */}
+
                     <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
 
 
