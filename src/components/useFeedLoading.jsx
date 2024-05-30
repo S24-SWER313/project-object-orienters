@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import ApiCalls from './ApiCalls';
 
 function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
     const [loading, setLoading] = useState(true);
@@ -11,35 +12,36 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
     }, [feedType, feedValue]);
 
     useEffect(() => {
-        if (!hasMore) return;
-        setLoading(true);
-        setError(false);
-        fetch(`http://localhost:8080/feed?feedType=${feedType}&value=${feedValue}&offset=${offset}&limit=${limit}`, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem("token")}` }
-        }).then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-            if (response.status === 401 || response.status === 403) {
-                localStorage.removeItem('token');
-                //window.location.href = '/login';
-            }
-        })
-            .then(data => {
+        const fetchFeed = async () => {
+            if (!hasMore) return;
+            setLoading(true);
+            setError(false);
+
+            try {
+                const response = await ApiCalls.get(`/feed?feedType=${feedType}&value=${feedValue}&offset=${offset}&limit=${limit}`);
+                const data = response.data;
+
                 if (Array.isArray(data._embedded.postList)) {
                     setPosts(prevPosts => [...prevPosts, ...data._embedded.postList]);
                     setHasMore(data.page.totalPages > offset + 1);
                 } else {
-                    console.error('Expected data.data to be an array but received:', data._embedded.postList);
+                    console.error('Expected data._embedded.postList to be an array but received:', data._embedded.postList);
                 }
+            } catch (error) {
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+                    localStorage.removeItem('token');
+                    // window.location.href = '/login'; // Uncomment if you want to redirect to login page
+                } else {
+                    console.error('Failed to fetch posts:', error);
+                    setError(true);
+                }
+            } finally {
                 setLoading(false);
-            }).catch(error => {
-                setError(true);
-                console.error('Failed to fetch posts:', error);
-                //throw new Error('Failed to fetch posts');
-            });
-    }, [feedType, feedValue, offset, limit]);
+            }
+        };
+
+        fetchFeed();
+    }, [feedType, feedValue, offset, limit, hasMore]);
 
     return { loading, error, posts, hasMore };
 }

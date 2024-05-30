@@ -18,7 +18,7 @@ import { dark, docco, dracula, gruvboxDark, lightfair, solarizedDark, solarizedL
 import { Light } from 'react-syntax-highlighter';
 import { coldarkCold, lucario, materialDark, solarizedlight, twilight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useAuth } from './AuthProvider';
-
+import ApiCalls from './ApiCalls';
 
 
 const Post = forwardRef((props, ref) => {
@@ -59,26 +59,18 @@ const Post = forwardRef((props, ref) => {
     }, [props.authorProfilePic]);
 
 
-    const addReaction = () => {
+     const addReaction = async () => {
         console.log(props.reactionsUrl)
-        fetch(props.reactionsUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({
+        try {
+            const postData = {
                 reactorID: user,
                 reactionType: "LIKE"
-            })
-        })
-            .then(response => response.json()) 
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+            };
+            const response = await ApiCalls.post(props.reactionsUrl, postData);
+            console.log('Success:', response.data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
 

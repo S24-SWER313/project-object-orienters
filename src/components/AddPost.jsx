@@ -10,6 +10,7 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import useProfileLoading from './useProfileLoading';
 import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import ApiCalls from './ApiCalls'; 
 
 
 function AddPost() {
@@ -42,26 +43,19 @@ function AddPost() {
         formData.append('privacy', privacy);
         files.forEach(file => formData.append('files', file));
 
-        const response = await fetch(`http://localhost:8080/profiles/${user}/posts`, {
-            method: 'POST',
+        const response = await ApiCalls.post(`/profiles/${user}/posts`, formData, {
             headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-            body: formData
+               // 'Content-Type': 'multipart/form-data'
+            }
         });
-
-        if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.statusText}`);
-        }
-        const data = await response.json();
-
+        //const data = response.data; 
         toast({
             title: 'Post created.',
-            description: `${files.length} files uploaded with the post.`,
+            description: `Post created Successfuly!.`,
             status: 'success',
             duration: 5000,
             isClosable: true,
-            position: `top`
+            position: 'top'
         });
 
     };
