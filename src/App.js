@@ -11,40 +11,39 @@ import ProfilePage from './components/ProfilePage';
 import PostFollowersFollowingTabs from './components/PostFollowersFollowingTabs';
 import AuthProvider from './components/AuthProvider';
 import PrivateRoute from './components/PrivateRoute';
+import CommentCard from './components/CommentCard';
 import "./style.css";
 import TrendPage from './components/Trend/TrendPage';
 // import ChatApp from './components/Messages/ChatApp';
-import OAuthRedirect from './components/OAuthRedirect';
+// import OAuthRedirect from './components/OAuthRedirect';
+import ChatApp from './components/Messages/ChatApp';
+//import OAuthRedirect from './components/OAuthRedirect';
+
 
 
 function App() {
     return (
 
-
-
         <Router>
             <AuthProvider>
                 <Routes>
+
+                    {/* <Route path="/" element={<EditProfile />} /> */}
                     <Route path="/" element={<Landing />} />
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/signup" element={<SignUp />} />
-                    {/* <Route path="/messages" element={<ChatApp/>} /> */}
-
-                    <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
+                    <Route path="/messages" element={<ChatApp/>} />
+                    {/* <Route path="/oauth2/redirect" element={<OAuthRedirect />} /> */}
 
 
                     <Route element={<PrivateRoute />}>
 
                         <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
                         <Route path="/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
-                        <Route path="/profiles/:profile" element={<MainLayout><ProfilePage
-                            backgroundImage="https://images.unsplash.com/photo-1666795599746-0f62dfa29a07?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90oy1pYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
-                            followers="15k"
-                            following="20k"
-                            posts="10" /></MainLayout>} />
-                          
+                        <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />
+                        <Route path="/trends/:value" element={<MainLayout><TrendPage /></MainLayout>} />
 
-                        <Route path="*" element={<MainLayout><Header /><Footer /></MainLayout>} />
+                        <Route path="*" element={<MainLayout></MainLayout>} />
                     </Route>
 
 

@@ -39,6 +39,7 @@ export default function SignUp() {
         body: JSON.stringify({ username: username, name: name, email: email, password: password }),
       })
         .then((response) => response.json().then(data => ({
+          
           status: response.status,
           data
         }))
@@ -81,7 +82,10 @@ export default function SignUp() {
         isClosable: true,
         position: `top`
       });
+
+      return false;
     }
+    return true;
   };
 
   return (

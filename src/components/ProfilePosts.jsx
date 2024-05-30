@@ -1,56 +1,47 @@
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Post from './Post';
-import useFeedLoading from './useFeedLoading'
+import useProfileLoading from './useProfileLoading';
+import { useAuth } from './AuthProvider';
+import ApiCalls from './ApiCalls';
 
+function ProfilePosts({ postsURI }) {
+    const [posts, setPosts] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-function PostList({feedType, feedValue, offset, limit}) {
-    
+    const { user, token } = useAuth();
+    const { profileData } = useProfileLoading({ profile: user });
 
-    const [feedTypeState, setFeedTypeState] = useState(feedType);
-    const [offsetState, setOffsetState] = useState(offset);
-    const [limitState, setLimitState] = useState(limit);
-    
-
-    const {
-        posts,
-        loading,
-        error,
-        hasMore
-    } = useFeedLoading(feedTypeState, feedValue, offsetState, limitState);
-
-    const observer = useRef();
-    const lastPostElementRef = useCallback(node => {
-        if (loading) return;
-        if (observer.current) observer.current.disconnect();
-        observer.current = new IntersectionObserver(entries => {
-            
-            if (entries[0].isIntersecting && hasMore) {
-                setOffsetState(prevOffset => prevOffset + 1);
+    useEffect(() => {
+        const fetchPosts = async () => {
+            if (postsURI) {
+                setLoading(true);
+                setError(null);
+                try {
+                    const response = await ApiCalls.get(postsURI);
+                    const data = response.data;
+                    if (data._embedded?.postList) {
+                        setPosts(data._embedded.postList);
+                    }
+                    setLoading(false);
+                } catch (error) {
+                    console.error("Failed to fetch posts:", error);
+                    setError("Failed to load posts");
+                    setLoading(false);
+                }
             }
-        });
-        if (node) observer.current.observe(node);
-    }, [loading, hasMore]);
+        };
 
-
-    //const [clientUsername, setClientUsername] = useState('hello');
-
-    //, setPosts);
-
+        fetchPosts();
+    }, [postsURI, token]);
 
     return (
         <>
             {posts.map((post, index) => {
+                // console.log(posts.length);
                 if (posts.length === index + 1) {
-
-                    // return <div style={{
-                    //     color: 'red',
-                    //     fontSize: '20px',
-                    //     margin: 50
-                    // }} ref={lastPostElementRef} key={index}>{post.textData}</div>
-
-                   return <Post
+                    return <Post
                         key={post.contentID || index}
-                        ref={lastPostElementRef}
                         contentID={post.contentID}
                         timestamp={post.timestamp}
                         textData={post.textData}
@@ -68,7 +59,7 @@ function PostList({feedType, feedValue, offset, limit}) {
                     />
 
                 } else {
-                   return <Post
+                    return <Post
                         key={post.contentID || index}
                         contentID={post.contentID}
                         timestamp={post.timestamp}
@@ -85,12 +76,6 @@ function PostList({feedType, feedValue, offset, limit}) {
                         selfUrl={post._links.self.href}
                         authorUrl={post._links.author.href}
                     />
-
-                    // return <div style={{
-                    //     color: 'red',
-                    //     fontSize: '20px',
-                    //     margin: 50
-                    // }} ref={lastPostElementRef} key={index}>{post.textData}</div>
                 }
             }
             )}
@@ -98,4 +83,4 @@ function PostList({feedType, feedValue, offset, limit}) {
     );
 }
 
-export default PostList;
+export default ProfilePosts;

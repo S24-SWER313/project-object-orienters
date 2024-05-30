@@ -46,6 +46,7 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import { useAuth } from './AuthProvider';
+import ApiCalls from './ApiCalls';
 
 function useProfileLoading(props) {
     const profile = props.profile;
@@ -53,33 +54,18 @@ function useProfileLoading(props) {
     const [profileData, setProfileData] = useState(null);
 
     useEffect(() => {
-        console.log("useProfileLoading useEffect Profile: ", profile);
-        if (profile && token) {
-            console.log('Fetching profile data for', profile);
-            
-            console.log('Fetching profile data for', profile);
-            fetch(`http://localhost:8080/profiles/${profile}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
+        const fetchProfileData = async () => {
+            if (profile && token) {
+                try {
+                    const response = await ApiCalls.get(`/profiles/${profile}`);
+                    setProfileData(response.data);
+                } catch (error) {
+                    console.error('Error fetching profile data:', error);
                 }
-            })
-            .then(response => {
-                console.log("res");
-                if (!response.ok) {
-                    throw new Error('Failed to fetch profile data');
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log("data");
-                setProfileData(data);
-            })
-            .catch(error => {
-                console.error('Error fetching profile data:', error);
-            });
-        }
+            }
+        };
+
+        fetchProfileData();
     }, [profile, token]);
 
     const memoizedProfileData = useMemo(() => ({
