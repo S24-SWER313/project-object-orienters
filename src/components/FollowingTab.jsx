@@ -17,6 +17,7 @@ import {
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import useProfileLoading from './useProfileLoading';
 import { useAuth } from './AuthProvider';
+import ApiCalls from './ApiCalls';
 
 
 const toProperCase = (str) => {
@@ -36,34 +37,23 @@ function FollowingTab() {
 
     useEffect(() => {
         if (profileData?._links?.following?.href) {
-            fetch(profileData._links.following.href, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
+            async function fetchFollowing() {
+                try {
+                    const response = await ApiCalls.get(profileData._links.following.href);
+                    const data = response.data;
                     if (data._embedded?.profileList) {
                         setFollowing(data._embedded.profileList);
                     }
                     setFollowingNumber(data.page.totalElements);
-                })
-                .catch((error) => {
+                } catch (error) {
                     console.error("Failed to fetch following:", error);
-                });
+                }
+            }
+            fetchFollowing();
         }
     }, [user, profileData]);
 
-
-
-
-
+    
     return (
         <>
             <Card mb={1}>

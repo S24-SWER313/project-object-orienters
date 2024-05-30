@@ -16,10 +16,11 @@ import {
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import useProfileLoading from './useProfileLoading';
 import { useAuth } from './AuthProvider';
+import ApiCalls from './ApiCalls';
 
 
 const toProperCase = (str) => {
-    if (!str) return ''; 
+    if (!str) return '';
     return str.toLowerCase().replace(/\b\w/g, function (char) {
         return char.toUpperCase();
     });
@@ -34,33 +35,24 @@ function FollowersTab() {
 
     useEffect(() => {
         if (profileData?._links?.followers?.href) {
-            fetch(profileData._links.followers.href, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            })
-            .then(response => {
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
+            async function fetchFollowers() {
+                try {
+                    const response = await ApiCalls.get(profileData._links.followers.href);
+                    const data = response.data;
+                    if (data._embedded?.profileList) {
+                        setFollowers(data._embedded.profileList);
+                    }
+                    setFollowersNumber(data.page.totalElements);
+                } catch (error) {
+                    console.error("Failed to fetch followers:", error);
                 }
-                return response.json();
-            })
-            .then(data => {
-                if (data._embedded?.profileList) {
-                    setFollowers(data._embedded.profileList);
-                }
-                setFollowersNumber(data.page.totalElements);
-            })
-            .catch((error) => {
-                console.error("Failed to fetch followers:", error);
-            });
+            }
+            fetchFollowers();
         } else {
             console.log("Followers link unavailable");
         }
     }, [user, profileData]);
-    
+
 
 
 
@@ -98,6 +90,6 @@ function FollowersTab() {
     );
 }
 
-export default FollowersTab ;
+export default FollowersTab;
 
 

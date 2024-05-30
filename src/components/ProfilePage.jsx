@@ -20,7 +20,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import useProfileLoading from './useProfileLoading';
 import ProfilePosts from './ProfilePosts';
 import { useAuth } from './AuthProvider';
-import { isEqual } from 'lodash';
+import ApiCalls from './ApiCalls';
 
 
 
@@ -38,8 +38,8 @@ function ProfilePage() {
     const [isFollowing, setIsFollowing] = useState(false);
 
     useEffect(() => {
-        console.log("profile "+ profile);
-        console.log("user "+ user);
+        console.log("profile " + profile);
+        console.log("user " + user);
         if (profile === user) {
             setIsOwner(true);
         }
@@ -52,15 +52,9 @@ function ProfilePage() {
         const formData = new FormData();
         formData.append('file', file);
 
-        fetch(`http://localhost:8080/profiles/${profile}/backgroundImg`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-            body: formData,
+        ApiCalls.post(`/profiles/${profile}/backgroundImg`, formData, {
         })
-            .then(response => response.json())
-            .then(data => {
+            .then(response => {
                 toast({
                     title: 'Background Image Updated.',
                     description: 'What a nice background!',
@@ -72,26 +66,27 @@ function ProfilePage() {
             })
             .catch((error) => {
                 console.error('Error:', error);
+                toast({
+                    title: 'Error Updating Background Image.',
+                    description: 'Please try again later.',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                    position: 'top',
+                });
             });
     }
 
 
     function handleAddFollower() {
+        const postData = { username: user };
 
-        fetch(`http://localhost:8080/profiles/${profile}/followers`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify({ username: user }),
-        })
-            .then(response => response.json())
-            .then(data => {
+        ApiCalls.post(`/profiles/${profile}/followers`, postData)
+            .then(response => {
                 setIsFollowing(true);
                 toast({
                     title: 'Following user.',
-                    description: 'Following user',
+                    description: 'You are now following the user.',
                     status: 'success',
                     duration: 5000,
                     isClosable: true,
@@ -100,6 +95,14 @@ function ProfilePage() {
             })
             .catch((error) => {
                 console.error('Error:', error);
+                toast({
+                    title: 'Error Following User.',
+                    description: 'Unable to follow the user at this time.',
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                    position: 'top',
+                });
             });
     }
     function handleProfilePicChange(event) {
@@ -109,18 +112,12 @@ function ProfilePage() {
         const formData = new FormData();
         formData.append('file', file);
 
-        fetch(`http://localhost:8080/profiles/${profile}/profilePic`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-            },
-            body: formData,
+        ApiCalls.post(`/profiles/${profile}/profilePic`, formData, {
         })
-            .then(response => response.json())
-            .then(data => {
+            .then(response => {
                 toast({
                     title: 'Profile Picture Updated.',
-                    description: 'What a nice picture!',
+                    description: 'What a nice background!',
                     status: 'success',
                     duration: 5000,
                     isClosable: true,
@@ -131,8 +128,8 @@ function ProfilePage() {
                 console.error('Error:', error);
                 toast({
                     title: 'Error Updating Profile Picture.',
-                    //description: 'What a nice picture!',
-                    status: 'success',
+                    description: 'Please try again later.',
+                    status: 'error',
                     duration: 5000,
                     isClosable: true,
                     position: 'top',
@@ -141,53 +138,36 @@ function ProfilePage() {
     }
 
     useEffect(() => {
-        if (profileData?._links?.followers?.href) {
-            fetch(profileData._links.followers.href, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
+        const fetchFollowers = async () => {
+            if (profileData?._links?.followers?.href) {
+                try {
+                    const response = await ApiCalls.get(profileData._links.followers.href);
+                    const data = response.data;
                     setFollowersNumber(data.page.totalElements);
-                })
-                .catch((error) => {
+                } catch (error) {
                     console.error("Failed to fetch followers:", error);
-                });
-        }
+                }
+            }
+        };
+
+        fetchFollowers();
     }, [user, profileData]);
 
     useEffect(() => {
-        if (profileData?._links?.following?.href) {
-            fetch(profileData._links.following.href, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                },
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
+        const fetchFollowing = async () => {
+            if (profileData?._links?.following?.href) {
+                try {
+                    const response = await ApiCalls.get(profileData._links.following.href);
+                    const data = response.data;
                     setFollowingNumber(data.page.totalElements);
-                })
-                .catch((error) => {
+                } catch (error) {
                     console.error("Failed to fetch following:", error);
-                });
-        }
+                }
+            }
+        };
+
+        fetchFollowing();
     }, [user, profileData]);
-
-
-
 
     return (
         <>
@@ -304,14 +284,14 @@ function ProfilePage() {
                                         boxShadow={'0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'}
                                         _hover={{
                                             bg: isFollowing ? 'green.500' : 'blue.500', // Conditional hover color
-                                          }}
-                                          _focus={{
+                                        }}
+                                        _focus={{
                                             bg: isFollowing ? 'green.500' : 'blue.500', // Conditional focus color
-                                          }}
-                                    
+                                        }}
+
                                         onClick={handleAddFollower}
-                                        >
-                                             {isFollowing ? 'Following' : 'Follow'}
+                                    >
+                                            {isFollowing ? 'Following' : 'Follow'}
                                         </Button></>
                                 )}
                             </Stack>

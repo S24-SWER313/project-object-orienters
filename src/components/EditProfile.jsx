@@ -20,6 +20,7 @@ import { SmallCloseIcon } from '@chakra-ui/icons';
 import useProfileLoading from './useProfileLoading';
 import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
+import ApiCalls from './ApiCalls';
 
 
 export default function EditProfile() {
@@ -47,82 +48,64 @@ export default function EditProfile() {
       about
     };
 
-    fetch(`http://localhost:8080/profiles/${user}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(payload)
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        toast({
-          title: 'Profile Updated.',
-          // description: 'What a nice picture!',
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-          position: 'top',
-        });
-      })
-      .catch(error => {
-        console.error('Failed to update profile:', error);
-        toast({
-          title: 'Error Updating Profile, Please Try Again.',
-           description: 'What a nice picture!',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-          position: 'top',
-        });
+    try {
+      await ApiCalls.put(`/profiles/${user}`, payload);
+      toast({
+        title: 'Profile Updated.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
       });
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+      toast({
+        title: 'Error Updating Profile, Please Try Again.',
+        description: 'What a nice picture!',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
   }
 
   function triggerFileInput() {
     fileInputRef.current.click();
   }
 
-  function handleProfilePicChange(event) {
+  async function handleProfilePicChange(event) {
     const file = event.target.files[0];
     if (!file) return;
 
     const formData = new FormData();
     formData.append('file', file);
 
-    fetch(`http://localhost:8080/profiles/${user}/profilePic`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      body: formData,
-    })
-      .then(response => response.json())
-      .then(data => {
-        toast({
-          title: 'Profile Picture Updated.',
-          description: 'What a nice picture!',
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-          position: 'top',
-        });
-      })
-      .catch((error) => {
-        toast({
-          title: 'Error Updating Profile Picture.',
-          //description: 'What a nice picture!',
-          status: 'success',
-          duration: 5000,
-          isClosable: true,
-          position: 'top',
-        });
+    try {
+      await ApiCalls.post(`/profiles/${user}/profilePic`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data' // This is actually set automatically by Axios when formData is detected
+        }
       });
+      toast({
+        title: 'Profile Picture Updated.',
+        description: 'What a nice picture!',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
+    } catch (error) {
+      console.error('Error updating profile picture:', error);
+      toast({
+        title: 'Error Updating Profile Picture.',
+        description: `Status: ${error.response ? error.response.status : "No response"}`,
+        status: 'error', // Changed from 'success' to 'error'
+        duration: 5000,
+        isClosable: true,
+        position: 'top',
+      });
+    }
   }
 
   return (
