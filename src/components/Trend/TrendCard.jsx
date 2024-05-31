@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Heading, Stack, StackDivider, Card, CardHeader, CardBody } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ApiCalls from '../ApiCalls';
 
 function TrendCard() {
     const [trends, setTrends] = useState([]);
+    const location = useLocation();
+
+    const getInitialSelectedTag = () => {
+        const path = location.pathname;
+        const match = path.match(/\/trends\/(.+)/);
+        return match ? match[1] : null;
+    };
+
+    const [selectedTag, setSelectedTag] = useState(getInitialSelectedTag);
 
     useEffect(() => {
         const fetchTrends = async () => {
@@ -23,16 +32,37 @@ function TrendCard() {
         fetchTrends();
     }, []);
 
+    useEffect(() => {
+        const path = location.pathname;
+        const match = path.match(/\/trends\/(.+)/);
+        if (!match) {
+            setSelectedTag(null);
+        }
+    }, [location]);
+
     return (
         <Card mb={1}>
             <CardHeader>
                 <Heading size='md'>Trends</Heading>
             </CardHeader>
             <CardBody>
-                <Stack divider={<StackDivider />} spacing='8'>
+                <Stack divider={<StackDivider />} spacing='3' fontSize={'lg'}>
                     {trends.map(trend => (
-                        <Box key={trend.tagName}>
-                            <Link to={`/trends/${trend.tagName}`}>
+                        <Box 
+                            key={trend.tagName}
+                            _hover={{ bg: 'gray.100', color: 'black' }}
+                            borderRadius='md'
+                            p='2'
+                            rounded={"10px"}
+                            bg={selectedTag === trend.tagName ? 'blue.500' : 'transparent'}
+                            color={selectedTag === trend.tagName ? 'white' : 'inherit'}
+                            onClick={() => setSelectedTag(trend.tagName)}
+                        >
+                            <Link
+                                to={`/trends/${trend.tagName}`}
+                                style={{ textDecoration: 'none' }}
+                                _hover={{ color: 'white' }}
+                            >
                                 #{trend.tagName}
                             </Link>
                         </Box>

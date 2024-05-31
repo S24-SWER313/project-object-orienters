@@ -1,7 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
-import Footer from './components/Footer';
 import SignUp from './components/SignUp';
 import LogIn from './components/LogIn';
 import Landing from './components/landing';
@@ -11,25 +9,26 @@ import ProfilePage from './components/ProfilePage';
 import PostFollowersFollowingTabs from './components/PostFollowersFollowingTabs';
 import AuthProvider from './components/AuthProvider';
 import PrivateRoute from './components/PrivateRoute';
-import CommentCard from './components/CommentCard';
 import "./style.css";
 import TrendPage from './components/Trend/TrendPage';
 import ChatApp from './components/Messages/ChatApp';
+import CodePage  from './components/CodePage';
+import NotFoundPage from './components/NotFoundPage';
 //import OAuthRedirect from './components/OAuthRedirect';
+
 
 
 function App() {
     return (
+        
 
         <Router>
             <AuthProvider>
                 <Routes>
 
-                    {/* <Route path="/" element={<EditProfile />} /> */}
                     <Route path="/" element={<Landing />} />
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/signup" element={<SignUp />} />
-                    <Route path="/messages" element={<ChatApp/>} />
                     {/* <Route path="/oauth2/redirect" element={<OAuthRedirect />} /> */}
 
 
@@ -39,15 +38,18 @@ function App() {
                         <Route path="/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
                         <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />
                         <Route path="/trends/:value" element={<MainLayout><TrendPage /></MainLayout>} />
+                        <Route path="/code" element={<MainLayout><CodePage /></MainLayout>} />
+                        <Route path="/messages" element={<ChatApp/>} />
 
-                        <Route path="*" element={<MainLayout></MainLayout>} />
+
+                        <Route path="*" element={<NotFoundPage />} />
                     </Route>
 
 
                 </Routes>
             </AuthProvider>
         </Router>
-    );
+     );
 }
 
 

@@ -82,7 +82,8 @@ export default function LogIn() {
               pot
             </Heading>
             <Text color={'gray.500'} fontSize={{ base: 'sm', sm: 'md', md: 'lg' }}>
-              Log in to TechSpot and reconnect with a community where technology enthusiasts and experts come together to shape tomorrow's innovations.            </Text>
+              Log in to TechSpot and reconnect with a community where technology enthusiasts and experts come together to shape tomorrow's innovations.
+              </Text>
           </Stack>
           <Box as={'form'} mt={10}>
             <Stack spacing={4}>
