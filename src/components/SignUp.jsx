@@ -181,55 +181,61 @@ export default function SignUp() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Stack>
-
-            <Button
-              h={'57'}
-              fontFamily={'heading'}
-              mt={8}
-              w={'full'}
-              bg='blue.400'
-              color={'white'}
-              _hover={{
-                boxShadow: '2xl'
-              }}
-              onClick={
-                signup
-              }
-            >
-              Signup
-            </Button>
-            <Button
-              h={'57'}
-              fontFamily={'heading'}
-              mt={3}
-              bg='white'
-              w={'full'}
-              //color={'white'}
-              _hover={{
-                boxShadow: '2xl'
-              }}
-              onClick={
-                () => {
-                  window.location.href = 'http://localhost:8080/oauth2/authorize/google';
+            <Stack>
+              <Button
+                h={'57'}
+                fontFamily={'heading'}
+                mt={8}
+                fontSize={"20px"}
+                w={'full'}
+                bg='blue.400'
+                color={'white'}
+                _hover={{
+                  boxShadow: '2xl'
+                }}
+                onClick={
+                  signup
                 }
-              }
-            >
-              Continue With Google  <FcGoogle />
-            </Button>
-            <Button
-              h={'57'}
-              fontFamily={'heading'}
-              mt={3}
-              w={'full'}
-              bg='white'
-              _hover={{
-                boxShadow: '2xl'
-              }}
-              onClick={() => {
-                window.location.href = githubAuthUrl;
-              }}>
-              Continue With Github <FaGithub />
-            </Button>
+              >
+                Signup
+              </Button>
+              <Button
+                h={'57'}
+                fontFamily={'heading'}
+                mt={3}
+                leftIcon={<FcGoogle size={"30px"} />}
+                fontSize={"20px"}
+                bg='white'
+                w={'full'}
+                //color={'white'}
+                _hover={{
+                  boxShadow: '2xl'
+                }}
+                onClick={
+                  () => {
+                    window.location.href = 'http://localhost:8080/oauth2/authorize/google';
+                  }
+                }
+              >
+                Continue With Google
+              </Button>
+              <Button
+                h={'57'}
+                fontFamily={'heading'}
+                fontSize={"20px"}
+                leftIcon={<FaGithub size={"30px"} />}
+                mt={3}
+                w={'full'}
+                bg='white'
+                _hover={{
+                  boxShadow: '2xl'
+                }}
+                onClick={() => {
+                  window.location.href = githubAuthUrl;
+                }}>
+                Continue With Github
+              </Button>
+            </Stack>
             <Stack isInline justifyContent='space-between' mt={4}>
               <Box>
                 <Link color={'blue.400'} href='/login'>Already a member? Login here!</Link>

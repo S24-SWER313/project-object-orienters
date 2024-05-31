@@ -1,18 +1,19 @@
 import React, { useRef, useState, useCallback } from 'react';
 import Post from './Post';
 import useFeedLoading from './useFeedLoading'
+import SharedPost from './SharedPost';
 
 
-function PostList({feedType, feedValue, offset, limit}) {
-    
+function PostList({ feedType, feedValue, offset, limit }) {
+
 
     const [feedTypeState, setFeedTypeState] = useState(feedType);
     const [offsetState, setOffsetState] = useState(offset);
     const [limitState, setLimitState] = useState(limit);
-    
+
 
     const {
-        posts,
+        mixedPosts,
         loading,
         error,
         hasMore
@@ -23,7 +24,7 @@ function PostList({feedType, feedValue, offset, limit}) {
         if (loading) return;
         if (observer.current) observer.current.disconnect();
         observer.current = new IntersectionObserver(entries => {
-            
+
             if (entries[0].isIntersecting && hasMore) {
                 setOffsetState(prevOffset => prevOffset + 1);
             }
@@ -39,58 +40,62 @@ function PostList({feedType, feedValue, offset, limit}) {
 
     return (
         <>
-            {posts.map((post, index) => {
-                if (posts.length === index + 1) {
+            {mixedPosts.map((post, index) => {
+                if (post.contentType === "Post") {
+                    if (mixedPosts.length === index + 1) {
 
-                    // return <div style={{
-                    //     color: 'red',
-                    //     fontSize: '20px',
-                    //     margin: 50
-                    // }} ref={lastPostElementRef} key={index}>{post.textData}</div>
+                        // return <div style={{
+                        //     color: 'red',
+                        //     fontSize: '20px',
+                        //     margin: 50
+                        // }} ref={lastPostElementRef} key={index}>{post.textData}</div>
 
-                   return <Post
-                        key={post.contentID || index}
-                        ref={lastPostElementRef}
-                        contentID={post.contentID}
-                        timestamp={post.timestamp}
-                        textData={post.textData}
-                        mediaData={post.mediaData}
-                        authorName={post.contentAuthor.name}
-                        authorProfilePic={post.contentAuthor.profilePic || '/default-profile.jpg'}
-                        authorProfession={post.contentAuthor.profession || 'No Profession'}
-                        numOfReactions={post.numOfReactions}
-                        numOfComments={post.numOfComments}
-                        numOfShares={post.numOfShares}
-                        reactionsUrl={post._links.reactions.href}
-                        commentsUrl={post._links.comments.href}
-                        selfUrl={post._links.self.href}
-                        authorUrl={post._links.author.href}
-                    />
+                        return <Post
+                            key={post.contentID || index}
+                            ref={lastPostElementRef}
+                            contentID={post.contentID}
+                            timestamp={post.timestamp}
+                            textData={post.textData}
+                            mediaData={post.mediaData}
+                            authorName={post.contentAuthor.name}
+                            authorProfilePic={post.contentAuthor.profilePic || '/default-profile.jpg'}
+                            authorProfession={post.contentAuthor.profession || 'No Profession'}
+                            numOfReactions={post.numOfReactions}
+                            numOfComments={post.numOfComments}
+                            numOfShares={post.numOfShares}
+                            reactionsUrl={post._links.reactions.href}
+                            commentsUrl={post._links.comments.href}
+                            selfUrl={post._links.self.href}
+                            authorUrl={post._links.author.href}
+                        />
 
+                    } else {
+                        return <Post
+                            key={post.contentID || index}
+                            contentID={post.contentID}
+                            timestamp={post.timestamp}
+                            textData={post.textData}
+                            mediaData={post.mediaData}
+                            authorName={post.contentAuthor.name}
+                            authorProfilePic={post.contentAuthor.profilePic || '/default-profile.jpg'}
+                            authorProfession={post.contentAuthor.profession || 'No Profession'}
+                            numOfReactions={post.numOfReactions}
+                            numOfComments={post.numOfComments}
+                            numOfShares={post.numOfShares}
+                            reactionsUrl={post._links.reactions.href}
+                            commentsUrl={post._links.comments.href}
+                            selfUrl={post._links.self.href}
+                            authorUrl={post._links.author.href}
+                        />
+
+                        // return <div style={{
+                        //     color: 'red',
+                        //     fontSize: '20px',
+                        //     margin: 50
+                        // }} ref={lastPostElementRef} key={index}>{post.textData}</div>
+                    }
                 } else {
-                   return <Post
-                        key={post.contentID || index}
-                        contentID={post.contentID}
-                        timestamp={post.timestamp}
-                        textData={post.textData}
-                        mediaData={post.mediaData}
-                        authorName={post.contentAuthor.name}
-                        authorProfilePic={post.contentAuthor.profilePic || '/default-profile.jpg'}
-                        authorProfession={post.contentAuthor.profession || 'No Profession'}
-                        numOfReactions={post.numOfReactions}
-                        numOfComments={post.numOfComments}
-                        numOfShares={post.numOfShares}
-                        reactionsUrl={post._links.reactions.href}
-                        commentsUrl={post._links.comments.href}
-                        selfUrl={post._links.self.href}
-                        authorUrl={post._links.author.href}
-                    />
-
-                    // return <div style={{
-                    //     color: 'red',
-                    //     fontSize: '20px',
-                    //     margin: 50
-                    // }} ref={lastPostElementRef} key={index}>{post.textData}</div>
+                    return <SharedPost key={post.contentID} sharedPost={post} />
                 }
             }
             )}
