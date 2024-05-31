@@ -1,6 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
 import { Flex, Input, Heading, Text, FormControl, Button, Avatar } from "@chakra-ui/react";
-import Sidebar from './Sidebar';
 import Bottombar from './Bottombar';
 import { SelectedChatContext } from './SelectedChatContext';
 import { useAuth } from '../AuthProvider';
@@ -14,8 +13,7 @@ const Topbar = ({ chatTitle }) => (
 
 
 const Chat = () => {
-  const [messages, setMessages] = useState([]);
-  const { selectedChat } = useContext(SelectedChatContext);
+  const { selectedChat, messages, setMessages} = useContext(SelectedChatContext);
   const { user } = useAuth();
 
   useEffect(() => {

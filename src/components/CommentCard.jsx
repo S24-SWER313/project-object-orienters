@@ -23,7 +23,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function CommentCard() {
-  const { user, token } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
   const { profileData } = useProfileLoading({ profile: user });

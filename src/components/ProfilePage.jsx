@@ -37,6 +37,22 @@ function ProfilePage() {
     const [isOwner, setIsOwner] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
 
+    // useEffect(() => {      /////////////////////////////BIG ERROR//////////////////////////
+    //     if (profile !== user) {
+    //         const fetchFollower = async () => {
+    //             try {
+    //                 const response = await ApiCalls.get(`/profiles/${profile}/followers/${user}`);
+    //                 const data = await response.json();
+    //                 setIsFollowing(data?.username === profile);
+    //             } catch (error) {
+    //                 console.error('Error:', error);
+    //             }
+    //         };
+    //         fetchFollower();
+    //     }
+    // }, [profile, user]);
+
+
     useEffect(() => {
         console.log("profile " + profile);
         console.log("user " + user);

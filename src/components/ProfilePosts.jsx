@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Post from './Post';
+import SharedPost from './SharedPost';
 import useProfileLoading from './useProfileLoading';
 import { useAuth } from './AuthProvider';
 import ApiCalls from './ApiCalls';
 
 function ProfilePosts({ postsURI }) {
     const [posts, setPosts] = useState([]);
+    const [sharedPosts, setSharedPosts] = useState([]);
+    const [mixedPosts, setMixedPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -23,6 +26,9 @@ function ProfilePosts({ postsURI }) {
                     if (data._embedded?.postList) {
                         setPosts(data._embedded.postList);
                     }
+                    if (data._embedded?.sharedPostList) {
+                        setSharedPosts(data._embedded.sharedPostList);
+                    }
                     setLoading(false);
                 } catch (error) {
                     console.error("Failed to fetch posts:", error);
@@ -35,47 +41,32 @@ function ProfilePosts({ postsURI }) {
         fetchPosts();
     }, [postsURI, token]);
 
+    useEffect(() => {
+        setMixedPosts([...posts, ...sharedPosts].sort((a, b) => {
+            let dateA = new Date(a.timestamp);
+            let dateB = new Date(b.timestamp);
+            return dateB - dateA;  
+        }));
+    }, [posts, sharedPosts]);
+
     return (
         <>
-            {posts.map((post, index) => {
-                // console.log(posts.length);
-                if (posts.length === index + 1) {
-                    return <Post
-                        key={post.contentID || index}
-                        contentID={post.contentID}
-                        timestamp={post.timestamp}
-                        textData={post.textData}
-                        mediaData={post.mediaData}
-                        authorName={post.contentAuthor.name}
-                        authorProfilePic={post.contentAuthor.profilePic || '/default-profile.jpg'}
-                        authorProfession={post.contentAuthor.profession || 'No Profession'}
-                        numOfReactions={post.numOfReactions}
-                        numOfComments={post.numOfComments}
-                        numOfShares={post.numOfShares}
-                        reactionsUrl={post._links.reactions.href}
-                        commentsUrl={post._links.comments.href}
-                        selfUrl={post._links.self.href}
-                        authorUrl={post._links.author.href}
-                    />
-
+            {mixedPosts.map((post, index) => {
+                if (post.contentType === "Post") {
+                    if (mixedPosts.length === index + 1) {
+                        return <Post
+                            key={post.contentID || index}
+                            post={post}
+                        />
+                    } else {
+                        return <Post
+                            key={post.contentID || index}
+                            post={post}
+                        />
+                    }
                 } else {
-                    return <Post
-                        key={post.contentID || index}
-                        contentID={post.contentID}
-                        timestamp={post.timestamp}
-                        textData={post.textData}
-                        mediaData={post.mediaData}
-                        authorName={post.contentAuthor.name}
-                        authorProfilePic={post.contentAuthor.profilePic || '/default-profile.jpg'}
-                        authorProfession={post.contentAuthor.profession || 'No Profession'}
-                        numOfReactions={post.numOfReactions}
-                        numOfComments={post.numOfComments}
-                        numOfShares={post.numOfShares}
-                        reactionsUrl={post._links.reactions.href}
-                        commentsUrl={post._links.comments.href}
-                        selfUrl={post._links.self.href}
-                        authorUrl={post._links.author.href}
-                    />
+                    return <SharedPost key={post.contentID} sharedPost={post} />
+
                 }
             }
             )}
