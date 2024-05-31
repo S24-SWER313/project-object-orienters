@@ -3,14 +3,23 @@ import {
     Box, Button, Input, Textarea, VStack, Flex, FormControl, FormLabel, InputGroup, CloseButton, Avatar, useToast, Icon, Text, List, ListItem, HStack, Card,
     CardBody,
     CardFooter, ModalFooter,
-    CardHeader, Menu, MenuButton, MenuItem, MenuList
+    CardHeader, Menu, MenuButton, MenuItem, MenuList,
+    TabPanel,
+    TabPanels,
+    Tab,
+    TabList,
+    Tabs
 } from '@chakra-ui/react';
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import useProfileLoading from './useProfileLoading';
 import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import ApiCalls from './ApiCalls'; 
+import ApiCalls from './ApiCalls';
+import Markdown from 'react-markdown';
+import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import remarkGfm from 'remark-gfm';
 
 
 function AddPost() {
@@ -45,7 +54,7 @@ function AddPost() {
 
         const response = await ApiCalls.post(`/profiles/${user}/posts`, formData, {
             headers: {
-               // 'Content-Type': 'multipart/form-data'
+                // 'Content-Type': 'multipart/form-data'
             }
         });
         //const data = response.data; 
@@ -119,21 +128,66 @@ function AddPost() {
                 </Flex>
             </CardHeader>
 
-            <CardBody>
+            <CardBody >
                 <Flex alignItems="start" gap="4">
-                    <VStack spacing={4} flex="1">
-                        <FormControl isRequired>
-                            <Textarea
-                                ref={textAreaRef}
-                                id='post-text'
-                                value={postText}
-                                onChange={handlePostTextChange}
-                                placeholder='Write something...'
-                                size='sm'
-                                minHeight="100px"  // Minimum height to start with
-                                height='auto'  // Set height to auto to allow resize
-                                overflow='hidden'  // Hide the scrollbar
-                            />
+                    <VStack spacing={4} flex="1" style={
+                                {
+                                    'max-height': 'calc(100vh - 100px)',
+                                    'overflow-y': 'auto',
+                                }
+                            }>
+                        <FormControl isRequired >
+
+
+                            <Tabs >
+                                <TabList>
+                                    <Tab>Text Area</Tab>
+                                    <Tab>View Markdown</Tab>
+                                </TabList>
+
+                                <TabPanels>
+                                    <TabPanel>
+                                        <Textarea
+                                            ref={textAreaRef}
+                                            id='post-text'
+                                            value={postText}
+                                            onChange={handlePostTextChange}
+                                            placeholder='Write something...'
+                                            size='sm'
+                                            minHeight="100px"  // Minimum height to start with
+                                            height='auto'  // Set height to auto to allow resize
+                                            overflow='hidden'  // Hide the scrollbar
+                                        />
+                                    </TabPanel>
+                                    <TabPanel size='sm'>
+                                        <Markdown remarkPlugins={[remarkGfm]} marginBottom='4' className="markdown" children={postText}
+                                            components={{
+                                                code({ node, inline, className, children, ...props }) {
+                                                    const match = /language-(\w+)/.exec(className || '');
+                                                    return !inline && match ? (
+                                                        <SyntaxHighlighter
+                                                            style={dracula}
+                                                            language={match[1]}
+                                                            PreTag="div"
+                                                            {...props}
+                                                        >
+                                                            {String(children).replace(/\n$/, '')}
+                                                        </SyntaxHighlighter>
+                                                    ) : (
+                                                        <code className={className} {...props}>
+                                                            {children}
+                                                        </code>
+                                                    );
+                                                }
+                                            }}
+                                        />
+                                    </TabPanel>
+                                </TabPanels>
+                            </Tabs>
+
+
+
+
                         </FormControl>
                     </VStack>
                 </Flex>
@@ -158,7 +212,7 @@ function AddPost() {
                         <List mt={2}>
                             {files.map((file, index) => (
                                 <ListItem key={index}>
-                                    <HStack spacing={4}>
+                                    <HStack spacing={4} maxW={'30%'} >
                                         <Text flex="1">{file.name}</Text>
                                         <CloseButton onClick={() => handleRemoveFile(index)} />
                                     </HStack>
