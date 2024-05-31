@@ -14,10 +14,13 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         const storedToken = localStorage.getItem('token');
-        if (storedUser && storedToken) {
+        const storedRefreshToken = localStorage.getItem('refreshToken');
+        if (storedUser && storedToken && storedRefreshToken) {
             setUser(storedUser);
             setToken(storedToken);
+            setRefreshToken(storedRefreshToken);
         }
+
     }, []);
 
     const loginAction = async ({ username, password }) => {
@@ -146,6 +149,9 @@ const AuthProvider = ({ children }) => {
             console.error('Logout Error:', error);
         }
     };
+
+
+    
     return (
         <AuthContext.Provider value={{ token, user,registerLoggedInOAuthUser, oauthLoginAction, loginAction, logOut }}>
             {children}
@@ -156,3 +162,4 @@ const AuthProvider = ({ children }) => {
 export default AuthProvider;
 
 export const useAuth = () => useContext(AuthContext);
+
