@@ -14,10 +14,13 @@ const AuthProvider = ({ children }) => {
     useEffect(() => {
         const storedUser = localStorage.getItem('user');
         const storedToken = localStorage.getItem('token');
-        if (storedUser && storedToken) {
+        const storedRefreshToken = localStorage.getItem('refreshToken');
+        if (storedUser && storedToken && storedRefreshToken) {
             setUser(storedUser);
             setToken(storedToken);
+            setRefreshToken(storedRefreshToken);
         }
+
     }, []);
 
     const loginAction = async ({ username, password }) => {
@@ -61,6 +64,65 @@ const AuthProvider = ({ children }) => {
         }
     };
 
+    const oauthLoginAction = async ({ id, username, provider }) => {
+        console.log(id, username, provider);
+        try {
+            const response = await fetch('http://localhost:8080/auth/oauth/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id, username, provider }),
+            });
+
+            const data = await response.json();
+            if(data.token) {
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', data.username);
+                localStorage.setItem('refreshToken', data.refreshToken);
+                setUser(data.username);
+                setToken(data.token);
+                toast({
+                    title: 'Login Success',
+                    description: "Welcome!",
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                    position: `top`
+                  });
+                navigate("/home");
+            }
+        } catch (error) {
+            console.error(error);
+            toast({
+                title: "Login Error",
+                description: error.message,
+                status: "error",
+                duration: 5000,
+                isClosable: true,
+                position: `top`
+            });
+        }
+
+    };
+
+    const registerLoggedInOAuthUser = async ({username, jwt, refreshToken}) => {
+        localStorage.setItem('token', jwt);
+        localStorage.setItem('user', username);
+        localStorage.setItem('refreshToken', refreshToken);
+        setUser(username);
+        setToken(token);
+        toast({
+            title: 'Login Success',
+            description: "Welcome!",
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+            position: `top`
+          });
+        navigate("/home");
+    }
+
     const logOut = async () => {
         try {
             await fetch('http://localhost:8080/auth/logout', {
@@ -87,8 +149,11 @@ const AuthProvider = ({ children }) => {
             console.error('Logout Error:', error);
         }
     };
+
+
+    
     return (
-        <AuthContext.Provider value={{ token, user, loginAction, logOut }}>
+        <AuthContext.Provider value={{ token, user,registerLoggedInOAuthUser, oauthLoginAction, loginAction, logOut }}>
             {children}
         </AuthContext.Provider>
     );
@@ -97,3 +162,4 @@ const AuthProvider = ({ children }) => {
 export default AuthProvider;
 
 export const useAuth = () => useContext(AuthContext);
+

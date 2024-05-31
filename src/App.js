@@ -15,7 +15,8 @@ import CommentCard from './components/CommentCard';
 import "./style.css";
 import TrendPage from './components/Trend/TrendPage';
 import ChatApp from './components/Messages/ChatApp';
-//import OAuthRedirect from './components/OAuthRedirect';
+import OAuthRedirect from './components/OAuthRedirect';
+import OAuthLogin from './components/OAuthLogin';
 
 
 function App() {
@@ -30,7 +31,8 @@ function App() {
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/messages" element={<ChatApp/>} />
-                    {/* <Route path="/oauth2/redirect" element={<OAuthRedirect />} /> */}
+                    <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
+                    <Route path="/oauth2/login" element={<OAuthLogin />} />
 
 
                     <Route element={<PrivateRoute />}>
