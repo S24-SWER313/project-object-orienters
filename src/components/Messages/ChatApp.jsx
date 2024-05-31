@@ -5,6 +5,7 @@ import Topbar from './Topbar';
 import { ChakraProvider } from '@chakra-ui/react';
 import { SelectedChatProvider } from './SelectedChatContext';
 
+
 const ChatApp = () => {
   return (
     <ChakraProvider>
