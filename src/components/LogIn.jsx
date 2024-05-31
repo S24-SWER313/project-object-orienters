@@ -22,6 +22,8 @@ export default function LogIn() {
   const { loginAction } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
+  const client_id = "Ov23liq6SrGiWeOzrddu";
+  const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${client_id}`;
 
   const handleIsSignedIn = () => {
     if (localStorage.getItem("token") != null) {
@@ -132,6 +134,38 @@ export default function LogIn() {
               }}
               onClick={handleLogin}>
               Login
+            </Button>
+            <Button
+              h={'57'}
+              fontFamily={'heading'}
+              mt={3}
+              bg='white'
+              w={'full'}
+              //color={'white'}
+              _hover={{
+                boxShadow: '2xl'
+              }}
+              onClick={
+                () => {
+                  window.location.href = 'http://localhost:8080/oauth2/authorize/google';
+                }
+              }
+            >
+              Continue With Google
+            </Button>
+            <Button
+              h={'57'}
+              fontFamily={'heading'}
+              mt={3}
+              w={'full'}
+              bg='white'
+              _hover={{
+                boxShadow: '2xl'
+              }}
+              onClick={()=>{
+                window.location.href = githubAuthUrl;
+              }}>
+              Continue With Github
             </Button>
             <Stack isInline justifyContent='space-between' mt={4}>
               <Box>

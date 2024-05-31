@@ -12,7 +12,8 @@ import {
   Image,
   useToast
 } from '@chakra-ui/react';
-
+import { FcGoogle } from "react-icons/fc";
+import { FaGithub } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
@@ -26,7 +27,7 @@ export default function SignUp() {
   const redirect_uri = "http://localhost:8080/oauth2/code/github";
   const scope = "user";  // Adjust the scope based on what permissions you need (e.g., 'repo', 'user')
   const state = "random_string_to_prevent_csrf";  // Should be a securely generated random string
-  
+
   const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${client_id}`;
   //&redirect_uri=${encodeURIComponent(redirect_uri)}&scope=${encodeURIComponent(scope)}&state=${state}`;
   async function signup() {
@@ -39,14 +40,14 @@ export default function SignUp() {
         body: JSON.stringify({ username: username, name: name, email: email, password: password }),
       })
         .then((response) => response.json().then(data => ({
-          
+
           status: response.status,
           data
         }))
         )
         .then(({ status, data }) => {
           if (status != 200) {
-            throw new Error(data.message || 'An error occurred.');
+            // throw new Error(data.message || 'An error occurred.');
           }
           toast({
             title: 'Account created.',
@@ -213,7 +214,7 @@ export default function SignUp() {
                 }
               }
             >
-              Signup With Google
+              Continue With Google  <FcGoogle />
             </Button>
             <Button
               h={'57'}
@@ -224,10 +225,10 @@ export default function SignUp() {
               _hover={{
                 boxShadow: '2xl'
               }}
-              onClick={()=>{
+              onClick={() => {
                 window.location.href = githubAuthUrl;
               }}>
-              Signup With Github
+              Continue With Github <FaGithub />
             </Button>
             <Stack isInline justifyContent='space-between' mt={4}>
               <Box>
