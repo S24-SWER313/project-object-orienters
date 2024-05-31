@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, forwardRef } from 'react';
 import {
-  Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, IconButton, Text
+  Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Center, Flex, Heading, IconButton, Size, Text
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import './style.css'; // Import your custom CSS'
@@ -53,21 +53,11 @@ const SharedPost = forwardRef(({ sharedPost }, ref) => {
           />
         </Flex>
       </CardHeader>
-      <CardBody>
-        <Post key={sharedPost.post.contentID} post={sharedPost.post}></Post>
+      <CardBody boxSize={'2xl'} ml={'-60px'}>
+        <Center>
+          <Post key={sharedPost.post.contentID} post={sharedPost.post}></Post>
+        </Center>
       </CardBody>
-      <CardFooter
-        marginTop='-9'
-        marginBottom='-3'
-        justify='space-between'
-        flexWrap='nowrap'
-        sx={{
-          '& > button': {
-            minW: '50',
-          },
-        }}
-      >
-      </CardFooter>
     </Card >
 
   );

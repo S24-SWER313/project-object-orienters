@@ -44,34 +44,26 @@ function PostList({ feedType, feedValue, offset, limit }) {
             {mixedPosts.map((post, index) => {
                 if (post.contentType === "Post") {
                     if (mixedPosts.length === index + 1) {
-
-                        // return <div style={{
-                        //     color: 'red',
-                        //     fontSize: '20px',
-                        //     margin: 50
-                        // }} ref={lastPostElementRef} key={index}>{post.textData}</div>
-
                         return <Post
                             key={post.contentID || index}
                             ref={lastPostElementRef}
                             post={post}
                         />
-
                     } else {
                         return <Post
                             key={post.contentID || index}
                             post={post}
                         />
-
-                        // return <div style={{
-                        //     color: 'red',
-                        //     fontSize: '20px',
-                        //     margin: 50
-                        // }} ref={lastPostElementRef} key={index}>{post.textData}</div>
                     }
                 } else {
-                    return <SharedPost key={post.contentID} sharedPost={post} />
-
+                    if (mixedPosts.length === index + 1) {
+                        return <SharedPost key={post.contentID || index}
+                            ref={lastPostElementRef}
+                            sharedPost={post} />
+                    } else {
+                        return <SharedPost key={post.contentID || index}
+                            sharedPost={post} />
+                    }
                 }
             }
             )}

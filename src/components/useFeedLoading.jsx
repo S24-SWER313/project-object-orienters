@@ -52,7 +52,7 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
         setMixedPosts([...posts, ...sharedPosts].sort((a, b) => {
             let dateA = new Date(a.timestamp);
             let dateB = new Date(b.timestamp);
-            return dateA - dateB;  
+            return dateB - dateA;  
         }));
     }, [posts, sharedPosts]);
 
