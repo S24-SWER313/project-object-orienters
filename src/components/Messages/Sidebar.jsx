@@ -1,57 +1,16 @@
 import { Avatar, Flex, Text } from "@chakra-ui/react";
 import { useAuth } from '../AuthProvider';
 import useProfileLoading from '../useProfileLoading';
-import { useContext, useEffect, useRef, useState } from "react";
-import SockJS from 'sockjs-client';
-import { Client } from '@stomp/stompjs';
+import { useContext } from "react";
 import { SelectedChatContext } from './SelectedChatContext';
 
 const Sidebar = () => {
   const { user } = useAuth();
   const { profileData } = useProfileLoading({ profile: user });
-  const [connectedUsers, setConnectedUsers] = useState([]);
-  const clientRef = useRef(null);
 
-  const { selectedChat, setSelectedChat } = useContext(SelectedChatContext);
+  const { selectedChat, setSelectedChat, connectedUsers } = useContext(SelectedChatContext);
 
-  useEffect(() => {
-    const socket = new SockJS('http://localhost:8080/ws');
-    const client = new Client({
-      webSocketFactory: () => socket,
-      reconnectDelay: 5000,
-      onConnect: onConnected,
-      onStompError: onError,
-    });
 
-    client.activate();
-    clientRef.current = client;
-
-    return () => {
-      client.deactivate();
-    };
-  }, []);
-
-  const onConnected = () => {
-    if (clientRef.current) {
-      clientRef.current.subscribe(`/user/public`, onMessageReceived);
-      findAndDisplayConnectedUsers();
-    }
-  };
-
-  const onError = (error) => {
-    console.error('Connection error', error);
-  };
-
-  const onMessageReceived = (message) => {
-    console.log('Message received:', message.body);
-  };
-
-  const findAndDisplayConnectedUsers = async () => {
-    const connectedUsersResponse = await fetch('http://localhost:8080/users');
-    let connectedUsers = await connectedUsersResponse.json();
-    connectedUsers = connectedUsers.filter(users => users.username !== user);
-    setConnectedUsers(connectedUsers);
-  };
 
   const ChatItem = ({ chat }) => {
     const isSelected = chat.username === selectedChat?.username;
