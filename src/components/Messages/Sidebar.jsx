@@ -46,9 +46,9 @@ const Sidebar = () => {
         </Flex>
       </Flex>
 
-      <Flex overflowY="scroll" direction="column" sx={{ scrollbarWidth: "none" }} flex={1}>
+     {connectedUsers && <Flex overflowY="scroll" direction="column" sx={{ scrollbarWidth: "none" }} flex={1}>
         {connectedUsers.map(chat => <ChatItem key={chat.username} chat={chat} />)}
-      </Flex>
+      </Flex>}
       <ul id="connectedUsers"></ul>
     </Flex>
   );

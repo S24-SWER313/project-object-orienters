@@ -26,7 +26,9 @@ const Chat = () => {
       
     };
 
-    fetchUserChat();
+    if (user && selectedChat.username) {
+      fetchUserChat();
+    }
   }, [user, selectedChat]);
 
   const getMessages = () => messages.map(msg => (
