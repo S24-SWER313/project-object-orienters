@@ -39,9 +39,9 @@ const AuthProvider = ({ children }) => {
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", data.username);
             localStorage.setItem("refreshToken", data.refreshToken);
-            setUser(data.username);
-            setToken(data.token);
-            setRefreshToken(data.refreshToken);
+            setUser(localStorage.getItem("user"));
+            setToken(localStorage.getItem("token"));
+            setRefreshToken(localStorage.getItem("refreshToken"));
             toast({
                 title: 'Login Success',
                 description: "Welcome Back!",
@@ -134,8 +134,10 @@ const AuthProvider = ({ children }) => {
             });
             localStorage.removeItem("token");
             localStorage.removeItem("user");
+            localStorage.removeItem("refreshToken");
             setUser(null);
             setToken(null);
+            setRefreshToken(null);
             toast({
                 title: 'Logout Success',
                 description: "See you soon!",

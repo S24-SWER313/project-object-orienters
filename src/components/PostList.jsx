@@ -38,6 +38,7 @@ function PostList({ feedType, feedValue, offset, limit }) {
     //, setPosts);
 
 
+
     return (
         <>
             {mixedPosts.map((post, index) => {
@@ -53,39 +54,13 @@ function PostList({ feedType, feedValue, offset, limit }) {
                         return <Post
                             key={post.contentID || index}
                             ref={lastPostElementRef}
-                            contentID={post.contentID}
-                            timestamp={post.timestamp}
-                            textData={post.textData}
-                            mediaData={post.mediaData}
-                            authorName={post.contentAuthor.name}
-                            authorProfilePic={post.contentAuthor.profilePic || '/default-profile.jpg'}
-                            authorProfession={post.contentAuthor.profession || 'No Profession'}
-                            numOfReactions={post.numOfReactions}
-                            numOfComments={post.numOfComments}
-                            numOfShares={post.numOfShares}
-                            reactionsUrl={post._links.reactions.href}
-                            commentsUrl={post._links.comments.href}
-                            selfUrl={post._links.self.href}
-                            authorUrl={post._links.author.href}
+                            post={post}
                         />
 
                     } else {
                         return <Post
                             key={post.contentID || index}
-                            contentID={post.contentID}
-                            timestamp={post.timestamp}
-                            textData={post.textData}
-                            mediaData={post.mediaData}
-                            authorName={post.contentAuthor.name}
-                            authorProfilePic={post.contentAuthor.profilePic || '/default-profile.jpg'}
-                            authorProfession={post.contentAuthor.profession || 'No Profession'}
-                            numOfReactions={post.numOfReactions}
-                            numOfComments={post.numOfComments}
-                            numOfShares={post.numOfShares}
-                            reactionsUrl={post._links.reactions.href}
-                            commentsUrl={post._links.comments.href}
-                            selfUrl={post._links.self.href}
-                            authorUrl={post._links.author.href}
+                            post={post}
                         />
 
                         // return <div style={{
@@ -96,6 +71,7 @@ function PostList({ feedType, feedValue, offset, limit }) {
                     }
                 } else {
                     return <SharedPost key={post.contentID} sharedPost={post} />
+
                 }
             }
             )}
@@ -104,3 +80,18 @@ function PostList({ feedType, feedValue, offset, limit }) {
 }
 
 export default PostList;
+
+// contentID={post.contentID}
+// timestamp={post.timestamp}
+// textData={post.textData}
+// mediaData={post.mediaData}
+// authorName={post.contentAuthor.name}
+// authorProfilePic={post.contentAuthor.profilePic || '/default-profile.jpg'}
+// authorProfession={post.contentAuthor.profession || 'No Profession'}
+// numOfReactions={post.numOfReactions}
+// numOfComments={post.numOfComments}
+// numOfShares={post.numOfShares}
+// reactionsUrl={post._links.reactions.href}
+// commentsUrl={post._links.comments.href}
+// selfUrl={post._links.self.href}
+// authorUrl={post._links.author.href}
