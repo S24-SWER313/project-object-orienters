@@ -15,6 +15,7 @@ const AuthProvider = ({ children }) => {
         const storedUser = localStorage.getItem('user');
         const storedToken = localStorage.getItem('token');
         const storedRefreshToken = localStorage.getItem('refreshToken');
+        console.log("local storage user on refresh", storedUser);
         if (storedUser && storedToken && storedRefreshToken) {
             setUser(storedUser);
             setToken(storedToken);

@@ -1,15 +1,29 @@
-import { useEffect, useRef,createContext, useState } from 'react';
+import { useEffect, useRef, createContext, useState } from 'react';
 import SockJS from 'sockjs-client';
 import { Client } from '@stomp/stompjs';
 import { useAuth } from '../AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 export const SelectedChatContext = createContext();
 
 export const SelectedChatProvider = ({ children }) => {
+
+  // const { navigate } = useNavigate();
+
+  // const handleIsSignedIn = () => {
+  //   if (localStorage.getItem("token") == null) {
+  //     navigate("/login");
+  //   }
+  // }
+  // useEffect(() => {
+  //   handleIsSignedIn();
+  // }, []);
+
   const [selectedChat, setSelectedChat] = useState({});
 
   const clientRef = useRef(null);
   const { user } = useAuth();
+  // const user = localStorage.getItem("user");
   const [connectedUsers, setConnectedUsers] = useState([]);
   const [messages, setMessages] = useState([]);
 
@@ -28,22 +42,33 @@ export const SelectedChatProvider = ({ children }) => {
     return () => {
       client.deactivate();
     };
-  }, []);
+  }, [user]);
+
+  useEffect(() => {
+    if (selectedChat.username) {
+      setMessages([]);
+    }
+  }, [selectedChat]);
 
   const onConnected = () => {
     if (clientRef.current) {
       clientRef.current.subscribe(`/user/public`, onMessageReceived);
       clientRef.current.subscribe(`/user/${user}/queue/messages`, onMessageReceived);
 
-      findAndDisplayConnectedUsers();
+     findAndDisplayConnectedUsers();
+     console.log("iffff");
     }
   };
 
   const findAndDisplayConnectedUsers = async () => {
-    const connectedUsersResponse = await fetch('http://localhost:8080/users');
-    let connectedUsers = await connectedUsersResponse.json();
-    connectedUsers = connectedUsers.filter(users => users.username !== user);
-    setConnectedUsers(connectedUsers);
+    console.log("user " +  user);
+    const connectedUsersResponse = await fetch(`http://localhost:8080/users?username=${user}`);
+    console.log("Connected users response: ");
+    console.log(connectedUsersResponse);
+    let connectedUsersRes = await connectedUsersResponse.json();
+    console.log("Connected users: ");
+    console.log(connectedUsersRes);
+    setConnectedUsers([...connectedUsersRes]);
   };
 
   const onError = (error) => {
@@ -55,13 +80,12 @@ export const SelectedChatProvider = ({ children }) => {
     message = JSON.parse(message.body);
     console.log("Selected chat username: " + selectedChat.username);
     console.log("Message senderId: " + message.senderId);
-    if(message.senderId == selectedChat.username) {
+    if (message.senderId == selectedChat.username) {
       console.log("Message from selected chat");
-      setMessages([...messages, message]);
+      setMessages((prevMessages) => [...prevMessages, message]);
     }
-    else{
+    else if(message.senderId != user) {
       console.log("New message from out" + message.senderId);
-
       alert("New message from " + message.senderId);
     }
   };
