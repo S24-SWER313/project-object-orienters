@@ -1,7 +1,12 @@
 import React, { useEffect, useState, forwardRef } from 'react';
 import {
     Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, Heading, IconButton, Link, Menu, MenuButton, MenuItem, MenuList, Text,
-    useDisclosure
+     Menu, MenuButton, MenuItem, MenuList, Text, ModalBody,
+    ModalCloseButton,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    
 } from '@chakra-ui/react';
 import { BiChat, BiLike, BiShare } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
@@ -22,11 +27,14 @@ import { faThumbsDown, faHeart, faFaceLaughSquint, faHandsClapping, faThumbsUp a
 import { faThumbsUp as regularThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import { Anchor } from '@mui/icons-material';
 
+import useProfileLoading from './useProfileLoading';
+import { useParams } from 'react-router-dom';
+import AddSharedPost from './AddSharedPost';
 
 
 const Post = forwardRef(({ post }, ref) => {
     const [profilePicUrl, setProfilePicUrl] = useState(null);
-
+    const { profile } = useParams();
     const moment = require('moment');
     const specificDateTime = moment(post.timestamp, 'YYYY-MM-DD HH:mm:ss.SSS');
     const duration = moment(specificDateTime).fromNow();
@@ -38,6 +46,9 @@ const Post = forwardRef(({ post }, ref) => {
     const [sharesCount, setSharesCount] = useState(post.numOfShares);
 
     const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const { profileData } = useProfileLoading({ profile });
+    const { isOpenY, onOpenY, onCloseY } = useDisclosure();
 
     const toProperCase = (str) => {
         if (str == null) return null;
@@ -87,6 +98,7 @@ const Post = forwardRef(({ post }, ref) => {
         }
 
     }
+
 
     const removeReaction = async () => {
         console.log(post._links.deleteReaction.href)
@@ -140,6 +152,10 @@ const Post = forwardRef(({ post }, ref) => {
     }
 
 
+    const handleOpen = (e) => {     //TAKE THIS AND IMPORTS
+        e.stopPropagation();
+        onOpenY();
+    };
 
     return (
         <>
@@ -233,6 +249,7 @@ const Post = forwardRef(({ post }, ref) => {
                             iconSize='20px'
                             onSelect={(key) => {
 
+
                                 setReaction(key);
                                 addReaction();
                             }}
@@ -275,8 +292,19 @@ const Post = forwardRef(({ post }, ref) => {
                 </DrawerContent>
             </Drawer>
 
-        </>
 
+
+            <Modal isOpen={isOpenY} onClose={onCloseY} isCentered >
+                <ModalOverlay />
+                <ModalContent maxW="32vw">
+                    <ModalCloseButton mr={'-10px'} mt={'2px'} />
+                    <ModalBody m={"10px"} >
+                        <AddSharedPost sharedPost={post} />
+                    </ModalBody>
+
+                </ModalContent>
+            </Modal>
+        </>
     );
 
 });

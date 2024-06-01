@@ -34,7 +34,7 @@ const AuthProvider = ({ children }) => {
             });
             const data = await response.json();
             if (!response.ok) {
-                throw new Error(data.errors || 'Failed to log in'); 
+               // throw new Error(data.errors || 'Failed to log in'); 
             }
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", data.username);
@@ -146,7 +146,7 @@ const AuthProvider = ({ children }) => {
                 isClosable: true,
                 position: `top`
               });
-            navigate("/login");
+            navigate("/");
         } catch (error) {
             console.error('Logout Error:', error);
         }
