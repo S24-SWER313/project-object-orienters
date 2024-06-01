@@ -14,13 +14,23 @@ import {
     Text,
     useColorModeValue,
     useToast,
-    VStack
+    VStack,
+    IconButton,
+    useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalCloseButton,
+    ModalBody
 } from "@chakra-ui/react";
 import { useNavigate, useParams } from 'react-router-dom';
 import useProfileLoading from './useProfileLoading';
 import ProfilePosts from './ProfilePosts';
 import { useAuth } from './AuthProvider';
 import ApiCalls from './ApiCalls';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import EditProfile from './EditProfile';
+import { FaRegEdit } from "react-icons/fa";
 
 
 
@@ -36,14 +46,22 @@ function ProfilePage() {
     const [PostsNumber, setPostsNumber] = useState(0);
     const [isOwner, setIsOwner] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-    // useEffect(() => {      /////////////////////////////BIG ERROR//////////////////////////
+
+    // useEffect(() => {
     //     if (profile !== user) {
     //         const fetchFollower = async () => {
+    //             console.log('Profile:', profile);
+    //             console.log('User:', user);
     //             try {
-    //                 const response = await ApiCalls.get(`/profiles/${profile}/followers/${user}`);
-    //                 const data = await response.json();
-    //                 setIsFollowing(data?.username === profile);
+    //                 const uri = `/profiles/${profile}/followers/${user}`;
+    //                 console.log('Requesting URI:', uri);
+
+    //                 const response = await ApiCalls.get(uri);
+    //                 setIsFollowing(response.data?.username === user);
+    //                 console.log(response.data);
+    //                 console.log(isFollowing);
     //             } catch (error) {
     //                 console.error('Error:', error);
     //             }
@@ -51,6 +69,8 @@ function ProfilePage() {
     //         fetchFollower();
     //     }
     // }, [profile, user]);
+    
+    
 
 
     useEffect(() => {
@@ -185,10 +205,27 @@ function ProfilePage() {
         fetchFollowing();
     }, [user, profileData]);
 
+    useEffect(() => {
+        const fetchPosts = async () => {
+            if (profileData?._links?.Posts?.href) {
+                try {
+                    const response = await ApiCalls.get(profileData._links.Posts.href);
+                    const data = response.data;
+                    setPostsNumber(data.page.totalElements);
+                } catch (error) {
+                    console.error("Failed to fetch following:", error);
+                }
+            }
+        };
+
+        fetchPosts();
+    }, [user, profileData]);
+
     return (
         <>
             <Card>
                 <CardHeader>
+                
                     <Box
                         w={'full'}
                         bg={useColorModeValue('white', 'gray.800')}
@@ -202,6 +239,7 @@ function ProfilePage() {
                                 src={profileData && profileData.backgroundImg ? profileData.backgroundImg.fileUrl : '/images/bg.jpg'}
                                 objectFit={'cover'}
                             />
+                            
                             <label style={{
                                 position: 'absolute',
                                 top: '10px',
@@ -215,6 +253,7 @@ function ProfilePage() {
                                     onChange={handleBackgroundChange}
                                     accept="image/*"
                                 />
+                                
                             </label>
                         </div>
                         <Flex justify={'left'} mt={-10} ml={2}>
@@ -230,11 +269,11 @@ function ProfilePage() {
                                 />
                                 <label style={{
                                     position: 'absolute',
-                                    top: '0', // Adjust as needed
-                                    right: '0', // Adjust as needed
+                                    top: '0', 
+                                    right: '0', 
                                     cursor: 'pointer',
-                                    background: 'rgba(255, 255, 255, 0.8)', // Light background to highlight the icon
-                                    borderRadius: '50%', // Circle around the icon
+                                    background: 'rgba(255, 255, 255, 0.8)', 
+                                    borderRadius: '50%', 
                                     padding: '5px'
                                 }}>
                                     <img src="/images/edit.png" alt="Edit" style={{ width: '24px', height: '24px' }} />
@@ -250,7 +289,10 @@ function ProfilePage() {
                         </Flex>
                         <VStack align="left" p={6} spacing={4}>
                             <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
-                                {profileData ? profileData.name : 'No Name'}
+                                {profileData ? profileData.name : 'No Name'} 
+                                { isOwner &&(
+                                <IconButton  onClick={onOpen} mx={1} variant='ghost' icon={<FaRegEdit size={'23px'}/>} />
+                                )}
                             </Heading>
                             <Text fontSize={'xl'} color={'gray.500'}>
                                 @{profileData && profileData.username ? profileData.username : 'No Profession'}
@@ -266,19 +308,19 @@ function ProfilePage() {
                                 <Stack spacing={0} align={'center'}>
                                     <Text fontSize={'lg'} fontWeight={600}>{PostsNumber}</Text>
                                     <Button variant='link' color={'gray.500'}
-                                        onClick={() => navigate('/posts-followers-following?tab=posts')}>
+                                        onClick={() => navigate('/profiles/' + user + '/posts-followers-following?tab=posts')}>
                                         Posts
                                     </Button>
                                 </Stack>
                                 <Stack spacing={0} align={'center'}>
                                     <Text fontSize={'lg'} fontWeight={600}>{FollowersNumber}</Text>
                                     <Button variant='link'
-                                        onClick={() => navigate('/posts-followers-following?tab=followers')}>Followers</Button>
+                                        onClick={() => navigate('/profiles/' + user + '/posts-followers-following?tab=followers')}>Followers</Button>
                                 </Stack>
                                 <Stack spacing={0} align={'center'}>
                                     <Text fontSize={'lg'} fontWeight={600}>{FollowingNumber}</Text>
                                     <Button variant='link'
-                                        onClick={() => navigate('/posts-followers-following?tab=following')}>Following</Button>
+                                        onClick={() => navigate('/profiles/' + user + '/posts-followers-following?tab=following')}>Following</Button>
                                 </Stack>
                             </Stack>
                             <Stack mt={8} direction={'row'} spacing={4} width="full">
@@ -331,6 +373,16 @@ function ProfilePage() {
 
                 </CardFooter>
             </Card>
+            <Modal isOpen={isOpen} onClose={onClose} isCentered>
+                <ModalOverlay />
+                <ModalContent maxW="50vw" mt={8}>
+                    <ModalCloseButton mr="-10px" mt="2px" />
+                    <ModalBody m="10px" mt={100}>
+                        <EditProfile />
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+
         </>
     );
 }

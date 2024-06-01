@@ -14,7 +14,6 @@ import {
     IconButton
 } from '@chakra-ui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
-import useProfileLoading from './useProfileLoading';
 import { useAuth } from './AuthProvider';
 import ApiCalls from './ApiCalls';
 
@@ -26,18 +25,16 @@ const toProperCase = (str) => {
     });
 }
 
-function FollowersTab() {
-    const { profile } = useParams();
+function FollowersTab({profile}) {
     const [followers, setFollowers] = useState([]);
     const [FollowersNumber, setFollowersNumber] = useState(0);
-    const { user, token } = useAuth();
-    const { profileData } = useProfileLoading({ profile });
+    const { user } = useAuth();
 
     useEffect(() => {
-        if (profileData?._links?.followers?.href) {
+        if (profile?._links?.followers.href) {
             async function fetchFollowers() {
                 try {
-                    const response = await ApiCalls.get(profileData._links.followers.href);
+                    const response = await ApiCalls.get(profile._links.followers.href);
                     const data = response.data;
                     if (data._embedded?.profileList) {
                         setFollowers(data._embedded.profileList);
@@ -51,7 +48,7 @@ function FollowersTab() {
         } else {
             console.log("Followers link unavailable");
         }
-    }, [user, profileData]);
+    }, [user, profile]);
 
 
 

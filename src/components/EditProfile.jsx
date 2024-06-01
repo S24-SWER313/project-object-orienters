@@ -215,6 +215,7 @@ export default function EditProfile() {
             placeholder="Password"
             _placeholder={{ color: 'gray.500' }}
             type="password"
+            onChange={e => setPassword(e.target.value)}
           />
         </FormControl>
         <FormControl id="password" isRequired>
@@ -223,7 +224,7 @@ export default function EditProfile() {
             placeholder="Re-Enter Password"
             _placeholder={{ color: 'gray.500' }}
             type="password"
-            onChange={e => setPassword(e.target.value)}
+            
           />
         </FormControl>
         <Stack spacing={6} direction={['column', 'row']}>

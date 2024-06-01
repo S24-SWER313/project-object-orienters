@@ -1,8 +1,9 @@
 import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import FollowersTab from './FollowersTab';
 import FollowingTab from './FollowingTab';
+import useProfileLoading from './useProfileLoading';
 
 
 function PostFollowersFollowingTabs() {
@@ -10,6 +11,8 @@ function PostFollowersFollowingTabs() {
     const { search } = useLocation();
     const query = new URLSearchParams(search);
     const tab = query.get('tab');
+    const { profile } = useParams();
+    const { profileData } = useProfileLoading({ profile });
 
     // Adjust indices to match the new order where 'posts' is first
     const tabIndex = tab === 'followers' ? 1 : (tab === 'following' ? 2 : 0);
@@ -34,10 +37,10 @@ function PostFollowersFollowingTabs() {
                     <p>List of Posts</p>
                 </TabPanel>
                 <TabPanel>
-                    <FollowersTab />
+                    <FollowersTab profile={profileData} />
                 </TabPanel>
                 <TabPanel>
-                    <FollowingTab />
+                    <FollowingTab profile={profileData} />
                 </TabPanel>
             </TabPanels>
         </Tabs>

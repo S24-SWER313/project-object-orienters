@@ -28,18 +28,16 @@ const toProperCase = (str) => {
 }
 
 
-function FollowingTab() {
-    const { profile } = useParams();
+function FollowingTab({profile}) {
     const [following, setFollowing] = useState([]);
     const [FollowingNumber, setFollowingNumber] = useState(0);
     const { user, token } = useAuth();
-    const { profileData } = useProfileLoading({ profile });
 
     useEffect(() => {
-        if (profileData?._links?.following?.href) {
+        if (profile?._links?.following?.href) {
             async function fetchFollowing() {
                 try {
-                    const response = await ApiCalls.get(profileData._links.following.href);
+                    const response = await ApiCalls.get(profile._links.following.href);
                     const data = response.data;
                     if (data._embedded?.profileList) {
                         setFollowing(data._embedded.profileList);
@@ -51,7 +49,7 @@ function FollowingTab() {
             }
             fetchFollowing();
         }
-    }, [user, profileData]);
+    }, [user, profile]);
 
     
     return (

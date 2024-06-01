@@ -16,7 +16,7 @@ export default function FriendCard({name, jobTitle, avatarImageUrl, backgroundIm
     return (
         <Center>
             <Box
-                h={'220px'}
+                h={'200px'}
                 maxW={'270px'}
                 w={'full'}
                 bg={useColorModeValue('white', 'gray.800')}
@@ -65,7 +65,7 @@ export default function FriendCard({name, jobTitle, avatarImageUrl, backgroundIm
                         </Stack>
                     </Stack>
 
-                    <Stack mt={8} direction={'row'} spacing={4} width="full">
+                    <Stack mt={6} direction={'row'} spacing={4} width="full">
 
                         <Button
                             size={'sm'}
