@@ -1,13 +1,13 @@
 import React from 'react'
-import { useParams } from "react-router-dom";
+import PostList from './PostList';
+import { Box } from '@chakra-ui/layout';
 
 function CodePage() {
-    const { value } = useParams();
     return (
-        <div>
+        <Box width="100%" maxWidth="960px" >
             <h1>Code Page</h1>
-            <p>Code Page is under construction</p>
-        </div>
+            <PostList feedType='CODE' feedValue='python' offset={0} limit={5} />
+        </Box>
     );
 }
 

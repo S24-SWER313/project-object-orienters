@@ -21,7 +21,7 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
             setError(false);
 
             try {
-                const response = await ApiCalls.get(`/feed?feedType=${feedType}&value=${feedValue}&offset=${offset}&limit=${limit}`);
+                const response = await ApiCalls.get(`/feed?feedType=${feedType}&` +( feedValue ? `value=${feedValue}` : '') + `&offset=${offset}&limit=${limit}`);
                 const data = response.data;
 
                 if (Array.isArray(data?._embedded?.postList)) {
