@@ -23,15 +23,15 @@ function MediaContentData({ mediaData }) {
                     switch (mimeType.split('/')[0]) {
                         case 'image':
                                                     
-                            mediaContentSetter(<img src={objectUrl} alt={mediaData[i].fileName} />);
+                            mediaContentSetter(<img key={mediaData[i].id} src={objectUrl} alt={mediaData[i].fileName} />);
                             break;
                         case 'video':
-                            mediaContentSetter(<video controls>
+                            mediaContentSetter(<video key={mediaData[i].id} controls>
                                 <source src={objectUrl} type={mimeType} alt={mediaData[i].fileName}/>
                             </video>);
                             break;
                         case 'audio':
-                            mediaContentSetter(<audio controls>
+                            mediaContentSetter(<audio key={mediaData[i].id} controls>
                                 <source src={objectUrl} type={mimeType} alt={mediaData[i].fileName}/>
                             </audio>);
                             break;

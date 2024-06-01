@@ -24,11 +24,11 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
                 const response = await ApiCalls.get(`/feed?feedType=${feedType}&value=${feedValue}&offset=${offset}&limit=${limit}`);
                 const data = response.data;
 
-                if (Array.isArray(data._embedded.postList)) {
+                if (Array.isArray(data?._embedded?.postList)) {
                     setPosts(prevPosts => [...prevPosts, ...data._embedded.postList]);
                     setHasMore(data.page.totalPages > offset + 1);
                 }
-                if (Array.isArray(data._embedded.sharedPostList)) {
+                if (Array.isArray(data._embedded.sharedPostList)) { //TODO add ?
                     setSharedPosts(prevShared => [...prevShared, ...data._embedded.sharedPostList]);
                     setHasMore(data.page.totalPages > offset + 1);
                 }

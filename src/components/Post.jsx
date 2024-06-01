@@ -1,11 +1,12 @@
 import React, { useEffect, useState, forwardRef } from 'react';
 import {
-    useDisclosure, Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Flex, Heading, IconButton, Menu, MenuButton, MenuItem, MenuList, Text, ModalBody,
+    Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, Heading, IconButton, Link, Menu, MenuButton, MenuItem, MenuList, Text,
+     Menu, MenuButton, MenuItem, MenuList, Text, ModalBody,
     ModalCloseButton,
     Modal,
     ModalOverlay,
     ModalContent,
-    ModalHeader
+    
 } from '@chakra-ui/react';
 import { BiChat, BiLike, BiShare } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
@@ -24,6 +25,8 @@ import ApiCalls from './ApiCalls';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsDown, faHeart, faFaceLaughSquint, faHandsClapping, faThumbsUp as solidThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as regularThumbsUp } from '@fortawesome/free-regular-svg-icons';
+import { Anchor } from '@mui/icons-material';
+
 import useProfileLoading from './useProfileLoading';
 import { useParams } from 'react-router-dom';
 import AddSharedPost from './AddSharedPost';
@@ -38,8 +41,14 @@ const Post = forwardRef(({ post }, ref) => {
     const [isReacted, setIsReacted] = useState(false);
     const { user, token } = useAuth();
     const [reaction, setReaction] = useState('like');
+    const [reactionCount, setReactionCount] = useState(post.numOfReactions);
+    const [commentsCount, setCommentsCount] = useState(post.numOfComments);
+    const [sharesCount, setSharesCount] = useState(post.numOfShares);
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+
     const { profileData } = useProfileLoading({ profile });
-    const { isOpen, onOpen, onClose } = useDisclosure();
+    const { isOpenY, onOpenY, onCloseY } = useDisclosure();
 
     const toProperCase = (str) => {
         if (str == null) return null;
@@ -57,6 +66,21 @@ const Post = forwardRef(({ post }, ref) => {
     }, [post?.contentAuthor?.profilePic]);
 
 
+    useEffect(() => {
+        async function fetchData() {
+            const response = await ApiCalls.get('/content/' + post.contentID + '/reactions/' + user);
+            const data = await response.data;
+
+            if (data.isReactor == true) {
+                setIsReacted(true);
+                setReaction(data.reactionType.toLowerCase());
+            } else
+                setIsReacted(false);
+        }
+        fetchData();
+    }, []);
+
+
     const addReaction = async () => {
         console.log(post._links.reactions.href)
         try {
@@ -65,16 +89,24 @@ const Post = forwardRef(({ post }, ref) => {
                 reactionType: reaction.toUpperCase(),
             };
             const response = await ApiCalls.post(post._links.reactions.href, postData);
+            if (!isReacted)
+                setReactionCount((prev) => prev + 1);
+            setIsReacted(true);
             console.log('Success:', response.data);
         } catch (error) {
             console.error('Error:', error);
         }
+
     }
 
 
     const removeReaction = async () => {
+        console.log(post._links.deleteReaction.href)
         try {
-            const response = await ApiCalls.delete(post._links.reactions.href + "/" + user);
+            const response = await ApiCalls.delete(post._links.deleteReaction.href);
+            if (isReacted)
+                setReactionCount((prev) => prev - 1);
+            setIsReacted(false);
             console.log('Success:', response.data);
         } catch (error) {
             console.error('Error:', error);
@@ -115,9 +147,14 @@ const Post = forwardRef(({ post }, ref) => {
 
     }
 
+    const openViewDetails = () => {
+        onOpen();
+    }
+
+
     const handleOpen = (e) => {     //TAKE THIS AND IMPORTS
         e.stopPropagation();
-        onOpen();
+        onOpenY();
     };
 
     return (
@@ -133,7 +170,7 @@ const Post = forwardRef(({ post }, ref) => {
                                 <Text fontSize='0.7em' textAlign={['left']} color={'gray'} >{duration}</Text>
                             </Box>
                         </Flex>
-                        <Menu isLazy>
+                        {user == post.contentAuthor?.userID && <Menu isLazy>
                             <MenuButton
                                 as={IconButton}
                                 variant='ghost'
@@ -145,7 +182,7 @@ const Post = forwardRef(({ post }, ref) => {
                                 <MenuItem>Edit Post</MenuItem>
                                 <MenuItem>Delete Post</MenuItem>
                             </MenuList>
-                        </Menu>
+                        </Menu>}
                     </Flex>
                 </CardHeader>
                 <CardBody>
@@ -174,6 +211,9 @@ const Post = forwardRef(({ post }, ref) => {
 
 
                     {post.mediaData != [] && <MediaContentData style={{ margin: "auto" }} objectFit='cover' mediaData={post.mediaData} />}
+                    <Flex justifyContent="flex-end">
+                        <Link color={'blue'} textDecor={'underline'} onClick={openViewDetails} height='30px'>View Details</Link>
+                    </Flex>
                 </CardBody>
                 <CardFooter
                     marginTop='-9'
@@ -189,7 +229,7 @@ const Post = forwardRef(({ post }, ref) => {
                 >
                     <Popup trigger={
                         <Button flex='1' variant='ghost' leftIcon={getIcon()} colorScheme={isReacted ? 'blue' : null} onClick={() => { setReaction('like'); toggleReaction() }}>
-                            <Box as="span" mr="2">{post.numOfReactions}</Box> Like
+                            <Box as="span" mr="2">{reactionCount}</Box> Like
                         </Button>}
                         position='top center'
                         on='hover'
@@ -204,20 +244,22 @@ const Post = forwardRef(({ post }, ref) => {
                             { label: "dislike", node: <div>👎</div>, key: "dislike" },
                             { label: "love", node: <div>❤️</div>, key: "love" },
                             { label: "support", node: <div>👏</div>, key: "support" },
-                            { label: "haha", node: <div>😄</div>, key: "smile" },
+                            { label: "haha", node: <div>😄</div>, key: "haha" },
                         ]}
                             iconSize='20px'
                             onSelect={(key) => {
+
+
                                 setReaction(key);
                                 addReaction();
                             }}
                         />
                     </Popup>
                     <Button flex='1' variant='ghost' leftIcon={<BiChat />}>
-                        <Box as="span" mr="2">{post.numOfComments}</Box> Comment
+                        <Box as="span" mr="2">{commentsCount}</Box> Comment
                     </Button>
-                    <Button flex='1' variant='ghost' leftIcon={<BiShare />} onClick={handleOpen}>
-                        <Box as="span" mr="2">{post.numOfShares}</Box> Share
+                    <Button flex='1' variant='ghost' leftIcon={<BiShare />}>
+                        <Box as="span" mr="2">{sharesCount}</Box> Share
                     </Button>
 
 
@@ -238,7 +280,21 @@ const Post = forwardRef(({ post }, ref) => {
 
             </Card >
 
-            <Modal isOpen={isOpen} onClose={onClose} isCentered >
+            <Drawer placement={'right'} onClose={onClose} isOpen={isOpen}>
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerHeader borderBottomWidth='1px'>Post Details</DrawerHeader>
+                    <DrawerBody>
+                        <p>Some contents...</p>
+                        <p>Some contents...</p>
+                        <p>Some contents...</p>
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
+
+
+
+            <Modal isOpen={isOpenY} onClose={onCloseY} isCentered >
                 <ModalOverlay />
                 <ModalContent maxW="32vw">
                     <ModalCloseButton mr={'-10px'} mt={'2px'} />
