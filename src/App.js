@@ -41,7 +41,7 @@ function App() {
                     <Route element={<PrivateRoute />}>
 
                         <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
-                        <Route path="/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
+                        <Route path="/profiles/:profile/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
                         <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />
                         <Route path="/trends/:value" element={<MainLayout><TrendPage /></MainLayout>} />
 

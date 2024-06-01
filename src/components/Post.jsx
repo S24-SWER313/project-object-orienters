@@ -84,7 +84,7 @@ const Post = forwardRef(({ post }, ref) => {
 
 
     const addReaction = async () => {
-        console.log(post._links.reactions.href)
+        console.log(post._links.reactions.href);
         try {
             const postData = {
                 reactorID: user,

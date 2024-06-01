@@ -37,13 +37,19 @@ function ProfilePage() {
     const [isOwner, setIsOwner] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
 
-    // useEffect(() => {      /////////////////////////////BIG ERROR//////////////////////////
+    // useEffect(() => {
     //     if (profile !== user) {
     //         const fetchFollower = async () => {
+    //             console.log('Profile:', profile);
+    //             console.log('User:', user);
     //             try {
-    //                 const response = await ApiCalls.get(`/profiles/${profile}/followers/${user}`);
-    //                 const data = await response.json();
-    //                 setIsFollowing(data?.username === profile);
+    //                 const uri = `/profiles/${profile}/followers/${user}`;
+    //                 console.log('Requesting URI:', uri);
+
+    //                 const response = await ApiCalls.get(uri);
+    //                 setIsFollowing(response.data?.username === user);
+    //                 console.log(response.data);
+    //                 console.log(isFollowing);
     //             } catch (error) {
     //                 console.error('Error:', error);
     //             }
@@ -51,6 +57,8 @@ function ProfilePage() {
     //         fetchFollower();
     //     }
     // }, [profile, user]);
+    
+    
 
 
     useEffect(() => {
@@ -185,6 +193,22 @@ function ProfilePage() {
         fetchFollowing();
     }, [user, profileData]);
 
+    useEffect(() => {
+        const fetchPosts = async () => {
+            if (profileData?._links?.Posts?.href) {
+                try {
+                    const response = await ApiCalls.get(profileData._links.Posts.href);
+                    const data = response.data;
+                    setPostsNumber(data.page.totalElements);
+                } catch (error) {
+                    console.error("Failed to fetch following:", error);
+                }
+            }
+        };
+
+        fetchPosts();
+    }, [user, profileData]);
+
     return (
         <>
             <Card>
@@ -266,19 +290,19 @@ function ProfilePage() {
                                 <Stack spacing={0} align={'center'}>
                                     <Text fontSize={'lg'} fontWeight={600}>{PostsNumber}</Text>
                                     <Button variant='link' color={'gray.500'}
-                                        onClick={() => navigate('/posts-followers-following?tab=posts')}>
+                                        onClick={() => navigate('/profiles/' + user + '/posts-followers-following?tab=posts')}>
                                         Posts
                                     </Button>
                                 </Stack>
                                 <Stack spacing={0} align={'center'}>
                                     <Text fontSize={'lg'} fontWeight={600}>{FollowersNumber}</Text>
                                     <Button variant='link'
-                                        onClick={() => navigate('/posts-followers-following?tab=followers')}>Followers</Button>
+                                        onClick={() => navigate('/profiles/' + user + '/posts-followers-following?tab=followers')}>Followers</Button>
                                 </Stack>
                                 <Stack spacing={0} align={'center'}>
                                     <Text fontSize={'lg'} fontWeight={600}>{FollowingNumber}</Text>
                                     <Button variant='link'
-                                        onClick={() => navigate('/posts-followers-following?tab=following')}>Following</Button>
+                                        onClick={() => navigate('/profiles/' + user + '/posts-followers-following?tab=following')}>Following</Button>
                                 </Stack>
                             </Stack>
                             <Stack mt={8} direction={'row'} spacing={4} width="full">
