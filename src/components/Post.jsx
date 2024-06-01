@@ -1,9 +1,11 @@
 import React, { useEffect, useState, forwardRef } from 'react';
 import {
-    Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Drawer, DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, Heading, IconButton, Link, Menu, MenuButton, MenuItem, MenuList, Text,
-     Menu, MenuButton, MenuItem, MenuList, Text, ModalBody,
+    Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Drawer, 
+    DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, 
+    Heading, IconButton, Link, Menu, MenuButton, MenuItem, MenuList, Text,
     ModalCloseButton,
-    Modal,
+    Modal,useDisclosure,
+    ModalBody,
     ModalOverlay,
     ModalContent,
     
