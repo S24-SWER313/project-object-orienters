@@ -34,14 +34,14 @@ const AuthProvider = ({ children }) => {
             });
             const data = await response.json();
             if (!response.ok) {
-                throw new Error(data.errors || 'Failed to log in'); 
+               // throw new Error(data.errors || 'Failed to log in'); 
             }
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", data.username);
             localStorage.setItem("refreshToken", data.refreshToken);
-            setUser(data.username);
-            setToken(data.token);
-            setRefreshToken(data.refreshToken);
+            setUser(localStorage.getItem("user"));
+            setToken(localStorage.getItem("token"));
+            setRefreshToken(localStorage.getItem("refreshToken"));
             toast({
                 title: 'Login Success',
                 description: "Welcome Back!",
@@ -134,8 +134,10 @@ const AuthProvider = ({ children }) => {
             });
             localStorage.removeItem("token");
             localStorage.removeItem("user");
+            localStorage.removeItem("refreshToken");
             setUser(null);
             setToken(null);
+            setRefreshToken(null);
             toast({
                 title: 'Logout Success',
                 description: "See you soon!",
@@ -144,7 +146,7 @@ const AuthProvider = ({ children }) => {
                 isClosable: true,
                 position: `top`
               });
-            navigate("/login");
+            navigate("/");
         } catch (error) {
             console.error('Logout Error:', error);
         }

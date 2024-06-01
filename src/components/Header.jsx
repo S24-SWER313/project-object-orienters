@@ -26,7 +26,7 @@ import {
 import { VisuallyHidden } from '@chakra-ui/visually-hidden';
 import { AiOutlineMenu, AiFillHome, AiOutlineInbox, AiOutlineSearch, AiFillBell } from 'react-icons/ai';
 import { BsFillCameraVideoFill } from 'react-icons/bs';
-import { AuthContext, useAuth } from './AuthProvider';
+import { useAuth } from './AuthProvider';
 import useProfileLoading from './useProfileLoading';
 import EditProfile from './EditProfile';
 

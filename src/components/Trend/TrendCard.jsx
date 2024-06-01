@@ -17,7 +17,7 @@ function TrendCard() {
                 }
             } catch (error) {
                 console.error('Error fetching trends:', error);
-                throw new Error(`HTTP error! Status: ${error.response ? error.response.status : "No response"}`);
+                //throw new Error(`HTTP error! Status: ${error.response ? error.response.status : "No response"}`);
             }
         };
         fetchTrends();

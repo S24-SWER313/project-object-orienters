@@ -3,14 +3,23 @@ import {
     Box, Button, Input, Textarea, VStack, Flex, FormControl, FormLabel, InputGroup, CloseButton, Avatar, useToast, Icon, Text, List, ListItem, HStack, Card,
     CardBody,
     CardFooter, ModalFooter,
-    CardHeader, Menu, MenuButton, MenuItem, MenuList
+    CardHeader, Menu, MenuButton, MenuItem, MenuList,
+    TabPanel,
+    TabPanels,
+    Tab,
+    TabList,
+    Tabs
 } from '@chakra-ui/react';
 import { AiOutlinePaperClip } from "react-icons/ai";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import useProfileLoading from './useProfileLoading';
 import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
-import ApiCalls from './ApiCalls'; 
+import ApiCalls from './ApiCalls';
+import Markdown from 'react-markdown';
+import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import remarkGfm from 'remark-gfm';
 
 
 function AddPost() {
@@ -45,7 +54,7 @@ function AddPost() {
 
         const response = await ApiCalls.post(`/profiles/${user}/posts`, formData, {
             headers: {
-               // 'Content-Type': 'multipart/form-data'
+                // 'Content-Type': 'multipart/form-data'
             }
         });
         //const data = response.data; 
@@ -119,21 +128,66 @@ function AddPost() {
                 </Flex>
             </CardHeader>
 
-            <CardBody>
+            <CardBody >
                 <Flex alignItems="start" gap="4">
-                    <VStack spacing={4} flex="1">
-                        <FormControl isRequired>
-                            <Textarea
-                                ref={textAreaRef}
-                                id='post-text'
-                                value={postText}
-                                onChange={handlePostTextChange}
-                                placeholder='Write something...'
-                                size='sm'
-                                minHeight="100px"  // Minimum height to start with
-                                height='auto'  // Set height to auto to allow resize
-                                overflow='hidden'  // Hide the scrollbar
-                            />
+                    <VStack spacing={4} flex="1" style={
+                                {
+                                    'max-height': 'calc(100vh - 100px)',
+                                    'overflow-y': 'auto',
+                                }
+                            }>
+                        <FormControl isRequired >
+
+
+                            <Tabs >
+                                <TabList>
+                                    <Tab>Text Area</Tab>
+                                    <Tab>View Markdown</Tab>
+                                </TabList>
+
+                                <TabPanels>
+                                    <TabPanel>
+                                        <Textarea
+                                            ref={textAreaRef}
+                                            id='post-text'
+                                            value={postText}
+                                            onChange={handlePostTextChange}
+                                            placeholder='Write something...'
+                                            size='sm'
+                                            minHeight="100px"  // Minimum height to start with
+                                            height='auto'  // Set height to auto to allow resize
+                                            overflow='hidden'  // Hide the scrollbar
+                                        />
+                                    </TabPanel>
+                                    <TabPanel size='sm'>
+                                        <Markdown remarkPlugins={[remarkGfm]} marginBottom='4' className="markdown" children={postText}
+                                            components={{
+                                                code({ node, inline, className, children, ...props }) {
+                                                    const match = /language-(\w+)/.exec(className || '');
+                                                    return !inline && match ? (
+                                                        <SyntaxHighlighter
+                                                            style={dracula}
+                                                            language={match[1]}
+                                                            PreTag="div"
+                                                            {...props}
+                                                        >
+                                                            {String(children).replace(/\n$/, '')}
+                                                        </SyntaxHighlighter>
+                                                    ) : (
+                                                        <code className={className} {...props}>
+                                                            {children}
+                                                        </code>
+                                                    );
+                                                }
+                                            }}
+                                        />
+                                    </TabPanel>
+                                </TabPanels>
+                            </Tabs>
+
+
+
+
                         </FormControl>
                     </VStack>
                 </Flex>
@@ -158,7 +212,7 @@ function AddPost() {
                         <List mt={2}>
                             {files.map((file, index) => (
                                 <ListItem key={index}>
-                                    <HStack spacing={4}>
+                                    <HStack spacing={4} maxW={'30%'} >
                                         <Text flex="1">{file.name}</Text>
                                         <CloseButton onClick={() => handleRemoveFile(index)} />
                                     </HStack>
@@ -181,120 +235,3 @@ function AddPost() {
 }
 
 export default AddPost;
-
-{/* <Box display="flex" flexDirection="column" alignItems="center" m={4}>
-                <Box
-                    w="60%"
-                    position="relative"
-                    p={8}
-                    shadow='md'
-                    borderWidth='1px'
-                    borderRadius='md'
-                    bg='lightgray'
-                >
-                    <CloseButton position="absolute" right="8px" top="-2px" onClick={() => alert('Card close button clicked!')} />
-                    <Flex alignItems="start" gap="4">
-                        <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' size='lg' />
-                        <VStack spacing={4} flex="1">
-                            <FormControl isRequired>
-                                <Textarea
-                                    id='post-text'
-                                    value={postText}
-                                    onChange={handlePostTextChange}
-                                    placeholder='Write something...'
-                                    size='sm'
-                                />
-                            </FormControl>
-                            <FormControl>
-                                <FormLabel htmlFor='file'>Attach media</FormLabel>
-                                <InputGroup>
-                                    <Input
-                                        type='file'
-                                        id='file'
-                                        ref={fileInputRef}
-                                        onChange={handleFileChange}
-                                        accept="audio/*,video/*,image/*"
-                                        multiple  // Enable selection of multiple files
-                                        style={{ display: 'none' }}  // Hide the default input
-                                    />
-                                    <Button variant='outline' colorScheme='blue' leftIcon={<Icon as={AiOutlinePaperClip} />} onClick={triggerFileInput}>Choose File</Button>
-                                </InputGroup>
-
-                                {files.length > 0 && (
-                                    <List mt={2}>
-                                        {files.map((file, index) => (
-                                            <ListItem key={index}>
-                                                <HStack spacing={4}>
-                                                    <Text flex="1">{file.name}</Text>
-                                                    <CloseButton onClick={() => handleRemoveFile(index)} />
-                                                </HStack>
-                                            </ListItem>
-                                        ))}
-                                    </List>
-                                )}
-                            </FormControl>
-                            <Button
-                                colorScheme='blue'
-                                onClick={handleSubmit}
-                                disabled={!postText && !files.length}  // Check if files are selected
-                            >Post</Button>
-                        </VStack>
-                    </Flex>
-                </Box>
-            </Box> */}
-
-
-
-
-
-
-{/* <Box display="flex" flexDirection="column" alignItems="center" m={4}>
-        <Card w="30%" background="lightblue">
-          <CloseButton onClick={() => alert("Card close button clicked!")} />
-          <CardHeader>
-
-       <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
-              <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
-              <Box alignItems="left">
-                <Textarea
-                  variant="outline"
-                  placeholder="Add New Post"
-                  rows={6}
-                />
-              </Box>
-            </Flex>
-          </CardHeader>
-          <CardBody>
-            <Button
-              flex="1"
-              variant="outline"
-              colorScheme="teal"
-              leftIcon={<BiLike />}
-            >
-              Like
-            </Button>
-            <Button
-              flex="1"
-              variant="outline"
-              colorScheme="teal"
-              leftIcon={<BiChat />}
-            >
-              Comment
-            </Button>
-            <Button
-              flex="1"
-              variant="outline"
-              colorScheme="teal"
-              leftIcon={<BiShare />}
-            >
-              Share
-            </Button>
-          </CardBody>
-          <CardFooter>
-            <Button flex="1" variant="outline" colorScheme="teal">
-              {" "}
-              POST{" "}
-            </Button>
-          </CardFooter>
-        </Card>
-      </Box>  */}

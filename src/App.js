@@ -14,9 +14,12 @@ import PrivateRoute from './components/PrivateRoute';
 import CommentCard from './components/CommentCard';
 import "./style.css";
 import TrendPage from './components/Trend/TrendPage';
+// import ChatApp from './components/Messages/ChatApp';
+// import OAuthRedirect from './components/OAuthRedirect';
 import ChatApp from './components/Messages/ChatApp';
 import OAuthRedirect from './components/OAuthRedirect';
 import OAuthLogin from './components/OAuthLogin';
+
 
 
 function App() {
