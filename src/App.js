@@ -31,14 +31,14 @@ function App() {
                     <Route path="/" element={<Landing />} />
                     <Route path="/login" element={<LogIn />} />
                     <Route path="/signup" element={<SignUp />} />
-                    <Route path="/messages" element={<ChatApp/>} />
+
                     <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
                     <Route path="/oauth2/login" element={<OAuthLogin />} />
 
 
 
                     <Route element={<PrivateRoute />}>
-
+                        <Route path="/messages" element={<ChatApp />} />
                         <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
                         <Route path="/profiles/:profile/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
                         <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />

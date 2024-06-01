@@ -28,7 +28,7 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
                     setPosts(prevPosts => [...prevPosts, ...data._embedded.postList]);
                     setHasMore(data.page.totalPages > offset + 1);
                 }
-                if (Array.isArray(data._embedded.sharedPostList)) { //TODO add ?
+                if (Array.isArray(data?._embedded?.sharedPostList)) {
                     setSharedPosts(prevShared => [...prevShared, ...data._embedded.sharedPostList]);
                     setHasMore(data.page.totalPages > offset + 1);
                 }
