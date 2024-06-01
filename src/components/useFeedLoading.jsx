@@ -21,11 +21,11 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
                 const response = await ApiCalls.get(`/feed?feedType=${feedType}&value=${feedValue}&offset=${offset}&limit=${limit}`);
                 const data = response.data;
 
-                if (Array.isArray(data._embedded.postList)) {
+                if (Array.isArray(data?._embedded?.postList)) {
                     setPosts(prevPosts => [...prevPosts, ...data._embedded.postList]);
                     setHasMore(data.page.totalPages > offset + 1);
                 } else {
-                    console.error('Expected data._embedded.postList to be an array but received:', data._embedded.postList);
+                    console.error('Expected data._embedded.postList to be an array but received:', data?._embedded?.postList);
                 }
             } catch (error) {
                 if (error.response && (error.response.status === 401 || error.response.status === 403)) {
