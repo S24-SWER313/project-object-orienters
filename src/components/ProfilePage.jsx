@@ -278,7 +278,7 @@ function ProfilePage() {
                                 objectFit={'cover'}
                             />
 
-                            <label style={{
+                            {isOwner && <label style={{
                                 position: 'absolute',
                                 top: '10px',
                                 right: '10px',
@@ -292,7 +292,7 @@ function ProfilePage() {
                                     accept="image/*"
                                 />
 
-                            </label>
+                            </label>}
                         </div>
                         <Flex justify={'left'} mt={-10} ml={2}>
                             <div style={{ position: 'relative', display: 'inline-block' }}>
@@ -305,7 +305,7 @@ function ProfilePage() {
                                         border: '2px solid white',
                                     }}
                                 />
-                                <label style={{
+                                {isOwner &&<label style={{
                                     position: 'absolute',
                                     top: '0',
                                     right: '0',
@@ -321,7 +321,7 @@ function ProfilePage() {
                                         onChange={handleProfilePicChange}
                                         accept="image/*"
                                     />
-                                </label>
+                                </label>}
                             </div>
 
                         </Flex>
@@ -381,7 +381,7 @@ function ProfilePage() {
                                         onMouseLeave={handleMouseLeave}
                                         _hover={
                                             {
-                                                bg: isFollowing ? 'Red' : 'blue.700', // Conditional hover color
+                                                bg: isFollowing ? 'Red' : 'blue.700',
                                             }}
                                         onClick={toggleFollower}
                                     >

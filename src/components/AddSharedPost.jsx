@@ -28,8 +28,7 @@ function AddSharedPost({ sharedPost }) {
                 sharer: user,
                 privacy: privacy,
             };
-            const response = await ApiCalls.post(`localhost:8080/profiles/${profileData.username}/posts/${sharedPost.contentID}/share`, sharedPostData);
-            console.log('Success:', response.data);
+            const response = await ApiCalls.post(`/profiles/${profileData.username}/posts/${sharedPost.contentID}/share`, sharedPostData);
             toast({
                 title: 'Share Post Successful!',
                 description: "Post Shared.",
@@ -37,7 +36,7 @@ function AddSharedPost({ sharedPost }) {
                 duration: 5000,
                 isClosable: true,
                 position: `top`
-              });
+            });
         } catch (error) {
             toast({
                 title: 'Error Sharing Post.',
@@ -45,8 +44,7 @@ function AddSharedPost({ sharedPost }) {
                 duration: 5000,
                 isClosable: true,
                 position: `top`
-              });
-            
+            });
         }
     }
 
@@ -72,12 +70,17 @@ function AddSharedPost({ sharedPost }) {
                         <MenuList>
                             <MenuItem onClick={() => selectPrivacy('PUBLIC')}>PUBLIC</MenuItem>
                             <MenuItem onClick={() => selectPrivacy('PRIVATE')}>PRIVATE</MenuItem>
-                            <MenuItem onClick={() => selectPrivacy('With Followers')}>With Followers</MenuItem>
+                            <MenuItem onClick={() => selectPrivacy('FRIENDS')}>With Followers</MenuItem>
                         </MenuList>
                     </Menu>
                 </Box>
             </CardBody>
-            <CardFooter><Button onClick={sharePost()}>Share Post</Button></CardFooter>
+            <CardFooter>
+                <Flex justifyContent="flex-end" width="100%">
+                    <Button onClick={() => sharePost()} bg={'blue.400'} color={'white'}>
+                        Share Post
+                    </Button>
+                </Flex></CardFooter>
         </Card>
 
     );
