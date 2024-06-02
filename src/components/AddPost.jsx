@@ -121,7 +121,7 @@ function AddPost() {
                             <MenuList>
                                 <MenuItem onClick={() => selectPrivacy('PUBLIC')}>PUBLIC</MenuItem>
                                 <MenuItem onClick={() => selectPrivacy('PRIVATE')}>PRIVATE</MenuItem>
-                                <MenuItem onClick={() => selectPrivacy('With Followers')}>With Followers</MenuItem>
+                                <MenuItem onClick={() => selectPrivacy('FRIENDS')}>With Followers</MenuItem>
                             </MenuList>
                         </Menu>
                     </Box>
