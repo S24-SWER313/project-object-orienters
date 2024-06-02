@@ -1,7 +1,7 @@
 import React, { useEffect, useState, forwardRef } from 'react';
 import {
-    Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Drawer, 
-    DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, 
+    Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Drawer,
+    DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex,
     Heading, IconButton, Link, Menu, MenuButton, MenuItem, MenuList, Text,
     ModalCloseButton,
     Modal, useDisclosure,
@@ -35,6 +35,8 @@ import AddSharedPost from './AddSharedPost';
 import Comments from './Comments/Comments';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import moment from 'moment';
+import EditPost from './EditPost';
+import DeletePost from './DeletePost';
 
 const Post = forwardRef(({ post }, ref) => {
     const [profilePicUrl, setProfilePicUrl] = useState(null);
@@ -52,6 +54,8 @@ const Post = forwardRef(({ post }, ref) => {
 
     const { profileData } = useProfileLoading({ profile });
     const { isOpen: isOpenY, onOpen: onOpenY, onClose: onCloseY } = useDisclosure();
+    const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
 
     const toProperCase = (str) => {
         if (str == null) return null;
@@ -138,9 +142,7 @@ const Post = forwardRef(({ post }, ref) => {
         onOpen();
     };
 
-    const handleOpenY = () => {
-        onOpen();
-    };
+
 
     const specificDateTime = new Date(post.timestamp);
     const userTimezoneOffset = specificDateTime.getTimezoneOffset() * 60000;
@@ -170,8 +172,8 @@ const Post = forwardRef(({ post }, ref) => {
                                     icon={<BsThreeDotsVertical />}
                                 />
                                 <MenuList>
-                                    <MenuItem>Edit Post</MenuItem>
-                                    <MenuItem>Delete Post</MenuItem>
+                                    <MenuItem onClick={onOpenEdit}>Edit Post</MenuItem>
+                                    <MenuItem onClick={onOpenDelete} >Delete Post</MenuItem>
                                 </MenuList>
                             </Menu>
                         )}
@@ -180,7 +182,6 @@ const Post = forwardRef(({ post }, ref) => {
                 <CardBody>
                     <Markdown
                         remarkPlugins={[remarkGfm]}
-                        marginBottom='4'
                         className="markdown"
                         children={post.textData}
                         components={{
@@ -204,7 +205,7 @@ const Post = forwardRef(({ post }, ref) => {
                         }}
                     />
                     {Array.isArray(post.mediaData) && post.mediaData.length > 0 && <MediaContentData style={{ margin: 'auto' }} objectFit='cover' mediaData={post.mediaData} />}
-                    <Flex justifyContent="flex-start" pt={50} pb={5}>
+                    <Flex justifyContent="flex-start" pt={50}>
                         <Link size={'xs'} color={'gray'} textDecor={'underline'} onClick={onSecondDrawerOpen}>view reactions</Link>
                     </Flex>
                 </CardBody>
@@ -308,6 +309,29 @@ const Post = forwardRef(({ post }, ref) => {
                     <ModalCloseButton mr={'-10px'} mt={'2px'} />
                     <ModalBody m={"10px"}>
                         <AddSharedPost sharedPost={post} />
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+
+
+
+            <Modal isOpen={isOpenEdit} onClose={onCloseEdit} isCentered>
+                <ModalOverlay />
+                <ModalContent maxW="32vw">
+                    <ModalCloseButton mr={'-10px'} mt={'2px'} />
+                    <ModalBody m={"10px"}>
+                        <EditPost post={post} />
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+
+
+            <Modal isOpen={isOpenDelete} onClose={onCloseDelete} isCentered>
+                <ModalOverlay />
+                <ModalContent maxW="32vw">
+                    <ModalCloseButton mr={'-10px'} mt={'2px'} />
+                    <ModalBody m={"10px"}>
+                        <DeletePost post={post} />
                     </ModalBody>
                 </ModalContent>
             </Modal>

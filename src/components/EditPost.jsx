@@ -22,13 +22,13 @@ import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import remarkGfm from 'remark-gfm';
 
 
-function AddPost() {
-    const [postText, setPostText] = useState('');
-    const [files, setFiles] = useState([]);  // Store multiple files in an array
+function EditPost({ post }) {
+    const [postText, setPostText] = useState(post.textData);
+    const [files, setFiles] = useState(post.mediaData);  // Store multiple files in an array
     const fileInputRef = useRef(null);
     const textAreaRef = useRef(null);  // Ensure this useRef is declared for textAreaRef
     const toast = useToast();
-    const [privacy, setPrivacy] = useState('PUBLIC');  // Default privacy setting
+    const [privacy, setPrivacy] = useState(post.privacy);  // Default privacy setting
     const { user, token } = useAuth();
     const { profileData } = useProfileLoading({ profile: user });
     const navigate = useNavigate();
@@ -47,26 +47,32 @@ function AddPost() {
     };
 
     const handleSubmit = async () => {
-        const formData = new FormData();
-        formData.append('text', postText);
-        formData.append('privacy', privacy);
-        files.forEach(file => formData.append('files', file));
+        try {
+            const formData = new FormData();
+            formData.append('text', postText);
+            formData.append('privacy', privacy);
+            files.forEach(file => formData.append('files', file));
 
-        const response = await ApiCalls.post(`/profiles/${user}/posts`, formData, {
-            headers: {
-                // 'Content-Type': 'multipart/form-data'
-            }
-        });
-        //const data = response.data; 
-        toast({
-            title: 'Post created.',
-            description: `Post created Successfully!`,
-            status: 'success',
-            duration: 5000,
-            isClosable: true,
-            position: 'top'
-        });
-
+            const response = await ApiCalls.put(`/profiles/${user}/posts/${post.contentID}`, formData);
+            console.log("Response:", response);
+            toast({
+                title: 'Post updated.',
+                description: `Post edited successfully!`,
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+                position: 'top'
+            });
+        } catch (error) {
+            toast({
+                title: 'Failed to update post.',
+                description: `Error occurred: ${error.message}`,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: 'top'
+            });
+        }
     };
 
 
@@ -131,11 +137,11 @@ function AddPost() {
             <CardBody >
                 <Flex alignItems="start" gap="4">
                     <VStack spacing={4} flex="1" style={
-                                {
-                                    'max-height': 'calc(100vh - 100px)',
-                                    'overflow-y': 'auto',
-                                }
-                            }>
+                        {
+                            'max-height': 'calc(100vh - 100px)',
+                            'overflowY': 'auto',
+                        }
+                    }>
                         <FormControl isRequired >
 
 
@@ -225,7 +231,7 @@ function AddPost() {
                             colorScheme="blue" mr={-7} mb={-5} onClick={() => {
                                 handleSubmit();
                                 navigate("/home");
-                            }}>POST</Button>
+                            }}>Submit</Button>
                     </ModalFooter>
                 </FormControl>
             </CardFooter>
@@ -234,4 +240,4 @@ function AddPost() {
     );
 }
 
-export default AddPost;
+export default EditPost;
