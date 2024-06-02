@@ -87,10 +87,9 @@ function ProfilePage() {
             handleDeleteFollower();
         else
             handleAddFollower();
-
-
-
     }
+
+
     function handleBackgroundChange(event) {
         const file = event.target.files[0];
         if (!file) return;

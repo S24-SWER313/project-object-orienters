@@ -172,7 +172,7 @@ const Post = forwardRef(({ post }, ref) => {
                                 <Text fontSize='0.7em' textAlign={['left']} color={'gray'} >{duration}</Text>
                             </Box>
                         </Flex>
-                        {user == post.contentAuthor?.userID && <Menu isLazy>
+                        {user == post.contentAuthor?.username && <Menu isLazy>
                             <MenuButton
                                 as={IconButton}
                                 variant='ghost'
