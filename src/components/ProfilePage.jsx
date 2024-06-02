@@ -47,30 +47,29 @@ function ProfilePage() {
     const [isOwner, setIsOwner] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false);
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [isHovering, setIsHovering] = useState(false);
 
 
-    // useEffect(() => {
-    //     if (profile !== user) {
-    //         const fetchFollower = async () => {
-    //             console.log('Profile:', profile);
-    //             console.log('User:', user);
-    //             try {
-    //                 const uri = `/profiles/${profile}/followers/${user}`;
-    //                 console.log('Requesting URI:', uri);
 
-    //                 const response = await ApiCalls.get(uri);
-    //                 setIsFollowing(response.data?.username === user);
-    //                 console.log(response.data);
-    //                 console.log(isFollowing);
-    //             } catch (error) {
-    //                 console.error('Error:', error);
-    //             }
-    //         };
-    //         fetchFollower();
-    //     }
-    // }, [profile, user]);
-    
-    
+    const handleMouseEnter = () => setIsHovering(true);
+    const handleMouseLeave = () => setIsHovering(false);
+
+
+    useEffect(() => {
+        if (profile !== user) {
+            const fetchFollower = async () => {
+                try {
+                    const response = await ApiCalls.get(`/profiles/${profile}/follower?followerUserName=${encodeURIComponent(user)}`);
+                    setIsFollowing(response.data?.username === user);
+                } catch (error) {
+                    //console.error('Error:', error);
+                }
+            };
+            fetchFollower();
+        }
+    }, [profile, user]);
+
+
 
 
     useEffect(() => {
@@ -81,6 +80,17 @@ function ProfilePage() {
         }
     }, [profile, user]);
 
+
+
+    const toggleFollower = async () => {
+        if (isFollowing)
+            handleDeleteFollower();
+        else
+            handleAddFollower();
+
+
+
+    }
     function handleBackgroundChange(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -115,14 +125,14 @@ function ProfilePage() {
 
 
     function handleAddFollower() {
-        const postData = { username: user };
+        const follower = { username: user };
 
-        ApiCalls.post(`/profiles/${profile}/followers`, postData)
+        ApiCalls.post(`/profiles/${profile}/followers`, follower)
             .then(response => {
                 setIsFollowing(true);
                 toast({
-                    title: 'Following user.',
-                    description: 'You are now following the user.',
+                    title: `Following ${profile}.`,
+                    description: `You are now following ${profile}.`,
                     status: 'success',
                     duration: 5000,
                     isClosable: true,
@@ -132,8 +142,8 @@ function ProfilePage() {
             .catch((error) => {
                 console.error('Error:', error);
                 toast({
-                    title: 'Error Following User.',
-                    description: 'Unable to follow the user at this time.',
+                    title: `Error Following ${profile}.`,
+                    description: `Unable to follow the ${profile} at this time.`,
                     status: 'error',
                     duration: 5000,
                     isClosable: true,
@@ -141,6 +151,35 @@ function ProfilePage() {
                 });
             });
     }
+
+    function handleDeleteFollower() {
+        const data = { deletedUser: user };
+
+        ApiCalls.delete(`/profiles/${profile}/followers`, { data: data })
+            .then(response => {
+                setIsFollowing(false);
+                toast({
+                    title: `Unfollowed ${profile}.`,
+                    description: `You have unfollowed ${profile}.`,
+                    status: 'success',
+                    duration: 5000,
+                    isClosable: true,
+                    position: 'top',
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                toast({
+                    title: `Error unfollowing ${profile}.`,
+                    description: `Unable to unfollow ${profile} at this time.`,
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                    position: 'top',
+                });
+            });
+    }
+
     function handleProfilePicChange(event) {
         const file = event.target.files[0];
         if (!file) return;
@@ -225,7 +264,7 @@ function ProfilePage() {
         <>
             <Card>
                 <CardHeader>
-                
+
                     <Box
                         w={'full'}
                         bg={useColorModeValue('white', 'gray.800')}
@@ -239,7 +278,7 @@ function ProfilePage() {
                                 src={profileData && profileData.backgroundImg ? profileData.backgroundImg.fileUrl : '/images/bg.jpg'}
                                 objectFit={'cover'}
                             />
-                            
+
                             <label style={{
                                 position: 'absolute',
                                 top: '10px',
@@ -253,7 +292,7 @@ function ProfilePage() {
                                     onChange={handleBackgroundChange}
                                     accept="image/*"
                                 />
-                                
+
                             </label>
                         </div>
                         <Flex justify={'left'} mt={-10} ml={2}>
@@ -269,11 +308,11 @@ function ProfilePage() {
                                 />
                                 <label style={{
                                     position: 'absolute',
-                                    top: '0', 
-                                    right: '0', 
+                                    top: '0',
+                                    right: '0',
                                     cursor: 'pointer',
-                                    background: 'rgba(255, 255, 255, 0.8)', 
-                                    borderRadius: '50%', 
+                                    background: 'rgba(255, 255, 255, 0.8)',
+                                    borderRadius: '50%',
                                     padding: '5px'
                                 }}>
                                     <img src="/images/edit.png" alt="Edit" style={{ width: '24px', height: '24px' }} />
@@ -289,9 +328,9 @@ function ProfilePage() {
                         </Flex>
                         <VStack align="left" p={6} spacing={4}>
                             <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
-                                {profileData ? profileData.name : 'No Name'} 
-                                { isOwner &&(
-                                <IconButton  onClick={onOpen} mx={1} variant='ghost' icon={<FaRegEdit size={'23px'}/>} />
+                                {profileData ? profileData.name : 'No Name'}
+                                {isOwner && (
+                                    <IconButton onClick={onOpen} mx={1} variant='ghost' icon={<FaRegEdit size={'23px'} />} />
                                 )}
                             </Heading>
                             <Text fontSize={'xl'} color={'gray.500'}>
@@ -307,20 +346,18 @@ function ProfilePage() {
 
                                 <Stack spacing={0} align={'center'}>
                                     <Text fontSize={'lg'} fontWeight={600}>{PostsNumber}</Text>
-                                    <Button variant='link' color={'gray.500'}
-                                        onClick={() => navigate('/profiles/' + user + '/posts-followers-following?tab=posts')}>
-                                        Posts
-                                    </Button>
+                                    <Text variant='link'
+                                    >Posts</Text>
                                 </Stack>
                                 <Stack spacing={0} align={'center'}>
                                     <Text fontSize={'lg'} fontWeight={600}>{FollowersNumber}</Text>
-                                    <Button variant='link'
-                                        onClick={() => navigate('/profiles/' + user + '/posts-followers-following?tab=followers')}>Followers</Button>
+                                    <Text variant='link'
+                                        onClick={() => navigate('/profiles/' + profile + '/posts-followers-following?tab=followers')} cursor={'pointer'}>Followers</Text>
                                 </Stack>
                                 <Stack spacing={0} align={'center'}>
                                     <Text fontSize={'lg'} fontWeight={600}>{FollowingNumber}</Text>
-                                    <Button variant='link'
-                                        onClick={() => navigate('/profiles/' + user + '/posts-followers-following?tab=following')}>Following</Button>
+                                    <Text variant='link'
+                                        onClick={() => navigate('/profiles/' + profile + '/posts-followers-following?tab=following')} cursor={'pointer'}>Following</Text>
                                 </Stack>
                             </Stack>
                             <Stack mt={8} direction={'row'} spacing={4} width="full">
@@ -340,16 +377,15 @@ function ProfilePage() {
                                         bg={'blue.400'}
                                         color={'white'}
                                         boxShadow={'0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'}
-                                        _hover={{
-                                            bg: isFollowing ? 'green.500' : 'blue.500', // Conditional hover color
-                                        }}
-                                        _focus={{
-                                            bg: isFollowing ? 'green.500' : 'blue.500', // Conditional focus color
-                                        }}
-
-                                        onClick={handleAddFollower}
+                                        onMouseEnter={handleMouseEnter}
+                                        onMouseLeave={handleMouseLeave}
+                                        _hover={
+                                            {
+                                                bg: isFollowing ? 'Red' : 'blue.700', // Conditional hover color
+                                            }}
+                                        onClick={toggleFollower}
                                     >
-                                            {isFollowing ? 'Following' : 'Follow'}
+                                            {isHovering ? (isFollowing ? 'Unfollow' : 'Follow') : (isFollowing ? 'Following' : 'Follow')}
                                         </Button></>
                                 )}
                             </Stack>
