@@ -21,14 +21,11 @@ import { ReactionBarSelector } from '@charkour/react-reactions';
 import Popup from 'reactjs-popup';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
 import { dark, docco, dracula, gruvboxDark, lightfair, solarizedDark, solarizedLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import { Light } from 'react-syntax-highlighter';
-// import { coldarkCold, lucario, materialDark, solarizedlight, twilight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useAuth } from './AuthProvider';
 import ApiCalls from './ApiCalls';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsDown, faHeart, faFaceLaughSquint, faHandsClapping, faThumbsUp as solidThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as regularThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { Anchor } from '@mui/icons-material';
 
 import useProfileLoading from './useProfileLoading';
 import { useParams } from 'react-router-dom';

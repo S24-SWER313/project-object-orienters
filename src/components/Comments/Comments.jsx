@@ -9,7 +9,7 @@ import {
 } from "./api";
 import { useToast,Box, VStack, Flex } from "@chakra-ui/react";
 
-const Comments = ({ commentsUrl, currentUserId }) => {
+const Comments = ({currentUserId }) => {
   const toast = useToast(); 
   const [backendComments, setBackendComments] = useState([]);
   const [activeComment, setActiveComment] = useState(null);
@@ -80,7 +80,7 @@ const Comments = ({ commentsUrl, currentUserId }) => {
   }, []);
 
   return (
-    <>  
+
     <Flex className="comments">
     
         <VStack>
@@ -104,7 +104,7 @@ const Comments = ({ commentsUrl, currentUserId }) => {
       </Box>
       </VStack>
     </Flex>  
-    </>
+ 
 
     
   );
