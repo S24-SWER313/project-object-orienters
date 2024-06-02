@@ -4,6 +4,7 @@ import Chat from './Chat';
 import Topbar from './Topbar';
 import { ChakraProvider } from '@chakra-ui/react';
 import { SelectedChatProvider } from './SelectedChatContext';
+import ChatterView from './ChatterView';
 
 
 const ChatApp = () => {
@@ -16,6 +17,7 @@ const ChatApp = () => {
             <Topbar />
             <Chat />
           </Flex>
+          <ChatterView />
         </Flex>
       </SelectedChatProvider>
     </ChakraProvider>

@@ -1,8 +1,9 @@
-import { Avatar, Flex, Text } from "@chakra-ui/react";
+import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 import { useAuth } from '../AuthProvider';
 import useProfileLoading from '../useProfileLoading';
 import { useContext } from "react";
 import { SelectedChatContext } from './SelectedChatContext';
+import { FaDotCircle } from "react-icons/fa";
 
 const Sidebar = () => {
   const { user } = useAuth();
@@ -23,14 +24,25 @@ const Sidebar = () => {
         _hover={{ bg: "gray.100", cursor: "pointer" }}
         onClick={() => setSelectedChat(chat)}
       >
-        <Avatar src="" marginEnd={3} />
-        <Text>{chat.fullName}</Text>
+        <Flex align="center">
+          <Avatar src="" marginEnd={3} />
+          <Text>{chat.fullName}</Text>
+        </Flex>
+        {selectedChat.username != chat.username && ( //TODO
+          <Box
+            width="10px"
+            height="10px"
+            borderRadius="50%"
+            bg="red.500"
+            marginLeft="auto"
+          />
+        )}
       </Flex>
     );
   };
 
   return (
-    <Flex h="100%" w="300px" borderEnd="1px solid" borderColor="gray.200" direction="column">
+    <Flex h="100%" w="20vw" borderEnd="1px solid" borderColor="gray.200" direction="column">
       <Flex h="81px" w="100%" align="center" justifyContent="space-between" borderBottom="1px solid" borderColor="gray.200" p={3}>
         <Flex align="center">
           <Avatar
@@ -46,9 +58,9 @@ const Sidebar = () => {
         </Flex>
       </Flex>
 
-      <Flex overflowY="scroll" direction="column" sx={{ scrollbarWidth: "none" }} flex={1}>
+      {connectedUsers && <Flex overflowY="scroll" direction="column" sx={{ scrollbarWidth: "none" }} flex={1}>
         {connectedUsers.map(chat => <ChatItem key={chat.username} chat={chat} />)}
-      </Flex>
+      </Flex>}
       <ul id="connectedUsers"></ul>
     </Flex>
   );
