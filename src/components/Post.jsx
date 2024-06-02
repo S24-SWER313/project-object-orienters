@@ -172,7 +172,7 @@ const Post = forwardRef(({ post }, ref) => {
                                 <Text fontSize='0.7em' textAlign={['left']} color={'gray'} >{duration}</Text>
                             </Box>
                         </Flex>
-                        {user == post.contentAuthor?.userID && <Menu isLazy>
+                        {user == post.contentAuthor?.username && <Menu isLazy>
                             <MenuButton
                                 as={IconButton}
                                 variant='ghost'
@@ -212,7 +212,7 @@ const Post = forwardRef(({ post }, ref) => {
                     />
 
 
-                    {post.mediaData != [] && <MediaContentData style={{ margin: "auto" }} objectFit='cover' mediaData={post.mediaData} />}
+                    {Array.isArray(post.mediaData) && post.mediaData.length > 0 && <MediaContentData style={{ margin: "auto" }} objectFit='cover' mediaData={post.mediaData} />}
                     <Flex justifyContent="flex-end">
                         <Link color={'blue'} textDecor={'underline'} onClick={openViewDetails} height='30px'>View Details</Link>
                     </Flex>

@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { Box } from '@chakra-ui/react';
+import { Box,Flex } from '@chakra-ui/react';
 import TrendCard from './Trend/TrendCard';
 import Header from './Header';
 import Footer from './Footer';
@@ -10,24 +10,26 @@ function MainLayout({ children }) {
 
     const handleIsSignedIn = () => {
         if (localStorage.getItem("token") == null) {
-          navigate("/login");
+            navigate("/login");
         }
-      }
-      useEffect(() => {
+    }
+    useEffect(() => {
         handleIsSignedIn();
-      }, []);
+    }, []);
     return (
         <>
-            <Header />
-            <Box display="flex" flexDirection="row" background={"gray.300"}>
-                <Box width="30%" paddingTop="6" paddingRight="5" paddingLeft="4" position="sticky" top="0">
-                    <TrendCard />
+            <Flex direction={'column'} minH={'90vh'} background={"gray.300"}>
+                <Header />
+                <Box display="flex" flexDirection="row" >
+                    <Box width="30%" paddingTop="6" paddingRight="5" paddingLeft="4" position="sticky" top="0">
+                        <TrendCard />
+                    </Box>
+                    <Box flex="1" paddingTop="4">
+                        {children}
+                    </Box>
                 </Box>
-                <Box flex="1" paddingTop="4">
-                    {children}
-                </Box>
-            </Box>
-            <Footer  align={'flex-end'}/>
+            </Flex>
+            <Footer align={'flex-end'} minH={'10vh'}/>
         </>
     );
 }
