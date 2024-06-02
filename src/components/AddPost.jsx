@@ -218,7 +218,7 @@ function AddPost() {
                                     </HStack>
                                 </ListItem>
                             ))}
-                        </List>
+                        </List> //TODO
                     )}
                     <ModalFooter>
                         <Button

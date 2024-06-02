@@ -9,21 +9,30 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
     const [mixedPosts, setMixedPosts] = useState([]);
     const [hasMore, setHasMore] = useState(true);
 
+    console.log(feedType, feedValue, offset, limit);
+
     useEffect(() => {
         setPosts([]);
         setSharedPosts([]);
+        setMixedPosts([]);
+        setHasMore(true);
     }, [feedType, feedValue]);
 
     useEffect(() => {
         const fetchFeed = async () => {
+            console.log(hasMore);
             if (!hasMore) return;
+            console.log('fetching feed');
+
             setLoading(true);
             setError(false);
 
             try {
-                const response = await ApiCalls.get(`/feed?feedType=${feedType}&` +( feedValue ? `value=${feedValue}` : '') + `&offset=${offset}&limit=${limit}`);
+                const uri =`/feed?feedType=${feedType}&` +( feedValue ? `value=${feedValue}` : '') + `&offset=${offset}&limit=${limit}`;
+                console.log(uri);
+                const response = await ApiCalls.get(uri);
                 const data = response.data;
-
+                console.log(data);
                 if (Array.isArray(data?._embedded?.postList)) {
                     setPosts(prevPosts => [...prevPosts, ...data._embedded.postList]);
                     setHasMore(data.page.totalPages > offset + 1);
@@ -33,6 +42,7 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
                     setHasMore(data.page.totalPages > offset + 1);
                 }
             } catch (error) {
+                console.error(error);
                 if (error.response && (error.response.status === 401 || error.response.status === 403)) {
                     localStorage.removeItem('token');
                     // window.location.href = '/login'; // Uncomment if you want to redirect to login page
@@ -44,6 +54,7 @@ function useFeedLoading(feedType, feedValue, offset, limit, clientUsername) {
                 setLoading(false);
             }
         };
+
 
         fetchFeed();
     }, [feedType, feedValue, offset, limit, hasMore]);
