@@ -13,18 +13,18 @@ function MediaContentData({ mediaData }) {
                 mediaData.forEach((mediaItem) => {
                     const mimeType = mediaItem.type || 'application/octet-stream';
                     const objectUrl = mediaItem.fileUrl;
-                    const elementId = `media-${mediaItem.id}`; 
-                    const commonStyles = { 
-                        width: '100%', 
-                        height: '100%', 
-                        objectFit: 'cover', 
+                    const elementId = `media-${mediaItem.id}`;
+                    const commonStyles = {
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
                         borderRadius: '20px',
-                        cursor: mimeType.split('/')[0] === 'image' || mimeType.split('/')[0] === 'video' ? 'pointer' : 'default' 
+                        cursor: mimeType.split('/')[0] === 'image' || mimeType.split('/')[0] === 'video' ? 'pointer' : 'default'
                     };
                     switch (mimeType.split('/')[0]) {
                         case 'image':
                             newMediaContent.push(
-                                <img key={elementId} id={elementId} src={objectUrl} alt={mediaItem.fileName} style={commonStyles} onClick={() => toggleFullscreen(elementId)}/>
+                                <img key={elementId} id={elementId} src={objectUrl} alt={mediaItem.fileName} style={commonStyles} onClick={() => toggleFullscreen(elementId)} />
                             );
                             break;
                         case 'video':
@@ -36,9 +36,11 @@ function MediaContentData({ mediaData }) {
                             break;
                         case 'audio':
                             newMediaContent.push(
-                                <audio key={elementId} id={elementId} controls style={commonStyles}>
-                                    <source src={objectUrl} type={mimeType} />
-                                </audio>
+                                <div style={{ background: 'url(/images/audio.png) no-repeat center center / cover',  height: '100%', borderRadius: '20px'}}>
+                                    <audio key={elementId} id={elementId} controls style={commonStyles}>
+                                        <source src={objectUrl} type={mimeType} />
+                                    </audio>
+                                </div>
                             );
                             break;
                         default:
@@ -86,7 +88,7 @@ function MediaContentData({ mediaData }) {
         transition: "opacity 0.6s ease",
         borderRadius: "0 3px 3px 0",
         userSelect: "none",
-        opacity: showNavigation ? 1 : 0, 
+        opacity: showNavigation ? 1 : 0,
         _hover: {
             opacity: 1,
             bg: "black",
