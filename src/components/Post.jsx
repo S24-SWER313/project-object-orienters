@@ -1,15 +1,15 @@
 import React, { useEffect, useState, forwardRef } from 'react';
 import {
-    Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Drawer, 
-    DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex, 
+    Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Drawer,
+    DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex,
     Heading, IconButton, Link, Menu, MenuButton, MenuItem, MenuList, Text,
     ModalCloseButton,
-    Modal,useDisclosure,
+    Modal, useDisclosure,
     ModalBody,
     ModalOverlay,
     ModalContent,
     Divider,
-    
+
 } from '@chakra-ui/react';
 import { BiChat, BiLike, BiShare } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
@@ -289,8 +289,8 @@ const Post = forwardRef(({ post }, ref) => {
                     <DrawerHeader>Post Comments</DrawerHeader>
                     <DrawerBody>
                         <Divider borderColor="black.50" />
-                    <Box overflowY="auto"> <Comments currentUserId="1"/></Box>
-                    {/* <Tabs>
+                        <Box overflowY="auto"> <Comments /></Box>
+                        {/* <Tabs>
                         <TabList>
                             <Tab>Comments</Tab>
                             
@@ -312,39 +312,39 @@ const Post = forwardRef(({ post }, ref) => {
 
 
             <Drawer placement='right' onClose={onSecondDrawerClose} isOpen={isSecondDrawerOpen} size='xs'>
-    <DrawerOverlay />
-    <DrawerContent>
-        <DrawerHeader>Post Reactions</DrawerHeader>
-        <DrawerBody>
-            <Tabs>
-                <TabList >
-                    <Tab><div>👍</div></Tab>  
-                    <Tab><div>👎</div></Tab>  
-                    <Tab><div>❤️</div></Tab>  
-                    <Tab><div>👏</div></Tab>  
-                    <Tab><div>😄</div></Tab> 
-                </TabList>
+                <DrawerOverlay />
+                <DrawerContent>
+                    <DrawerHeader>Post Reactions</DrawerHeader>
+                    <DrawerBody>
+                        <Tabs>
+                            <TabList >
+                                <Tab><div>👍</div></Tab>
+                                <Tab><div>👎</div></Tab>
+                                <Tab><div>❤️</div></Tab>
+                                <Tab><div>👏</div></Tab>
+                                <Tab><div>😄</div></Tab>
+                            </TabList>
 
-                <Box flex="1" overflowY="auto">
-              <TabPanels>
-                <TabPanel>
-                    <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                            <Avatar  name={post.contentAuthor?.name} src={profilePicUrl || undefined} />
-                            <Box alignItems="left">
-                                <Heading size='sm' textAlign={['left']}>{toProperCase(post.contentAuthor?.name)}</Heading>
+                            <Box flex="1" overflowY="auto">
+                                <TabPanels>
+                                    <TabPanel>
+                                        <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                                            <Avatar name={post.contentAuthor?.name} src={profilePicUrl || undefined} />
+                                            <Box alignItems="left">
+                                                <Heading size='sm' textAlign={['left']}>{toProperCase(post.contentAuthor?.name)}</Heading>
+                                            </Box>
+                                        </Flex>
+                                    </TabPanel>
+                                    <TabPanel><p>Content for dislike reactions</p></TabPanel>
+                                    <TabPanel><p>Content for love reactions</p></TabPanel>
+                                    <TabPanel><p>Content for support reactions</p></TabPanel>
+                                    <TabPanel><p>Content for haha reactions</p></TabPanel>
+                                </TabPanels>
                             </Box>
-                        </Flex>
-                        </TabPanel>
-                <TabPanel><p>Content for dislike reactions</p></TabPanel>
-                <TabPanel><p>Content for love reactions</p></TabPanel>
-                <TabPanel><p>Content for support reactions</p></TabPanel>
-                <TabPanel><p>Content for haha reactions</p></TabPanel>
-              </TabPanels>
-            </Box>
-          </Tabs>
-        </DrawerBody>
-      </DrawerContent>
-    </Drawer>
+                        </Tabs>
+                    </DrawerBody>
+                </DrawerContent>
+            </Drawer>
 
 
 

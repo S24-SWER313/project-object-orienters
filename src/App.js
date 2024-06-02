@@ -14,47 +14,51 @@ import TrendPage from './components/Trend/TrendPage';
 import ChatApp from './components/Messages/ChatApp';
 import OAuthRedirect from './components/OAuthRedirect';
 import OAuthLogin from './components/OAuthLogin';
-import CodePage  from './components/CodePage';
+import CodePage from './components/CodePage';
 import NotFoundPage from './components/NotFoundPage';
+import { SelectedCommentProvider } from './components/Comments/CommentsContext';
 
 
 
 
 function App() {
     return (
-        
+
 
         <Router>
             <AuthProvider>
-                <Routes>
+                <SelectedCommentProvider>
+                    <Routes>
 
-                    <Route path="/" element={<Landing />} />
-                    <Route path="/login" element={<LogIn />} />
-                    <Route path="/signup" element={<SignUp />} />
+                        <Route path="/" element={<Landing />} />
+                        <Route path="/login" element={<LogIn />} />
+                        <Route path="/signup" element={<SignUp />} />
 
-                    <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
-                    <Route path="/oauth2/login" element={<OAuthLogin />} />
-
-
-
-                    <Route element={<PrivateRoute />}>
-                        <Route path="/messages" element={<ChatApp />} />
-                        <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
-                        <Route path="/profiles/:profile/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
-                        <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />
-                        <Route path="/trends/:value" element={<MainLayout><TrendPage /></MainLayout>} />
-                        <Route path="/code" element={<MainLayout><CodePage /></MainLayout>} />
-                        <Route path="/messages" element={<ChatApp/>} />
+                        <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
+                        <Route path="/oauth2/login" element={<OAuthLogin />} />
 
 
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Route>
+
+                        <Route element={<PrivateRoute />}>
+
+                            <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
+                            <Route path="/profiles/:profile/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
+                            <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />
+                            <Route path="/trends/:value" element={<MainLayout><TrendPage /></MainLayout>} />
+                            <Route path="/code" element={<MainLayout><CodePage /></MainLayout>} />
+
+                            <Route path="/messages" element={<ChatApp />} />
 
 
-                </Routes>
+                            <Route path="*" element={<NotFoundPage />} />
+                        </Route>
+
+
+                    </Routes>
+                </SelectedCommentProvider>
             </AuthProvider>
         </Router>
-     );
+    );
 }
 
 

@@ -38,7 +38,7 @@ const CommentForm = ({
       <Textarea
         placeholder="Write your comment..."
         value={currentCommentText}
-        onChange={(e) => setCurrentCommentText(e.target.value)}
+        onChange={(e) => console.log(e.target.value)}
         size="sm"
         resize="vertical"
         mb={2}
