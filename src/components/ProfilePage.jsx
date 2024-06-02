@@ -368,6 +368,7 @@ function ProfilePage() {
                                         _focus={{
                                             bg: 'gray.200',
                                         }}
+                                        onClick={() => navigate(`/messages/${profile}`)}
                                     >
                                         Message
                                     </Button><Button
