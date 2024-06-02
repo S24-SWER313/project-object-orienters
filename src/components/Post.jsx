@@ -8,6 +8,7 @@ import {
     ModalBody,
     ModalOverlay,
     ModalContent,
+    Divider,
     
 } from '@chakra-ui/react';
 import { BiChat, BiLike, BiShare } from 'react-icons/bi';
@@ -32,6 +33,8 @@ import { Anchor } from '@mui/icons-material';
 import useProfileLoading from './useProfileLoading';
 import { useParams } from 'react-router-dom';
 import AddSharedPost from './AddSharedPost';
+import Comments from './Comments/Comments';
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
 
 
 const Post = forwardRef(({ post }, ref) => {
@@ -48,6 +51,7 @@ const Post = forwardRef(({ post }, ref) => {
     const [sharesCount, setSharesCount] = useState(post.numOfShares);
 
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const { isOpen: isSecondDrawerOpen, onOpen: onSecondDrawerOpen, onClose: onSecondDrawerClose } = useDisclosure();
 
     const { profileData } = useProfileLoading({ profile });
     const { isOpenY, onOpenY, onCloseY } = useDisclosure();
@@ -213,8 +217,8 @@ const Post = forwardRef(({ post }, ref) => {
 
 
                     {Array.isArray(post.mediaData) && post.mediaData.length > 0 && <MediaContentData style={{ margin: "auto" }} objectFit='cover' mediaData={post.mediaData} />}
-                    <Flex justifyContent="flex-end">
-                        <Link color={'blue'} textDecor={'underline'} onClick={openViewDetails} height='30px'>View Details</Link>
+                    <Flex justifyContent="flex-start" pt={50} pb={5}>
+                        <Link size={'xs'} color={'gray'} textDecor={'underline'} onClick={onSecondDrawerOpen} >view reactions</Link>
                     </Flex>
                 </CardBody>
                 <CardFooter
@@ -257,7 +261,7 @@ const Post = forwardRef(({ post }, ref) => {
                             }}
                         />
                     </Popup>
-                    <Button flex='1' variant='ghost' leftIcon={<BiChat />}>
+                    <Button onClick={openViewDetails} flex='1' variant='ghost' leftIcon={<BiChat />}>
                         <Box as="span" mr="2">{commentsCount}</Box> Comment
                     </Button>
                     <Button flex='1' variant='ghost' leftIcon={<BiShare />}>
@@ -282,17 +286,68 @@ const Post = forwardRef(({ post }, ref) => {
 
             </Card >
 
-            <Drawer placement={'right'} onClose={onClose} isOpen={isOpen}>
+            <Drawer placement={'right'} onClose={onClose} isOpen={isOpen} size={'md'}>
                 <DrawerOverlay />
                 <DrawerContent>
-                    <DrawerHeader borderBottomWidth='1px'>Post Details</DrawerHeader>
+                    <DrawerHeader>Post Comments</DrawerHeader>
                     <DrawerBody>
-                        <p>Some contents...</p>
-                        <p>Some contents...</p>
-                        <p>Some contents...</p>
+                        <Divider borderColor="black.50" />
+                    <Box overflowY="auto"> <Comments currentUserId="1"/></Box>
+                    {/* <Tabs>
+                        <TabList>
+                            <Tab>Comments</Tab>
+                            
+
+                        </TabList>
+
+                        <TabPanels>
+                            <TabPanel>
+                                <Box overflowY="auto"> <Comments currentUserId="1"/></Box>
+                            </TabPanel>
+                            
+                        </TabPanels>
+                    </Tabs> */}
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
+
+
+
+
+            <Drawer placement='right' onClose={onSecondDrawerClose} isOpen={isSecondDrawerOpen} size='xs'>
+    <DrawerOverlay />
+    <DrawerContent>
+        <DrawerHeader>Post Reactions</DrawerHeader>
+        <DrawerBody>
+            <Tabs>
+                <TabList >
+                    <Tab><div>👍</div></Tab>  
+                    <Tab><div>👎</div></Tab>  
+                    <Tab><div>❤️</div></Tab>  
+                    <Tab><div>👏</div></Tab>  
+                    <Tab><div>😄</div></Tab> 
+                </TabList>
+
+                <Box flex="1" overflowY="auto">
+              <TabPanels>
+                <TabPanel>
+                    <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                            <Avatar  name={post.contentAuthor?.name} src={profilePicUrl || undefined} />
+                            <Box alignItems="left">
+                                <Heading size='sm' textAlign={['left']}>{toProperCase(post.contentAuthor?.name)}</Heading>
+                            </Box>
+                        </Flex>
+                        </TabPanel>
+                <TabPanel><p>Content for dislike reactions</p></TabPanel>
+                <TabPanel><p>Content for love reactions</p></TabPanel>
+                <TabPanel><p>Content for support reactions</p></TabPanel>
+                <TabPanel><p>Content for haha reactions</p></TabPanel>
+              </TabPanels>
+            </Box>
+          </Tabs>
+        </DrawerBody>
+      </DrawerContent>
+    </Drawer>
 
 
 
