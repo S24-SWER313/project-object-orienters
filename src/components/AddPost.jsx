@@ -24,11 +24,11 @@ import remarkGfm from 'remark-gfm';
 
 function AddPost() {
     const [postText, setPostText] = useState('');
-    const [files, setFiles] = useState([]);  // Store multiple files in an array
+    const [files, setFiles] = useState([]);  
     const fileInputRef = useRef(null);
-    const textAreaRef = useRef(null);  // Ensure this useRef is declared for textAreaRef
+    const textAreaRef = useRef(null);  
     const toast = useToast();
-    const [privacy, setPrivacy] = useState('PUBLIC');  // Default privacy setting
+    const [privacy, setPrivacy] = useState('PUBLIC');  
     const { user, token } = useAuth();
     const { profileData } = useProfileLoading({ profile: user });
     const navigate = useNavigate();
@@ -39,7 +39,7 @@ function AddPost() {
     };
 
     const handleFileChange = (event) => {
-        setFiles([...event.target.files]);  // Convert FileList to array
+        setFiles([...event.target.files]);  
     };
 
     const handleRemoveFile = (index) => {
