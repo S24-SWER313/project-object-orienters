@@ -264,7 +264,7 @@ function ProfilePage() {
     return (
         <>
         
-            <Card mt={2} mb={3} w={'650px'}>
+            <Card mt={2} mb={3} w={'900px'}>
                 <CardHeader>
 
                     <Box
