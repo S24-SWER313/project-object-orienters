@@ -9,7 +9,25 @@ import ApiCalls from './ApiCalls';
 import { useAuth } from './AuthProvider';
 
 
-function FriendsList({ users }) {
+function FriendsList() {
+    const { user } = useAuth();
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await ApiCalls.get(`/feed?feedType=MUTUAL_FOLLOWING&value=${user}&offset=0&limit=10`);
+                const data = response.data;
+                if (data._embedded?.profileList) {
+                    setUsers(data._embedded.profileList);
+                }
+            } catch (error) {
+                console.error("Failed to fetch suggestions");
+            }
+        };
+        fetchUsers();
+    }, [user]);
+
     return (
         <Box
             bg="white"
@@ -27,7 +45,7 @@ function FriendsList({ users }) {
                 spacing={4}
             >
                 {users.map((user, index) => (
-                    <FriendCard key={`user-${index}`} {...user} />
+                    <FriendCard key={`user-${index}`} inUser={user} />
                 ))}
             </Stack>
 
