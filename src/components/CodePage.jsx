@@ -22,7 +22,7 @@ const Combobox = ({setFeedValue}) => {
 
     useEffect(() => {
         if (value.length === 0) {
-            setFeedValue('following');
+            setFeedValue('');
             return;
         }
         setFeedValue(value.concat().join(','));

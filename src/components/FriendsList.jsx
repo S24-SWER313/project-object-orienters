@@ -84,7 +84,7 @@ function FriendsList({ users }) {
             overflow="hidden"
             position="relative"
         >
-            <Heading size="md" alignSelf="flex-start" mb="4">Friends Suggestions</Heading>
+            <Heading size="md" alignSelf="flex-start" mb="4">Followers Suggestions</Heading>
             <Flex alignItems="center" justifyContent="center" w="full" position="relative" overflowX="hidden">
                 <LeftArrow onClick={scrollLeft} />
                 <Box ref={menuRef} style={{ display: 'flex', overflowX: 'auto', scrollBehavior: 'smooth', width: '100%' }}>
