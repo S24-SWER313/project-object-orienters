@@ -226,8 +226,8 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
                                 icon={<BsThreeDotsVertical />}
                             />
                             <MenuList>
-                                <MenuItem>Edit Post</MenuItem>
-                                <MenuItem color='red'>Delete Post</MenuItem>
+                                <MenuItem onClick={onOpenEdit}>Edit Post</MenuItem>
+                                <MenuItem color='red' onClick={onOpenDelete}>Delete Post</MenuItem>
                             </MenuList>
                         </Menu>}
                     </Flex>
