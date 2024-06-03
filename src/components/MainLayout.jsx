@@ -99,7 +99,7 @@ function MainLayout({ children }) {
           <Header />
           </Box>
           <Flex direction="column" minH={'90vh'}>
-            <Flex flex="1" p="4" justify="space-between">
+            <Flex flex="1" p={{ base: paddingBase, md: '12' }} justify="space-between">
               <Box pt={2} >
                 <TrendCard />
               </Box>
