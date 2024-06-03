@@ -1,18 +1,19 @@
 import { Avatar, Box, Text, Button, VStack, HStack, Flex } from "@chakra-ui/react";
 import CommentForm from "./CommentForm";
 import { useAuth } from "../AuthProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import useCommentsLoading from "./useCommentsLoading";
 
 const Comment = ({
   comment,
-  replies,
+  // replies,
   setActiveComment,
   activeComment,
   updateComment,
   deleteComment,
   addComment,
   parentId = null,
-  fetchReplies,
+  // fetchReplies,
 }) => {
   const { user } = useAuth();
 
@@ -31,9 +32,23 @@ const Comment = ({
   const replyId = parentId ? parentId : comment.contentID;
   const createdAt = new Date(comment.timestamp).toLocaleDateString();
 
+  const postId = comment.contentID;
+
+  const { commentsList } = useCommentsLoading({ contentId: postId });
+
+  const [replies, setReplies] = useState(commentsList);
+
+
   useEffect(() => {
-    fetchReplies(comment.contentID);
-  }, [comment.contentID, fetchReplies]);
+    if (commentsList) {
+      setReplies(commentsList);
+    }
+  }, [commentsList, setReplies]);
+
+
+  // useEffect(() => {
+  //   commentsList(comment.contentID);
+  // }, [comment.contentID, fetchReplies]);
 
   return (
     <Box key={comment.contentID} p={4}>
@@ -92,8 +107,8 @@ const Comment = ({
                 deleteComment={deleteComment}
                 addComment={addComment}
                 parentId={comment.contentID}
-                replies={replies}
-                fetchReplies={fetchReplies}
+              // replies={replies}
+              // fetchReplies={fetchReplies}
               />
             ))}
           </VStack>

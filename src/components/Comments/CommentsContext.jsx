@@ -15,8 +15,6 @@ export const SelectedCommentProvider = ({ children }) => {
         console.log(currentPost);
     
       }, [currentPost]);
-      console.log('backendComments:', backendComments);
-      console.log('Type of backendComments:', typeof backendComments);
 
   useEffect(() => {
     setBackendComments([]);

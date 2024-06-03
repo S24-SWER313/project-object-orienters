@@ -9,6 +9,7 @@ import {
     ModalOverlay,
     ModalContent,
     Divider,
+    Toast,
 } from '@chakra-ui/react';
 
 import { BiChat, BiLike, BiShare } from 'react-icons/bi';
@@ -33,12 +34,11 @@ import AddSharedPost from './AddSharedPost';
 import Comments from './Comments/Comments';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import moment from 'moment';
-import { Toast } from '@chakra-ui/react/dist';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+// import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import EditPost from './EditPost';
 import DeletePost from './DeletePost';
 
-const Post = forwardRef(({ post }, ref) => {
+const Post = forwardRef(({ post, sharedPost }, ref) => {
     const [profilePicUrl, setProfilePicUrl] = useState(null);
     const { profile } = useParams();
     const navigate = useNavigate();
@@ -59,23 +59,25 @@ const Post = forwardRef(({ post }, ref) => {
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
 
 
+    console.log('Post:', sharedPost);
+
     const fetchReactors = async (postId, reactionType) => {
         try {
-          const response = await ApiCalls.get(`http://localhost:8080/content/${postId}/reactions/${reactionType}/users`);
-          const data = response.data;
-          console.log('Reactors data:', data);
-          setReactors(data?._embedded?.userList); // Adjust according to your actual response structure
+            const response = await ApiCalls.get(`http://localhost:8080/content/${postId}/reactions/${reactionType}/users`);
+            const data = response.data;
+            console.log('Reactors data:', data);
+            setReactors(data?._embedded?.userList); // Adjust according to your actual response structure
         } catch (error) {
-          Toast({
-            title: 'Failed to fetch reactors.',
-            description: `Error: ${error.message}`,
-            status: 'error',
-            duration: 2000,
-            isClosable: true,
-            position: 'top',
-          });
+            Toast({
+                title: 'Failed to fetch reactors.',
+                description: `Error: ${error.message}`,
+                status: 'error',
+                duration: 2000,
+                isClosable: true,
+                position: 'top',
+            });
         }
-      };
+    };
 
     const toProperCase = (str) => {
         if (str == null) return null;
@@ -108,12 +110,22 @@ const Post = forwardRef(({ post }, ref) => {
     }, []);
 
     const addReaction = async () => {
+        console.log('Postadd:', post);
+
         try {
             const postData = {
                 reactorID: user,
                 reactionType: reaction.toUpperCase(),
             };
-            const response = await ApiCalls.post(post._links.reactions.href, postData);
+            let uri;
+            if (sharedPost && sharedPost.contentType == 'Post') {
+                uri = post._links.reactions.href;
+            } else {
+                uri = sharedPost._links.sub_reactions.href;
+            } 
+            console.log('URI:', uri);
+            const response = await ApiCalls.post(uri, postData);
+            console.log('Success:', response.data);
             if (!isReacted) setReactionCount((prev) => prev + 1);
             setIsReacted(true);
             console.log('Success:', response.data);
@@ -124,7 +136,18 @@ const Post = forwardRef(({ post }, ref) => {
 
     const removeReaction = async () => {
         try {
-            const response = await ApiCalls.delete(post._links.deleteReaction.href);
+            console.log('Postrem:', post);
+            let uri;
+            
+            if ( sharedPost && sharedPost.contentType == 'Post') {
+                uri = post._links.deleteReaction.href;
+                console.log('delete', sharedPost._links.deleteReaction.href)
+            } else {
+                console.log('delete:', sharedPost._links.sub_deleteReaction.href)
+                uri = sharedPost._links.sub_deleteReaction.href;
+            }
+            console.log('URI:', uri);
+            const response = await ApiCalls.delete(uri);
             if (isReacted) setReactionCount((prev) => prev - 1);
             setIsReacted(false);
             console.log('Success:', response.data);
@@ -170,7 +193,7 @@ const Post = forwardRef(({ post }, ref) => {
     const duration = moment(localTime).fromNow();
 
 
-    const Reactor = function ({ name, profilePicUrl}) {
+    const Reactor = function ({ name, profilePicUrl }) {
         return (
             <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                 <Avatar name={name} src={profilePicUrl || undefined} />

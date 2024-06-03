@@ -9,37 +9,44 @@ import {
 } from "./api";
 import { useToast, Box, VStack, Flex } from "@chakra-ui/react";
 import { CommentsContext } from "./CommentsContext";
+import useCommentsLoading from "./useCommentsLoading";
+import { useAuth } from "../AuthProvider";
 
 const Comments = () => {
   const toast = useToast();
-  const { backendComments, setBackendComments } = useContext(CommentsContext);
+  const { postId , currentCommentText, setcurrentCommentText} = useContext(CommentsContext);
+  const { commentsList } = useCommentsLoading({ contentId: postId });
+  const [backendComments, setBackendComments] = useState(commentsList);
   const [activeComment, setActiveComment] = useState(null);
-  const { postId } = useContext(CommentsContext);
+  const { user } = useAuth();
+  // useEffect(() => {
+  //   getCommentsApi(postId).then((data) => {
+  //     setBackendComments(data);
+  //   });
+  // }, [postId]);
 
-  const [replies, setReplies] = useState({});
+  // const getReplies = useCallback(async (commentId) => {
+  //   if (!replies[commentId]) {
+  //     const data = await getCommentsApi(commentId);
+  //     setReplies((prevReplies) => ({
+  //       ...prevReplies,
+  //       [commentId]: data,
+  //     }));
+  //   }
+  // }, [replies]);
 
   useEffect(() => {
-    getCommentsApi(postId).then((data) => {
-      setBackendComments(data);
-    });
-  }, [postId]);
-
-  const getReplies = useCallback(async (commentId) => {
-    if (!replies[commentId]) {
-      const data = await getCommentsApi(commentId);
-      setReplies((prevReplies) => ({
-        ...prevReplies,
-        [commentId]: data,
-      }));
+    if (commentsList) {
+      setBackendComments(commentsList);
     }
-  }, [replies]);
+  }, [commentsList, setBackendComments]);
 
-  const addComment = (text, parentId) => {
-    createCommentApi(text, parentId).then((comment) => {
+  const addComment = (currentCommentText, parentId) => {
+    createCommentApi(postId, currentCommentText, user).then((comment) => {
       setBackendComments([comment, ...backendComments]);
       setActiveComment(null);
       if (parentId) {
-        getReplies(parentId); // Refresh replies for the parent comment
+        // getReplies(parentId); // Refresh replies for the parent comment
       }
     });
   };
@@ -90,17 +97,17 @@ const Comments = () => {
         <Box className="comment-form-title"></Box>
         <CommentForm submitLabel="Write" handleSubmit={addComment} />
         <Box className="comments-container">
-          {backendComments.map((rootComment) => (
+          {backendComments && backendComments.map((rootComment) => (
             <Comment
               key={rootComment.contentID}
               comment={rootComment}
-              replies={replies[rootComment.contentID] || []}
+              // replies={replies[rootComment.contentID] || []}
               activeComment={activeComment}
               setActiveComment={setActiveComment}
               addComment={addComment}
               deleteComment={deleteComment}
               updateComment={updateComment}
-              fetchReplies={getReplies}
+            // fetchReplies={getReplies}
             />
           ))}
         </Box>

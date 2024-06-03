@@ -69,7 +69,7 @@ const SharedPost = forwardRef(({ sharedPost }, ref) => {
         </CardHeader>
         <CardBody boxSize={'2xl'} ml={'-60px'}>
           <Center>
-            <Post key={sharedPost.post.contentID} post={sharedPost.post}></Post>
+            <Post key={sharedPost.post.contentID} post={sharedPost.post} sharedPost={sharedPost}></Post>
           </Center>
         </CardBody>
       </Card >

@@ -1,6 +1,7 @@
 import { useState, useContext, useEffect } from 'react';
 import { Button, Textarea, Box, useToast } from '@chakra-ui/react';
 import { CommentsContext } from './CommentsContext';
+import { set } from 'firebase/database';
 
 const CommentForm = ({
   submitLabel,
@@ -10,9 +11,10 @@ const CommentForm = ({
 
 
 
-  const { currentCommentText, setCurrentCommentText } = useContext(CommentsContext);
-  const handleSubmit = () => { };
+  const { currentCommentText, setcurrentCommentText } = useContext(CommentsContext);
+  const [inputValue, setInputValue] = useState("");
   
+
 
 
   const isTextareaDisabled = currentCommentText.length === 0;
@@ -21,8 +23,8 @@ const CommentForm = ({
   const onSubmit = (event) => {
     event.preventDefault();
     if (!isTextareaDisabled) {
-      handleSubmit(currentCommentText);
-      setCurrentCommentText("");
+      setcurrentCommentText(inputValue);
+      setInputValue("");
       toast({
         title: 'Comment created successfully.',
         status: 'success',
@@ -38,7 +40,7 @@ const CommentForm = ({
       <Textarea
         placeholder="Write your comment..."
         value={currentCommentText}
-        onChange={(e) => console.log(e.target.value)}
+        onChange={(e) => setInputValue(e.target.value)}
         size="sm"
         resize="vertical"
         mb={2}
