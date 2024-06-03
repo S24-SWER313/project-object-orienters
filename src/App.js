@@ -16,6 +16,7 @@ import OAuthRedirect from './components/OAuthRedirect';
 import OAuthLogin from './components/OAuthLogin';
 import CodePage from './components/CodePage';
 import NotFoundPage from './components/NotFoundPage';
+import { SelectedCommentProvider } from './components/Comments/CommentsContext';
 import ProfileSearchComponents from './components/ProfileSearchComponents';
 import CompaniesCard from './components/CompaniesCard';
 
@@ -27,14 +28,15 @@ function App() {
 
         <Router>
             <AuthProvider>
-                <Routes>
+                <SelectedCommentProvider>
+                    <Routes>
 
-                    <Route path="/" element={<Landing />} />
-                    <Route path="/login" element={<LogIn />} />
-                    <Route path="/signup" element={<SignUp />} />
+                        <Route path="/" element={<Landing />} />
+                        <Route path="/login" element={<LogIn />} />
+                        <Route path="/signup" element={<SignUp />} />
 
-                    <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
-                    <Route path="/oauth2/login" element={<OAuthLogin />} />
+                        <Route path="/oauth2/redirect" element={<OAuthRedirect />} />
+                        <Route path="/oauth2/login" element={<OAuthLogin />} />
 
 
 
@@ -48,11 +50,12 @@ function App() {
                         <Route path="/messages/:profile" element={<ChatApp />} />
 
 
-                        <Route path="*" element={<NotFoundPage />} />
-                    </Route>
+                            <Route path="*" element={<NotFoundPage />} />
+                        </Route>
 
 
-                </Routes>
+                    </Routes>
+                </SelectedCommentProvider>
             </AuthProvider>
         </Router>
     );

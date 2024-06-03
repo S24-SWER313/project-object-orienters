@@ -6,7 +6,7 @@ import PostList from './PostList';
 
 function Home() {
     return (
-        <Box width="100%" maxWidth="960px" >
+        <Box width="100%"  >
             <CallerAddPost />
             {/* <FriendsList users={users} /> */}
             <PostList feedType='ALL_USERS' feedValue='following' offset={0} limit={5} />

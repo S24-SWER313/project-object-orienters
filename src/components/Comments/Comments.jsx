@@ -1,39 +1,60 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import {
-  getComments as getCommentsApi,
-  createComment as createCommentApi,
+  // getComments as getCommentsApi,
+  // createComment as createCommentApi,
   updateComment as updateCommentApi,
-  deleteComment as deleteCommentApi,
+  // deleteComment as deleteCommentApi,
 } from "./api";
-import { useToast,Box, VStack, Flex } from "@chakra-ui/react";
+import { useToast, Box, VStack, Flex } from "@chakra-ui/react";
+import { CommentsContext } from "./CommentsContext";
+import useCommentsLoading from "./useCommentsLoading";
+import { useAuth } from "../AuthProvider";
 
-const Comments = ({currentUserId }) => {
-  const toast = useToast(); 
-  const [backendComments, setBackendComments] = useState([]);
+const Comments = () => {
+  const toast = useToast();
+  const { postId , currentCommentText, setcurrentCommentText} = useContext(CommentsContext);
+  const { commentsList } = useCommentsLoading({ contentId: postId });
+  const [backendComments, setBackendComments] = useState(commentsList);
   const [activeComment, setActiveComment] = useState(null);
-  const rootComments = backendComments.filter(
-    (backendComment) => backendComment.parentId === null
-  );
-  const getReplies = (commentId) =>
-    backendComments
-      .filter((backendComment) => backendComment.parentId === commentId)
-      .sort(
-        (a, b) =>
-          new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-      );
-  const addComment = (text, parentId) => {
-    createCommentApi(text, parentId).then((comment) => {
-      setBackendComments([comment, ...backendComments]);
-      setActiveComment(null);
-    });
-  };
+  const { user } = useAuth();
+  // useEffect(() => {
+  //   getCommentsApi(postId).then((data) => {
+  //     setBackendComments(data);
+  //   });
+  // }, [postId]);
+
+  // const getReplies = useCallback(async (commentId) => {
+  //   if (!replies[commentId]) {
+  //     const data = await getCommentsApi(commentId);
+  //     setReplies((prevReplies) => ({
+  //       ...prevReplies,
+  //       [commentId]: data,
+  //     }));
+  //   }
+  // }, [replies]);
+
+  useEffect(() => {
+    if (commentsList) {
+      setBackendComments(commentsList);
+    }
+  }, [commentsList, setBackendComments]);
+
+  // const addComment = () => {
+  //   createCommentApi(postId, currentCommentText, user).then((comment) => {
+  //     setBackendComments([comment, ...backendComments]);
+  //     setActiveComment(null);
+  //     // if (parentId) {
+  //     //   // getReplies(parentId); // Refresh replies for the parent comment
+  //     // }
+  //   });
+  // };
 
   const updateComment = (text, commentId) => {
     updateCommentApi(text).then(() => {
       const updatedBackendComments = backendComments.map((backendComment) => {
-        if (backendComment.id === commentId) {
+        if (backendComment.contentID === commentId) {
           return { ...backendComment, body: text };
         }
         return backendComment;
@@ -42,71 +63,35 @@ const Comments = ({currentUserId }) => {
       setActiveComment(null);
     });
   };
+
   const deleteComment = (commentId) => {
-  
-    if (true) { //window.confirm("Are you sure you want to remove this comment?")
-      deleteCommentApi(commentId)
-        .then(() => {
-          const updatedBackendComments = backendComments.filter(
-            (backendComment) => backendComment.id !== commentId
-          );
-          setBackendComments(updatedBackendComments);
-          toast({
-            title: 'Comment deleted successfully.',
-            status: 'success',
-            duration: 2000,
-            isClosable: true,
-            position: 'top', 
-          });
-        })
-        .catch((error) => {
-          // Handling errors if the API call fails
-          toast({
-            title: 'Failed to delete comment.',
-            description: `Error: ${error.message}`,
-            status: 'error',
-            duration: 2000,
-            isClosable: true,
-            position: 'top',
-          });
-        });
-    }
+   
   };
 
-  useEffect(() => {
-    getCommentsApi().then((data) => {
-      setBackendComments(data);
-    });
-  }, []);
-
   return (
-
     <Flex className="comments">
-    
-        <VStack>
-      {/* <h3 className="comments-title">Comments</h3> */}
-      <Box className="comment-form-title"></Box>
-      <CommentForm submitLabel="Write" handleSubmit={addComment} />
-      <Box className="comments-container">
-        {rootComments.map((rootComment) => (
-          <Comment
-            key={rootComment.id}
-            comment={rootComment}
-            replies={getReplies(rootComment.id)}
-            activeComment={activeComment}
-            setActiveComment={setActiveComment}
-            addComment={addComment}
-            deleteComment={deleteComment}
-            updateComment={updateComment}
-            currentUserId={currentUserId}
+      <VStack>
+        <Box className="comment-form-title"></Box>
+        <CommentForm submitLabel="Write"
+        //  handleSubmit={addComment}
           />
-        ))}
-      </Box>
+        <Box className="comments-container">
+          {backendComments && backendComments.map((rootComment) => (
+            <Comment
+              key={rootComment.contentID}
+              comment={rootComment}
+              // replies={replies[rootComment.contentID] || []}
+              activeComment={activeComment}
+              setActiveComment={setActiveComment}
+              // addComment={addComment}
+              // deleteComment={deleteComment}
+              updateComment={updateComment}
+            // fetchReplies={getReplies}
+            />
+          ))}
+        </Box>
       </VStack>
-    </Flex>  
- 
-
-    
+    </Flex>
   );
 };
 

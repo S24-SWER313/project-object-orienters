@@ -1,4 +1,4 @@
-import React, { useEffect, useState, forwardRef } from 'react';
+import React, { useEffect, useState, forwardRef, useContext } from 'react';
 import {
     Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Drawer,
     DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex,
@@ -35,8 +35,9 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import moment from 'moment';
 import EditPost from './EditPost';
 import DeletePost from './DeletePost';
+import { CommentsContext } from './Comments/CommentsContext';
 
-const Post = forwardRef(({ post }, ref) => {
+const Post = forwardRef(({ post, sharedPost }, ref) => {
     const [profilePicUrl, setProfilePicUrl] = useState(null);
     const { profile } = useParams();
     const navigate = useNavigate();
@@ -56,24 +57,26 @@ const Post = forwardRef(({ post }, ref) => {
     const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
 
+    const { setPostId } = useContext(CommentsContext);
+    console.log('Post:', sharedPost);
 
     const fetchReactors = async (postId, reactionType) => {
         try {
-          const response = await ApiCalls.get(`http://localhost:8080/content/${postId}/reactions/${reactionType}/users`);
-          const data = response.data;
-          console.log('Reactors data:', data);
-          setReactors(data?._embedded?.userList); // Adjust according to your actual response structure
+            const response = await ApiCalls.get(`http://localhost:8080/content/${postId}/reactions/${reactionType}/users`);
+            const data = response.data;
+            console.log('Reactors data:', data);
+            setReactors(data?._embedded?.userList); // Adjust according to your actual response structure
         } catch (error) {
-          Toast({
-            title: 'Failed to fetch reactors.',
-            description: `Error: ${error.message}`,
-            status: 'error',
-            duration: 2000,
-            isClosable: true,
-            position: 'top',
-          });
+            Toast({
+                title: 'Failed to fetch reactors.',
+                description: `Error: ${error.message}`,
+                status: 'error',
+                duration: 2000,
+                isClosable: true,
+                position: 'top',
+            });
         }
-      };
+    };
 
     const toProperCase = (str) => {
         if (str == null) return null;
@@ -106,12 +109,22 @@ const Post = forwardRef(({ post }, ref) => {
     }, []);
 
     const addReaction = async () => {
+        console.log('Postadd:', post);
+
         try {
             const postData = {
                 reactorID: user,
                 reactionType: reaction.toUpperCase(),
             };
-            const response = await ApiCalls.post(post._links.reactions.href, postData);
+            let uri;
+            if (sharedPost && sharedPost.contentType == 'Post') {
+                uri = post._links.reactions.href;
+            } else {
+                uri = sharedPost._links.sub_reactions.href;
+            }
+            console.log('URI:', uri);
+            const response = await ApiCalls.post(uri, postData);
+            console.log('Success:', response.data);
             if (!isReacted) setReactionCount((prev) => prev + 1);
             setIsReacted(true);
             console.log('Success:', response.data);
@@ -122,7 +135,18 @@ const Post = forwardRef(({ post }, ref) => {
 
     const removeReaction = async () => {
         try {
-            const response = await ApiCalls.delete(post._links.deleteReaction.href);
+            console.log('Postrem:', post);
+            let uri;
+
+            if (sharedPost && sharedPost.contentType == 'Post') {
+                uri = post._links.deleteReaction.href;
+                console.log('delete', sharedPost._links.deleteReaction.href)
+            } else {
+                console.log('delete:', sharedPost._links.sub_deleteReaction.href)
+                uri = sharedPost._links.sub_deleteReaction.href;
+            }
+            console.log('URI:', uri);
+            const response = await ApiCalls.delete(uri);
             if (isReacted) setReactionCount((prev) => prev - 1);
             setIsReacted(false);
             console.log('Success:', response.data);
@@ -157,6 +181,7 @@ const Post = forwardRef(({ post }, ref) => {
     };
 
     const openViewDetails = () => {
+        setPostId()
         onOpen();
     };
 
@@ -168,7 +193,7 @@ const Post = forwardRef(({ post }, ref) => {
     const duration = moment(localTime).fromNow();
 
 
-    const Reactor = function ({ name, profilePicUrl}) {
+    const Reactor = function ({ name, profilePicUrl }) {
         return (
             <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
                 <Avatar name={name} src={profilePicUrl || undefined} />
@@ -292,7 +317,21 @@ const Post = forwardRef(({ post }, ref) => {
                     <DrawerHeader>Post Comments</DrawerHeader>
                     <DrawerBody>
                         <Divider borderColor="black.50" />
-                        <Box overflowY="auto"><Comments currentUserId="1" /></Box>
+                        <Box overflowY="auto"> <Comments /></Box>
+                        {/* <Tabs>
+                        <TabList>
+                            <Tab>Comments</Tab>
+                            
+
+                        </TabList>
+
+                        <TabPanels>
+                            <TabPanel>
+                                <Box overflowY="auto"> <Comments currentUserId="1"/></Box>
+                            </TabPanel>
+                            
+                        </TabPanels>
+                    </Tabs> */}
                     </DrawerBody>
                 </DrawerContent>
             </Drawer>
@@ -310,10 +349,16 @@ const Post = forwardRef(({ post }, ref) => {
                                 <Tab><div>👏</div></Tab>
                                 <Tab><div>😄</div></Tab>
                             </TabList>
+
                             <Box flex="1" overflowY="auto">
                                 <TabPanels>
                                     <TabPanel>
-
+                                        <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                                            <Avatar name={post.contentAuthor?.name} src={profilePicUrl || undefined} />
+                                            <Box alignItems="left">
+                                                <Heading size='sm' textAlign={['left']}>{toProperCase(post.contentAuthor?.name)}</Heading>
+                                            </Box>
+                                        </Flex>
                                     </TabPanel>
                                     <TabPanel><p>Content for dislike reactions</p></TabPanel>
                                     <TabPanel><p>Content for love reactions</p></TabPanel>
