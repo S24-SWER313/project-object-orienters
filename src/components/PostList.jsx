@@ -47,11 +47,13 @@ function PostList({ feedType, feedValue, offset, limit }) {
                             key={post.contentID || index}
                             ref={lastPostElementRef}
                             post={post}
+                            sharedPost={post}
                         />
                     } else {
                         return <Post
                             key={post.contentID || index}
                             post={post}
+                            sharedPost={post}
                         />
                     }
                 } else {

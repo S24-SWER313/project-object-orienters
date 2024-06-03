@@ -6,7 +6,7 @@ export const CommentsContext = createContext();
 export const SelectedCommentProvider = ({ children }) => {
 
 
-    const [postId, setPostId] = useState();
+    const [postId, setPostId] = useState(8);
     const [currentCommentText, setcurrentCommentText] = useState("");
     const [backendComments, setBackendComments] = useState([]);
     const [currentPost, setCurrentPost] = useState({});
@@ -16,7 +16,6 @@ export const SelectedCommentProvider = ({ children }) => {
     
       }, [currentPost]);
 
-
   useEffect(() => {
     setBackendComments([]);
 
@@ -25,7 +24,7 @@ export const SelectedCommentProvider = ({ children }) => {
 
 
     return (
-        <CommentsContext.Provider value={{ postId, setPostId, currentCommentText, setcurrentCommentText }}>
+        <CommentsContext.Provider value={{ postId, setPostId, currentCommentText, setcurrentCommentText, backendComments, setBackendComments }}>
             {children}
         </CommentsContext.Provider>
     );
