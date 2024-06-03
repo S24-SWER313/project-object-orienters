@@ -162,7 +162,7 @@ const Post = forwardRef(({ post }, ref) => {
 
     return (
         <>
-            <Card ref={ref} key={post.contentID} w={[0.88, 0.9, 0.8]} maxW={550} m='2'>
+            <Card ref={ref} key={post.contentID}  m='2' w={'600px'}>
                 <CardHeader marginBottom='-6'>
                     <Flex spacing='4'>
                         <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
@@ -370,3 +370,9 @@ export default Post;
 // public enum ReactionType {
 //     LIKE, DISLIKE, LOVE, SUPPORT, HAHA
 // }
+
+
+
+
+
+

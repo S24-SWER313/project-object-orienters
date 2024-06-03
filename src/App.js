@@ -16,6 +16,8 @@ import OAuthRedirect from './components/OAuthRedirect';
 import OAuthLogin from './components/OAuthLogin';
 import CodePage  from './components/CodePage';
 import NotFoundPage from './components/NotFoundPage';
+import ProfileSearchComponents from './components/ProfileSearchComponents';
+import CompaniesCard from './components/CompaniesCard';
 
 
 
@@ -23,6 +25,7 @@ import NotFoundPage from './components/NotFoundPage';
 function App() {
     return (
         
+//  <ProfileSearchComponents/> 
 
         <Router>
             <AuthProvider>

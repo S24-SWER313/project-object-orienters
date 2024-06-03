@@ -12,9 +12,10 @@ import {
     useColorModeValue,
 } from '@chakra-ui/react';
 
-export default function FriendCard({name, jobTitle, avatarImageUrl, backgroundImage, followers, following}) {
+function CompaniesCard() {
     return (
         <Center>
+        
             <Box
                 h={'200px'}
                 maxW={'270px'}
@@ -26,13 +27,13 @@ export default function FriendCard({name, jobTitle, avatarImageUrl, backgroundIm
                     alt={'Profile background'}
                     h={'50px'}
                     w={'full'}
-                    src={backgroundImage} 
+                    src=""
                     objectFit={'cover'}
                 />
-                <Flex justify={'center'} mt={-10} mb={-5}>
+                <Flex  mt={-10} mb={-5}>
                     <Avatar
                         size={'lg'}
-                        src={avatarImageUrl}
+                        src=""
                         alt={'Profile picture'}
                         css={{
                             border: '2px solid white',
@@ -41,42 +42,20 @@ export default function FriendCard({name, jobTitle, avatarImageUrl, backgroundIm
                 </Flex>
 
                 <Box p={6}>
-                    <Stack spacing={0} align={'center'} mb={1.5}>
+                    <Stack>
                         <Heading fontSize={'sm'} fontWeight={500} fontFamily={'body'}>
-                            {name}
+                            Husam
                         </Heading>
-                        <Text color={'gray.500'} fontSize={'xs'}>
-                            {jobTitle}
-                        </Text>
-                    </Stack>
-
-                    <Stack direction={'row'} justify={'center'} spacing={6} mb={-5}>
-                        <Stack spacing={0} align={'center'}>
-                            <Text fontSize={'sm'} fontWeight={600}>{followers}</Text> {/* Display followers */}
+                       
+                            <Text fontSize={'sm'} fontWeight={600}>1000</Text>
                             <Text fontSize={'xs'} color={'gray.500'}>
                                 Followers
                             </Text>
-                        </Stack>
-                        <Stack spacing={0} align={'center'}>
-                            <Text fontSize={'sm'} fontWeight={600}>{following}</Text> {/* Display following */}
-                            <Text fontSize={'xs'} color={'gray.500'}>
-                                Following
-                            </Text>
-                        </Stack>
+        
                     </Stack>
 
-                    <Stack mt={6} direction={'row'} spacing={4} width="full" paddingLeft={8}>
+                    <Stack direction={'row'} spacing={4} width="full">
 
-                        <Button
-                            size={'sm'}
-
-                            fontSize={'xs'}
-                            rounded={'full'}
-                            _focus={{
-                                bg: 'gray.200',
-                            }}>
-                            Message
-                        </Button>
                         <Button
                             size={'sm'}
                             fontSize={'xs'}
@@ -96,6 +75,9 @@ export default function FriendCard({name, jobTitle, avatarImageUrl, backgroundIm
 
                 </Box>
             </Box>
-        </Center>
-    );
+            </Center>
+        
+    )
 }
+
+export default CompaniesCard
