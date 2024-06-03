@@ -17,13 +17,14 @@ import OAuthLogin from './components/OAuthLogin';
 import CodePage from './components/CodePage';
 import NotFoundPage from './components/NotFoundPage';
 import { SelectedCommentProvider } from './components/Comments/CommentsContext';
+import ProfileSearchComponents from './components/ProfileSearchComponents';
+import CompaniesCard from './components/CompaniesCard';
 
 
 
 
 function App() {
     return (
-
 
         <Router>
             <AuthProvider>
@@ -39,15 +40,14 @@ function App() {
 
 
 
-                        <Route element={<PrivateRoute />}>
-
-                            <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
-                            <Route path="/profiles/:profile/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
-                            <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />
-                            <Route path="/trends/:value" element={<MainLayout><TrendPage /></MainLayout>} />
-                            <Route path="/code" element={<MainLayout><CodePage /></MainLayout>} />
-
-                            <Route path="/messages" element={<ChatApp />} />
+                    <Route element={<PrivateRoute />}>
+                        <Route path="/messages" element={<ChatApp />} />
+                        <Route path="/home" element={<MainLayout><Home /></MainLayout>} />
+                        <Route path="/profiles/:profile/posts-followers-following" element={<MainLayout><PostFollowersFollowingTabs /></MainLayout>} />
+                        <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />
+                        <Route path="/trends/:value" element={<MainLayout><TrendPage /></MainLayout>} />
+                        <Route path="/code" element={<MainLayout><CodePage /></MainLayout>} />
+                        <Route path="/messages/:profile" element={<ChatApp />} />
 
 
                             <Route path="*" element={<NotFoundPage />} />

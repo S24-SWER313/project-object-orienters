@@ -150,7 +150,7 @@ export default function FriendCard({ inUser }) {
 
                     
 
-                    <Stack mt={6} direction={'row'} spacing={4} width="full">
+                    <Stack mt={6} direction={'row'} spacing={4} width="full" paddingLeft={8}>
 
                         <Button
                             size={'sm'}

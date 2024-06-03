@@ -8,8 +8,7 @@ import {
     ModalBody,
     ModalOverlay,
     ModalContent,
-    Divider,
-    Toast,
+    Divider,Toast
 } from '@chakra-ui/react';
 
 import { BiChat, BiLike, BiShare } from 'react-icons/bi';
@@ -34,7 +33,6 @@ import AddSharedPost from './AddSharedPost';
 import Comments from './Comments/Comments';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import moment from 'moment';
-// import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import EditPost from './EditPost';
 import DeletePost from './DeletePost';
 import { CommentsContext } from './Comments/CommentsContext';
@@ -208,7 +206,7 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
 
     return (
         <>
-            <Card ref={ref} key={post.contentID} w={[0.88, 0.9, 0.8]} maxW={550} m='2'>
+            <Card ref={ref} key={post.contentID}  m='2' w={'600px'}>
                 <CardHeader marginBottom='-6'>
                     <Flex spacing='4'>
                         <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
@@ -261,7 +259,7 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
                     />
                     {Array.isArray(post.mediaData) && post.mediaData.length > 0 && <MediaContentData style={{ margin: 'auto' }} objectFit='cover' mediaData={post.mediaData} />}
                     <Flex justifyContent="flex-start" pt={50}>
-                        <Link size={'xs'} color={'gray'} textDecor={'underline'} onClick={onSecondDrawerOpen}>view reactions</Link>
+                        {/* <Link size={'xs'} color={'gray'} textDecor={'underline'} onClick={onSecondDrawerOpen}>view reactions</Link> */}
                     </Flex>
                 </CardBody>
                 <CardFooter
@@ -308,7 +306,7 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
                         <Box as="span" mr="2">{commentsCount}</Box> Comment
                     </Button>
                     <Button flex='1' variant='ghost' leftIcon={<BiShare />} onClick={onOpenY}>
-                        <Box as="span" mr="2">{sharesCount}</Box> Share
+                        Share
                     </Button>
                 </CardFooter>
             </Card>
@@ -414,3 +412,4 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
 
 
 export default Post;
+
