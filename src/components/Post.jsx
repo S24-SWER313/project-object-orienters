@@ -27,7 +27,6 @@ import ApiCalls from './ApiCalls';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsDown, faHeart, faFaceLaughSquint, faHandsClapping, faThumbsUp as solidThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as regularThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { Anchor } from '@mui/icons-material';
 
 import useProfileLoading from './useProfileLoading';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -37,6 +36,8 @@ import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import moment from 'moment';
 import { Toast } from '@chakra-ui/react/dist';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import EditPost from './EditPost';
+import DeletePost from './DeletePost';
 
 const Post = forwardRef(({ post }, ref) => {
     const [profilePicUrl, setProfilePicUrl] = useState(null);
@@ -55,6 +56,8 @@ const Post = forwardRef(({ post }, ref) => {
 
     const { profileData } = useProfileLoading({ profile });
     const { isOpen: isOpenY, onOpen: onOpenY, onClose: onCloseY } = useDisclosure();
+    const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
+    const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
 
 
     const fetchReactors = async (postId, reactionType) => {
@@ -160,9 +163,7 @@ const Post = forwardRef(({ post }, ref) => {
         onOpen();
     };
 
-    const handleOpenY = () => {
-        onOpen();
-    };
+
 
     const specificDateTime = new Date(post.timestamp);
     const userTimezoneOffset = specificDateTime.getTimezoneOffset() * 60000;
@@ -212,7 +213,6 @@ const Post = forwardRef(({ post }, ref) => {
                 <CardBody>
                     <Markdown
                         remarkPlugins={[remarkGfm]}
-                        marginBottom='4'
                         className="markdown"
                         children={post.textData}
                         components={{
@@ -236,7 +236,7 @@ const Post = forwardRef(({ post }, ref) => {
                         }}
                     />
                     {Array.isArray(post.mediaData) && post.mediaData.length > 0 && <MediaContentData style={{ margin: 'auto' }} objectFit='cover' mediaData={post.mediaData} />}
-                    <Flex justifyContent="flex-start" pt={50} pb={5}>
+                    <Flex justifyContent="flex-start" pt={50}>
                         <Link size={'xs'} color={'gray'} textDecor={'underline'} onClick={onSecondDrawerOpen}>view reactions</Link>
                     </Flex>
                 </CardBody>
@@ -335,6 +335,29 @@ const Post = forwardRef(({ post }, ref) => {
                     <ModalCloseButton mr={'-10px'} mt={'2px'} />
                     <ModalBody m={"10px"}>
                         <AddSharedPost sharedPost={post} />
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+
+
+
+            <Modal isOpen={isOpenEdit} onClose={onCloseEdit} isCentered>
+                <ModalOverlay />
+                <ModalContent maxW="32vw">
+                    <ModalCloseButton mr={'-10px'} mt={'2px'} />
+                    <ModalBody m={"10px"}>
+                        <EditPost post={post} />
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+
+
+            <Modal isOpen={isOpenDelete} onClose={onCloseDelete} isCentered>
+                <ModalOverlay />
+                <ModalContent maxW="32vw">
+                    <ModalCloseButton mr={'-10px'} mt={'2px'} />
+                    <ModalBody m={"10px"}>
+                        <DeletePost post={post} />
                     </ModalBody>
                 </ModalContent>
             </Modal>

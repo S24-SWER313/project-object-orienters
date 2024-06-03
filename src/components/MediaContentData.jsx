@@ -99,6 +99,7 @@ function MediaContentData({ mediaData }) {
         <Flex
             w="full"
             p={0}
+            mt={'15'}
             alignItems="center"
             justifyContent="center"
             overflow="hidden"
