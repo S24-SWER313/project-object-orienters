@@ -33,7 +33,6 @@ import AddSharedPost from './AddSharedPost';
 import Comments from './Comments/Comments';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import moment from 'moment';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import EditPost from './EditPost';
 import DeletePost from './DeletePost';
 
@@ -235,7 +234,7 @@ const Post = forwardRef(({ post }, ref) => {
                     />
                     {Array.isArray(post.mediaData) && post.mediaData.length > 0 && <MediaContentData style={{ margin: 'auto' }} objectFit='cover' mediaData={post.mediaData} />}
                     <Flex justifyContent="flex-start" pt={50}>
-                        <Link size={'xs'} color={'gray'} textDecor={'underline'} onClick={onSecondDrawerOpen}>view reactions</Link>
+                        {/* <Link size={'xs'} color={'gray'} textDecor={'underline'} onClick={onSecondDrawerOpen}>view reactions</Link> */}
                     </Flex>
                 </CardBody>
                 <CardFooter
