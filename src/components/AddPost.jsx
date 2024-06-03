@@ -17,7 +17,6 @@ import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import ApiCalls from './ApiCalls';
 import Markdown from 'react-markdown';
-
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import remarkGfm from 'remark-gfm';
@@ -29,7 +28,7 @@ function AddPost() {
     const fileInputRef = useRef(null);
     const textAreaRef = useRef(null);  
     const toast = useToast();
-    const [privacy, setPrivacy] = useState('PUBLIC');  
+    const [privacy, setPrivacy] = useState('PUBLIC'); 
     const { user, token } = useAuth();
     const { profileData } = useProfileLoading({ profile: user });
     const navigate = useNavigate();
@@ -40,7 +39,7 @@ function AddPost() {
     };
 
     const handleFileChange = (event) => {
-        setFiles([...event.target.files]);  
+        setFiles([...event.target.files]);  // Convert FileList to array
     };
 
     const handleRemoveFile = (index) => {
