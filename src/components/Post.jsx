@@ -253,7 +253,7 @@ const Post = forwardRef(({ post }, ref) => {
                         <Box as="span" mr="2">{commentsCount}</Box> Comment
                     </Button>
                     <Button flex='1' variant='ghost' leftIcon={<BiShare />} onClick={onOpenY}>
-                        <Box as="span" mr="2">{sharesCount}</Box> Share
+                        Share
                     </Button>
                 </CardFooter>
             </Card>

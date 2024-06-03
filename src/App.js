@@ -44,7 +44,7 @@ function App() {
                         <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />
                         <Route path="/trends/:value" element={<MainLayout><TrendPage /></MainLayout>} />
                         <Route path="/code" element={<MainLayout><CodePage /></MainLayout>} />
-                        <Route path="/messages" element={<ChatApp/>} />
+                        <Route path="/messages/:profile" element={<ChatApp/>} />
 
 
                         <Route path="*" element={<NotFoundPage />} />

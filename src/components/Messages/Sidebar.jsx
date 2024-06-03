@@ -1,12 +1,15 @@
+import React, { useEffect } from 'react';
 import { Avatar, Box, Flex, Text } from "@chakra-ui/react";
 import { useAuth } from '../AuthProvider';
 import useProfileLoading from '../useProfileLoading';
 import { useContext } from "react";
 import { SelectedChatContext } from './SelectedChatContext';
 import { FaDotCircle } from "react-icons/fa";
+import { useParams } from "react-router-dom";
 
 const Sidebar = () => {
   const { user } = useAuth();
+  const { value } = useParams();
   const { profileData } = useProfileLoading({ profile: user });
 
   const { selectedChat, setSelectedChat, connectedUsers } = useContext(SelectedChatContext);
@@ -14,6 +17,11 @@ const Sidebar = () => {
 
 
   const ChatItem = ({ chat }) => {
+    useEffect(() => {
+      if (value) {
+        setSelectedChat(value);
+      }
+    }, [value]);
     const isSelected = chat.username === selectedChat?.username;
     return (
       <Flex
