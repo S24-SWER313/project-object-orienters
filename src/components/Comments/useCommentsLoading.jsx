@@ -12,7 +12,7 @@ function useCommentsLoading(props) {
         const fetchProfileData = async () => {
             if (token) {
                 try {
-                    const response = await ApiCalls.get(`http://localhost:8080/content/${content}/comments`);
+                    const response = await ApiCalls.get(`http://localhost:8080/content/${content}/comments?offset=0&limit=20`);
                     if (response.data?._embedded?.commentList) {
                         setComments(response.data?._embedded?.commentList);
                         console.log("useCommentsLoading data", response.data?._embedded?.commentList);

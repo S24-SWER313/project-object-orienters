@@ -1,4 +1,4 @@
-import React, { useEffect, useState, forwardRef } from 'react';
+import React, { useEffect, useState, forwardRef, useContext } from 'react';
 import {
     Avatar, Box, Button, Card, CardBody, CardFooter, CardHeader, Drawer,
     DrawerBody, DrawerContent, DrawerHeader, DrawerOverlay, Flex,
@@ -37,6 +37,7 @@ import moment from 'moment';
 // import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import EditPost from './EditPost';
 import DeletePost from './DeletePost';
+import { CommentsContext } from './Comments/CommentsContext';
 
 const Post = forwardRef(({ post, sharedPost }, ref) => {
     const [profilePicUrl, setProfilePicUrl] = useState(null);
@@ -58,7 +59,7 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
     const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
 
-
+    const { setPostId } = useContext(CommentsContext);
     console.log('Post:', sharedPost);
 
     const fetchReactors = async (postId, reactionType) => {
@@ -122,7 +123,7 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
                 uri = post._links.reactions.href;
             } else {
                 uri = sharedPost._links.sub_reactions.href;
-            } 
+            }
             console.log('URI:', uri);
             const response = await ApiCalls.post(uri, postData);
             console.log('Success:', response.data);
@@ -138,8 +139,8 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
         try {
             console.log('Postrem:', post);
             let uri;
-            
-            if ( sharedPost && sharedPost.contentType == 'Post') {
+
+            if (sharedPost && sharedPost.contentType == 'Post') {
                 uri = post._links.deleteReaction.href;
                 console.log('delete', sharedPost._links.deleteReaction.href)
             } else {
@@ -182,6 +183,7 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
     };
 
     const openViewDetails = () => {
+        setPostId()
         onOpen();
     };
 

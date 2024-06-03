@@ -1,8 +1,11 @@
-import { Avatar, Box, Text, Button, VStack, HStack, Flex } from "@chakra-ui/react";
+import { Avatar, Box, Text, Button, VStack, HStack, Flex, Toast } from "@chakra-ui/react";
 import CommentForm from "./CommentForm";
 import { useAuth } from "../AuthProvider";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useCommentsLoading from "./useCommentsLoading";
+import ApiCalls from "../ApiCalls";
+import { CommentsContext } from "./CommentsContext";
+import { ConstructionOutlined } from "@mui/icons-material";
 
 const Comment = ({
   comment,
@@ -10,7 +13,6 @@ const Comment = ({
   setActiveComment,
   activeComment,
   updateComment,
-  deleteComment,
   addComment,
   parentId = null,
   // fetchReplies,
@@ -31,10 +33,10 @@ const Comment = ({
   const canEdit = user === comment.contentAuthor.username && !timePassed;
   const replyId = parentId ? parentId : comment.contentID;
   const createdAt = new Date(comment.timestamp).toLocaleDateString();
-
-  const postId = comment.contentID;
-
-  const { commentsList } = useCommentsLoading({ contentId: postId });
+  const { postId } = useContext(CommentsContext);
+  const comentId = comment.contentID;
+  const canDelete = comment.contentAuthor.username == user;
+  const { commentsList } = useCommentsLoading({ contentId: comentId });
 
   const [replies, setReplies] = useState(commentsList);
 
@@ -46,9 +48,25 @@ const Comment = ({
   }, [commentsList, setReplies]);
 
 
+
   // useEffect(() => {
   //   commentsList(comment.contentID);
   // }, [comment.contentID, fetchReplies]);
+
+  const deleteComment = async function () {
+    console.log(`/content/${postId}/comments/${comment.contentID}`);
+    let url = `content/${postId}/comments/${comment.contentID}`
+    const response = await ApiCalls.delete(url);
+    console.log(response.data);
+    Toast({
+      title: "Comment deleted successfully.",
+      status: "success",
+      duration: 2000,
+      isClosable: true,
+      position: "top",
+    });
+
+  }
 
   return (
     <Box key={comment.contentID} p={4}>
@@ -83,9 +101,9 @@ const Comment = ({
               Edit
             </Button>
           )}
-          <Button variant="link" size="sm" colorScheme="red" onClick={() => deleteComment(comment.contentID)}>
+          {canDelete && <Button variant="link" size="sm" colorScheme="red" onClick={() => deleteComment(comentId)}>
             Delete
-          </Button>
+          </Button>}
         </HStack>
         {isReplying && (
           <CommentForm
@@ -104,7 +122,7 @@ const Comment = ({
                 setActiveComment={setActiveComment}
                 activeComment={activeComment}
                 updateComment={updateComment}
-                deleteComment={deleteComment}
+                // deleteComment={deleteComment}
                 addComment={addComment}
                 parentId={comment.contentID}
               // replies={replies}

@@ -2,10 +2,10 @@ import { useState, useEffect, useContext, useCallback } from "react";
 import CommentForm from "./CommentForm";
 import Comment from "./Comment";
 import {
-  getComments as getCommentsApi,
-  createComment as createCommentApi,
+  // getComments as getCommentsApi,
+  // createComment as createCommentApi,
   updateComment as updateCommentApi,
-  deleteComment as deleteCommentApi,
+  // deleteComment as deleteCommentApi,
 } from "./api";
 import { useToast, Box, VStack, Flex } from "@chakra-ui/react";
 import { CommentsContext } from "./CommentsContext";
@@ -41,15 +41,15 @@ const Comments = () => {
     }
   }, [commentsList, setBackendComments]);
 
-  const addComment = (currentCommentText, parentId) => {
-    createCommentApi(postId, currentCommentText, user).then((comment) => {
-      setBackendComments([comment, ...backendComments]);
-      setActiveComment(null);
-      if (parentId) {
-        // getReplies(parentId); // Refresh replies for the parent comment
-      }
-    });
-  };
+  // const addComment = () => {
+  //   createCommentApi(postId, currentCommentText, user).then((comment) => {
+  //     setBackendComments([comment, ...backendComments]);
+  //     setActiveComment(null);
+  //     // if (parentId) {
+  //     //   // getReplies(parentId); // Refresh replies for the parent comment
+  //     // }
+  //   });
+  // };
 
   const updateComment = (text, commentId) => {
     updateCommentApi(text).then(() => {
@@ -65,37 +65,16 @@ const Comments = () => {
   };
 
   const deleteComment = (commentId) => {
-    deleteCommentApi(commentId)
-      .then(() => {
-        const updatedBackendComments = backendComments.filter(
-          (backendComment) => backendComment.contentID !== commentId
-        );
-        setBackendComments(updatedBackendComments);
-        toast({
-          title: "Comment deleted successfully.",
-          status: "success",
-          duration: 2000,
-          isClosable: true,
-          position: "top",
-        });
-      })
-      .catch((error) => {
-        toast({
-          title: "Failed to delete comment.",
-          description: `Error: ${error.message}`,
-          status: "error",
-          duration: 2000,
-          isClosable: true,
-          position: "top",
-        });
-      });
+   
   };
 
   return (
     <Flex className="comments">
       <VStack>
         <Box className="comment-form-title"></Box>
-        <CommentForm submitLabel="Write" handleSubmit={addComment} />
+        <CommentForm submitLabel="Write"
+        //  handleSubmit={addComment}
+          />
         <Box className="comments-container">
           {backendComments && backendComments.map((rootComment) => (
             <Comment
@@ -104,8 +83,8 @@ const Comments = () => {
               // replies={replies[rootComment.contentID] || []}
               activeComment={activeComment}
               setActiveComment={setActiveComment}
-              addComment={addComment}
-              deleteComment={deleteComment}
+              // addComment={addComment}
+              // deleteComment={deleteComment}
               updateComment={updateComment}
             // fetchReplies={getReplies}
             />
