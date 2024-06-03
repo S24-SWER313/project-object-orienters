@@ -49,9 +49,9 @@ function ProfilePage() {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [isHovering, setIsHovering] = useState(false);
 
-    if(profileData === null){
-        navigate('/NotFoundPage');
-    }
+    // if(profileData === null){
+    //     navigate('/NotFoundPage');
+    // }
 
     const handleMouseEnter = () => setIsHovering(true);
     const handleMouseLeave = () => setIsHovering(false);
