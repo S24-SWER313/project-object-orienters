@@ -22,7 +22,7 @@ import NotFoundPage from './components/NotFoundPage';
 
 function App() {
     return (
-        
+
 
         <Router>
             <AuthProvider>

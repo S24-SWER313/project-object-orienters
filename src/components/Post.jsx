@@ -20,14 +20,13 @@ import './style.css'; // Import your custom CSS'
 import { ReactionBarSelector } from '@charkour/react-reactions';
 import Popup from 'reactjs-popup';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
-import { dark, docco, dracula, gruvboxDark, lightfair, solarizedDark, solarizedLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-import { Light } from 'react-syntax-highlighter';
+// import { dark, docco, dracula, gruvboxDark, lightfair, solarizedDark, solarizedLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+// import { Light } from 'react-syntax-highlighter';
 import { useAuth } from './AuthProvider';
 import ApiCalls from './ApiCalls';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsDown, faHeart, faFaceLaughSquint, faHandsClapping, faThumbsUp as solidThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { faThumbsUp as regularThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { Anchor } from '@mui/icons-material';
 
 import useProfileLoading from './useProfileLoading';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -35,6 +34,8 @@ import AddSharedPost from './AddSharedPost';
 import Comments from './Comments/Comments';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import moment from 'moment';
+import { Toast } from '@chakra-ui/react/dist';
+import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import EditPost from './EditPost';
 import DeletePost from './DeletePost';
 
@@ -48,6 +49,7 @@ const Post = forwardRef(({ post }, ref) => {
     const [reactionCount, setReactionCount] = useState(post.numOfReactions);
     const [commentsCount, setCommentsCount] = useState(post.numOfComments);
     const [sharesCount, setSharesCount] = useState(post.numOfShares);
+    const [reactors, setReactors] = useState([]);
 
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { isOpen: isSecondDrawerOpen, onOpen: onSecondDrawerOpen, onClose: onSecondDrawerClose } = useDisclosure();
@@ -56,6 +58,25 @@ const Post = forwardRef(({ post }, ref) => {
     const { isOpen: isOpenY, onOpen: onOpenY, onClose: onCloseY } = useDisclosure();
     const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
+
+
+    const fetchReactors = async (postId, reactionType) => {
+        try {
+          const response = await ApiCalls.get(`http://localhost:8080/content/${postId}/reactions/${reactionType}/users`);
+          const data = response.data;
+          console.log('Reactors data:', data);
+          setReactors(data?._embedded?.userList); // Adjust according to your actual response structure
+        } catch (error) {
+          Toast({
+            title: 'Failed to fetch reactors.',
+            description: `Error: ${error.message}`,
+            status: 'error',
+            duration: 2000,
+            isClosable: true,
+            position: 'top',
+          });
+        }
+      };
 
     const toProperCase = (str) => {
         if (str == null) return null;
@@ -149,6 +170,18 @@ const Post = forwardRef(({ post }, ref) => {
     const localTime = new Date(specificDateTime.getTime() - userTimezoneOffset);
     const duration = moment(localTime).fromNow();
 
+
+    const Reactor = function ({ name, profilePicUrl}) {
+        return (
+            <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
+                <Avatar name={name} src={profilePicUrl || undefined} />
+                <Box alignItems="left">
+                    <Heading size='sm' textAlign={['left']}>{toProperCase(name)}</Heading>
+                </Box>
+            </Flex>
+        )
+    }
+
     return (
         <>
             <Card ref={ref} key={post.contentID} w={[0.88, 0.9, 0.8]} maxW={550} m='2'>
@@ -162,21 +195,19 @@ const Post = forwardRef(({ post }, ref) => {
                                 <Text fontSize='0.7em' textAlign={['left']} color={'gray'}>{duration}</Text>
                             </Box>
                         </Flex>
-                        {user === post.contentAuthor?.username && (
-                            <Menu isLazy>
-                                <MenuButton
-                                    as={IconButton}
-                                    variant='ghost'
-                                    colorScheme='gray'
-                                    aria-label='See menu'
-                                    icon={<BsThreeDotsVertical />}
-                                />
-                                <MenuList>
-                                    <MenuItem onClick={onOpenEdit}>Edit Post</MenuItem>
-                                    <MenuItem onClick={onOpenDelete} >Delete Post</MenuItem>
-                                </MenuList>
-                            </Menu>
-                        )}
+                        {user == post.contentAuthor?.username && <Menu isLazy>
+                            <MenuButton
+                                as={IconButton}
+                                variant='ghost'
+                                colorScheme='gray'
+                                aria-label='See menu'
+                                icon={<BsThreeDotsVertical />}
+                            />
+                            <MenuList>
+                                <MenuItem>Edit Post</MenuItem>
+                                <MenuItem color='red'>Delete Post</MenuItem>
+                            </MenuList>
+                        </Menu>}
                     </Flex>
                 </CardHeader>
                 <CardBody>
@@ -276,7 +307,7 @@ const Post = forwardRef(({ post }, ref) => {
                     <DrawerBody>
                         <Tabs>
                             <TabList>
-                                <Tab><div>👍</div></Tab>
+                                <Tab onClick={console.log("hi")}><div>👍</div></Tab>
                                 <Tab><div>👎</div></Tab>
                                 <Tab><div>❤️</div></Tab>
                                 <Tab><div>👏</div></Tab>
@@ -285,12 +316,7 @@ const Post = forwardRef(({ post }, ref) => {
                             <Box flex="1" overflowY="auto">
                                 <TabPanels>
                                     <TabPanel>
-                                        <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
-                                            <Avatar name={post.contentAuthor?.name} src={profilePicUrl || undefined} />
-                                            <Box alignItems="left">
-                                                <Heading size='sm' textAlign={['left']}>{toProperCase(post.contentAuthor?.name)}</Heading>
-                                            </Box>
-                                        </Flex>
+
                                     </TabPanel>
                                     <TabPanel><p>Content for dislike reactions</p></TabPanel>
                                     <TabPanel><p>Content for love reactions</p></TabPanel>
@@ -338,5 +364,9 @@ const Post = forwardRef(({ post }, ref) => {
         </>
     );
 });
+
+
+
+
 
 export default Post;
