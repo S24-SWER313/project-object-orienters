@@ -98,7 +98,7 @@ function MainLayout({ children }) {
           <Box as="header">
           <Header />
           </Box>
-          <Flex direction="column" minHeight="calc(100vh - headerHeight - footerHeight)">
+          <Flex direction="column" minH={'90vh'}>
             <Flex flex="1" p="4" justify="space-between">
               <Box pt={2} >
                 <TrendCard />
