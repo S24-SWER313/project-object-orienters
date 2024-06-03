@@ -33,7 +33,6 @@ import AddSharedPost from './AddSharedPost';
 import Comments from './Comments/Comments';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import moment from 'moment';
-import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import EditPost from './EditPost';
 import DeletePost from './DeletePost';
 
