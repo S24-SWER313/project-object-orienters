@@ -20,7 +20,7 @@ import './style.css'; // Import your custom CSS'
 import { ReactionBarSelector } from '@charkour/react-reactions';
 import Popup from 'reactjs-popup';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
-import { dark, docco, dracula, gruvboxDark, lightfair, solarizedDark, solarizedLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { dark, docco, gruvboxDark, lightfair, solarizedDark, solarizedLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { useAuth } from './AuthProvider';
 import ApiCalls from './ApiCalls';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
