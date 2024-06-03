@@ -16,6 +16,7 @@ import {
     Box,
     Text
 } from '@chakra-ui/react';
+import SearchForm from './Search/SearchForm';
 
 import { AiOutlineSearch, AiOutlineBell } from 'react-icons/ai';
 import { MdOutlineLogout } from "react-icons/md";
@@ -29,10 +30,6 @@ function Header() {
     const { user, logOut } = useAuth();
     const { profileData } = useProfileLoading({ profile: user });
     const [isSearchVisible, setIsSearchVisible] = useState(false);
-
-    const handleSearchClick = () => {
-        setIsSearchVisible(!isSearchVisible);
-    };
 
 
     return (
@@ -59,6 +56,8 @@ function Header() {
                     </chakra.a>
                     <HStack>
                         <Button
+                            colorScheme='blue'
+
                             onClick={() => navigate("/messages")}
                             variant="ghost"
                             leftIcon={<ChatIcon />}
@@ -68,6 +67,7 @@ function Header() {
                             Messages
                         </Button>
                         <Button
+                        colorScheme='blue'
                             onClick={() => navigate("/code")}
                             variant="ghost"
                             leftIcon={<FaCode />}
@@ -80,23 +80,15 @@ function Header() {
                 </HStack>
                 <HStack spacing={3} alignItems="center">
                     <Box display={{ base: 'none', md: 'flex' }}>
-                        <InputGroup>
-                            <InputLeftElement pointerEvents="none">
-                                <AiOutlineSearch />
-                            </InputLeftElement>
-                            <Input type="tel" placeholder="Search..." />
-                        </InputGroup>
+                        <SearchForm/>
                     </Box>
                     <Box display={{ base: 'flex', md: 'none' }}>
                         <IconButton
                             icon={<AiOutlineSearch />}
-                            onClick={handleSearchClick}
+                            onClick={<SearchForm/>}
                         />
                     </Box>
 
-                    <chakra.a p={3} color="gray.800" _dark={{ color: "inherit" }} rounded="sm" _hover={{ color: "gray.800", _dark: { color: "gray.600" } }}>
-                        <IconButton icon={<AiOutlineBell />} />
-                    </chakra.a>
                     <Avatar
                         onClick={() => navigate('/profiles/' + user)}
                         cursor="pointer"
@@ -111,7 +103,7 @@ function Header() {
                         fontSize="12px"
                         w="100px"
                         colorScheme="red"
-                        variant="outline"
+                        
                         rounded={11}
                     >
                         LogOut

@@ -41,7 +41,7 @@ function TrendCard() {
     }, [location]);
 
     return (
-        <Card mb={1}>
+        <Card mb={3} w={'280px'}>
             <CardHeader>
                 <Heading size='md'>Trends</Heading>
             </CardHeader>

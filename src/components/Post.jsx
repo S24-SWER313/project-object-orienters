@@ -20,8 +20,7 @@ import './style.css'; // Import your custom CSS'
 import { ReactionBarSelector } from '@charkour/react-reactions';
 import Popup from 'reactjs-popup';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
-// import { dark, docco, dracula, gruvboxDark, lightfair, solarizedDark, solarizedLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-// import { Light } from 'react-syntax-highlighter';
+import { dark, docco, dracula, gruvboxDark, lightfair, solarizedDark, solarizedLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { useAuth } from './AuthProvider';
 import ApiCalls from './ApiCalls';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -183,7 +182,7 @@ const Post = forwardRef(({ post }, ref) => {
 
     return (
         <>
-            <Card ref={ref} key={post.contentID} w={[0.88, 0.9, 0.8]} maxW={550} m='2'>
+            <Card ref={ref} key={post.contentID}  m='2' w={'600px'}>
                 <CardHeader marginBottom='-6'>
                     <Flex spacing='4'>
                         <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
@@ -369,3 +368,4 @@ const Post = forwardRef(({ post }, ref) => {
 
 
 export default Post;
+

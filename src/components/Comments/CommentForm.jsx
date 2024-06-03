@@ -1,28 +1,34 @@
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Button, Textarea, Box, useToast } from '@chakra-ui/react';
+import { CommentsContext } from './CommentsContext';
 
 const CommentForm = ({
-  handleSubmit,
   submitLabel,
   hasCancelButton = false,
   handleCancel,
-  initialText = "",
 }) => {
-  const [text, setText] = useState(initialText);
-  const isTextareaDisabled = text.length === 0;
-  const toast = useToast(); 
+
+
+
+  const { currentCommentText, setCurrentCommentText } = useContext(CommentsContext);
+  const handleSubmit = () => { };
+  
+
+
+  const isTextareaDisabled = currentCommentText.length === 0;
+  const toast = useToast();
 
   const onSubmit = (event) => {
     event.preventDefault();
     if (!isTextareaDisabled) {
-      handleSubmit(text);
-      setText("");
+      handleSubmit(currentCommentText);
+      setCurrentCommentText("");
       toast({
         title: 'Comment created successfully.',
         status: 'success',
         duration: 2000,
         isClosable: true,
-        position: 'top', 
+        position: 'top',
       });
     }
   };
@@ -31,8 +37,8 @@ const CommentForm = ({
     <Box as="form" onSubmit={onSubmit}>
       <Textarea
         placeholder="Write your comment..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        value={currentCommentText}
+        onChange={(e) => setCurrentCommentText(e.target.value)}
         size="sm"
         resize="vertical"
         mb={2}

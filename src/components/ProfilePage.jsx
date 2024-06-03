@@ -261,13 +261,14 @@ function ProfilePage() {
 
     return (
         <>
-            <Card>
+        
+            <Card mt={2} mb={3} w={'650px'}>
                 <CardHeader>
 
                     <Box
                         w={'full'}
                         bg={useColorModeValue('white', 'gray.800')}
-                        boxShadow={'2xl'}
+                        // boxShadow={'2xl'}
                         overflow={'hidden'}>
                         <div style={{ position: 'relative', width: 'full', height: '200px' }}>
                             <Image
@@ -333,7 +334,7 @@ function ProfilePage() {
                                 )}
                             </Heading>
                             <Text fontSize={'xl'} color={'gray.500'}>
-                                @{profileData && profileData.username ? profileData.username : 'No Profession'}
+                                @{profileData && profileData.username ? profileData.username : 'null'}
                             </Text>
                             <Text fontSize={'md'} color={'gray.500'}>
                                 {profileData && profileData.profession ? profileData.profession : 'No Profession'}

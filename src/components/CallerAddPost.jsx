@@ -52,8 +52,8 @@ function CallerAddPost() {
     return (
         <>
 
-            <Box display="flex" flexDirection="column" cursor="pointer" w={[0.88, 0.9, 0.8]} maxW={550} m='2' onClick={handleOpen}>
-                <Card border={'1px'} height="190px">
+            <Box display="flex" flexDirection="column" cursor="pointer"  m='2' onClick={handleOpen}>
+                <Card border={'1px'} height="190px" w={'600px'}>
 
                     <CardHeader>
                         <Flex alignItems="center" gap="4">

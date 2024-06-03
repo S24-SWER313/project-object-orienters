@@ -8,7 +8,7 @@ function Home() {
     return (
         <Box width="100%" maxWidth="960px" >
             <CallerAddPost />
-            <FriendsList/>
+            {/* <FriendsList users={users} /> */}
             <PostList feedType='ALL_USERS' feedValue='following' offset={0} limit={5} />
 
         </Box>
