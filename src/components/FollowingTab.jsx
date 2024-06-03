@@ -147,7 +147,7 @@ function FollowingTab({ profile }) {
 
     return (
         <>
-            <Card mb={1}>
+            <Card mb={1} w={'700px'}>
                 <CardHeader>
                     <Heading size='md'>Following Tab</Heading>
                 </CardHeader>

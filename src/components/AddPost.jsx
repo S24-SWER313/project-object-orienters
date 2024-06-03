@@ -17,7 +17,6 @@ import { useAuth } from './AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import ApiCalls from './ApiCalls';
 import Markdown from 'react-markdown';
-
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import remarkGfm from 'remark-gfm';
@@ -25,11 +24,11 @@ import remarkGfm from 'remark-gfm';
 
 function AddPost() {
     const [postText, setPostText] = useState('');
-    const [files, setFiles] = useState([]);  // Store multiple files in an array
+    const [files, setFiles] = useState([]);  
     const fileInputRef = useRef(null);
-    const textAreaRef = useRef(null);  // Ensure this useRef is declared for textAreaRef
+    const textAreaRef = useRef(null);  
     const toast = useToast();
-    const [privacy, setPrivacy] = useState('PUBLIC');  // Default privacy setting
+    const [privacy, setPrivacy] = useState('PUBLIC'); 
     const { user, token } = useAuth();
     const { profileData } = useProfileLoading({ profile: user });
     const navigate = useNavigate();

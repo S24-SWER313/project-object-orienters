@@ -30,7 +30,7 @@ import { faThumbsUp as regularThumbsUp } from '@fortawesome/free-regular-svg-ico
 import useProfileLoading from './useProfileLoading';
 import { useNavigate, useParams } from 'react-router-dom';
 import AddSharedPost from './AddSharedPost';
-import Comments from './Comments/Comments';
+import CommentForm from './Commentss/CommentForm';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import moment from 'moment';
 import EditPost from './EditPost';
@@ -56,9 +56,9 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
     const { isOpen: isOpenY, onOpen: onOpenY, onClose: onCloseY } = useDisclosure();
     const { isOpen: isOpenEdit, onOpen: onOpenEdit, onClose: onCloseEdit } = useDisclosure();
     const { isOpen: isOpenDelete, onOpen: onOpenDelete, onClose: onCloseDelete } = useDisclosure();
+    const { isOpen: isOpenComment, onOpen: onOpenComment, onClose: onCloseComment } = useDisclosure();
 
     const { setPostId } = useContext(CommentsContext);
-    console.log('Post:', sharedPost);
 
     const fetchReactors = async (postId, reactionType) => {
         try {
@@ -302,7 +302,7 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
                             }}
                         />
                     </Popup>
-                    <Button onClick={openViewDetails} flex='1' variant='ghost' leftIcon={<BiChat />}>
+                    <Button onClick={onOpenComment} flex='1' variant='ghost' leftIcon={<BiChat />}>
                         <Box as="span" mr="2">{commentsCount}</Box> Comment
                     </Button>
                     <Button flex='1' variant='ghost' leftIcon={<BiShare />} onClick={onOpenY}>
@@ -311,13 +311,13 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
                 </CardFooter>
             </Card>
 
-            <Drawer placement={'right'} onClose={onClose} isOpen={isOpen} size={'md'}>
+            {/* <Drawer placement={'right'} onClose={onClose} isOpen={isOpen} size={'md'}>
                 <DrawerOverlay />
                 <DrawerContent>
                     <DrawerHeader>Post Comments</DrawerHeader>
                     <DrawerBody>
                         <Divider borderColor="black.50" />
-                        <Box overflowY="auto"> <Comments /></Box>
+                        <Box overflowY="auto"> <CommentForm post = {post}/></Box>
                         {/* <Tabs>
                         <TabList>
                             <Tab>Comments</Tab>
@@ -332,9 +332,9 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
                             
                         </TabPanels>
                     </Tabs> */}
-                    </DrawerBody>
+                    {/* </DrawerBody>
                 </DrawerContent>
-            </Drawer>
+            </Drawer> */} 
 
             <Drawer placement='right' onClose={onSecondDrawerClose} isOpen={isSecondDrawerOpen} size='xs'>
                 <DrawerOverlay />
@@ -343,7 +343,7 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
                     <DrawerBody>
                         <Tabs>
                             <TabList>
-                                <Tab onClick={console.log("hi")}><div>👍</div></Tab>
+                                <Tab><div>👍</div></Tab>
                                 <Tab><div>👎</div></Tab>
                                 <Tab><div>❤️</div></Tab>
                                 <Tab><div>👏</div></Tab>
@@ -389,6 +389,16 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
                     <ModalCloseButton mr={'-10px'} mt={'2px'} />
                     <ModalBody m={"10px"}>
                         <EditPost post={post} />
+                    </ModalBody>
+                </ModalContent>
+            </Modal>
+
+            <Modal isOpen={isOpenComment} onClose={onCloseComment} isCentered>
+                <ModalOverlay />
+                <ModalContent maxW="32vw">
+                    <ModalCloseButton mr={'-10px'} mt={'2px'} />
+                    <ModalBody m={"10px"}>
+                        <CommentForm post={post}></CommentForm>
                     </ModalBody>
                 </ModalContent>
             </Modal>

@@ -19,12 +19,15 @@ import NotFoundPage from './components/NotFoundPage';
 import { SelectedCommentProvider } from './components/Comments/CommentsContext';
 import ProfileSearchComponents from './components/ProfileSearchComponents';
 import CompaniesCard from './components/CompaniesCard';
+import CommentForm from './components/Commentss/CommentForm';
+import Comment from './components/Commentss/Comment';
 
 
 
 
 function App() {
     return (
+
 
         <Router>
             <AuthProvider>
