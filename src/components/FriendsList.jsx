@@ -1,9 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Box, Heading, Flex, IconButton } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
-import { ScrollMenu } from 'react-horizontal-scrolling-menu';
-import 'react-horizontal-scrolling-menu/dist/styles.css';
+
+// Assuming FriendCard, ApiCalls, and useAuth are defined elsewhere, import them:
 import FriendCard from './FriendCard';
+import ApiCalls from './ApiCalls';
+import { useAuth } from './AuthProvider';
 
 // Arrow component for fixed positioning
 const Arrow = ({ direction, onClick, disabled }) => {
@@ -35,8 +37,25 @@ const RightArrow = ({ onClick }) => (
     <Arrow direction="right" onClick={onClick} />
 );
 
-function FriendsList({ users }) {
+function FriendsList() {
+    const { user } = useAuth();
+    const [users, setUsers] = useState([]);
     const menuRef = useRef(null);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                const response = await ApiCalls.get(`/feed?feedType=MUTUAL_FOLLOWING&value=${user}&offset=0&limit=10`);
+                const data = response.data;
+                if (data._embedded?.profileList) {
+                    setUsers(data._embedded.profileList);
+                }
+            } catch (error) {
+                console.error("Failed to fetch suggestions");
+            }
+        };
+        fetchUsers();
+    }, [user]);
 
     const scrollLeft = () => {
         if (menuRef.current) {
@@ -61,11 +80,12 @@ function FriendsList({ users }) {
             overflow="hidden"
             w={'200px'}
             flex="0 0 auto"
-
         >
-            <FriendCard {...user} />
+            <FriendCard inUser={user} />
         </Box>
     );
+
+    if (users.length === 0) return null; // This will not render anything if there are no users
 
     return (
         <Box
@@ -79,12 +99,11 @@ function FriendsList({ users }) {
             rounded="lg"
             m="2"
             p="4"
-            // maxWidth="600px"
-            h= '301px'
+            h='301px'
             overflow="hidden"
             position="relative"
         >
-            <Heading size="md" alignSelf="flex-start" mb="4">Friends Suggestions</Heading>
+            <Heading size="md" alignSelf="flex-start" mb="4">Followers Suggestions</Heading>
             <Flex alignItems="center" justifyContent="center" w="full" position="relative" overflowX="hidden">
                 <LeftArrow onClick={scrollLeft} />
                 <Box ref={menuRef} style={{ display: 'flex', overflowX: 'auto', scrollBehavior: 'smooth', width: '100%' }}>

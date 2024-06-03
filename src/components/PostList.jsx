@@ -6,7 +6,6 @@ import SharedPost from './SharedPost';
 
 function PostList({ feedType, feedValue, offset, limit }) {
 
-
     const [feedTypeState, setFeedTypeState] = useState(feedType);
     const [offsetState, setOffsetState] = useState(offset);
     const [limitState, setLimitState] = useState(limit);

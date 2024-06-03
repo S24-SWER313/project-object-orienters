@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import { Flex, Input, Heading, Text, FormControl, Button, Avatar, VStack } from "@chakra-ui/react";
+import { Flex, Input, Heading, Text, FormControl, Button, Avatar, VStack, CircularProgress } from "@chakra-ui/react";
 import Bottombar from './Bottombar';
 import { SelectedChatContext } from './SelectedChatContext';
 import { useAuth } from '../AuthProvider';
@@ -16,20 +16,23 @@ const Topbar = ({ chatTitle }) => (
 const Chat = () => {
   const { selectedChat, messages, setMessages } = useContext(SelectedChatContext);
   const { user } = useAuth();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     console.log("entered selectedChat", selectedChat.username);
     const fetchUserChat = async () => {
+      setIsLoading(true);
       const response = await fetch(`http://localhost:8080/messages/${user}/${selectedChat.username}`);
       const data = await response.json();
       console.log("data", data);
       setMessages(data.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp)));
-
+      setIsLoading(false);
     };
 
     if (user && selectedChat.username) {
       fetchUserChat();
     }
+
   }, [user, selectedChat]);
 
   const getMessages = () => messages.map(msg => (
@@ -58,7 +61,9 @@ const Chat = () => {
 
     <>
       <Flex id='chat-container' flex={1} direction="column" pt={4} mx={5} overflow="scroll" sx={{ scrollbarWidth: "none" }}>
-        {getMessages()}
+        
+        {isLoading && selectedChat?.username ? <CircularProgress alignSelf='center' isIndeterminate color='green.300' /> : getMessages()}
+
       </Flex>
 
       <Bottombar />

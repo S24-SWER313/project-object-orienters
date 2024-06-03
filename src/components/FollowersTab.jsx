@@ -29,9 +29,13 @@ function FollowersTab({ profile }) {
     const navigate = useNavigate();
     const toast = useToast();
     const [followingStatus, setFollowingStatus] = useState({});
-    const [isHovering, setIsHovering] = useState(false);
-    const handleMouseEnter = () => setIsHovering(true);
-    const handleMouseLeave = () => setIsHovering(false);
+    const [isHovering, setIsHovering] = useState({});
+    const handleMouseEnter = (username) => {
+        setIsHovering(prev => ({ ...prev, [username]: true }));
+    };
+    const handleMouseLeave = (username) => {
+        setIsHovering(prev => ({ ...prev, [username]: false }));
+    };
 
     const fetchFollower = async (followerUsername) => {
 
@@ -191,15 +195,15 @@ function FollowersTab({ profile }) {
                                     rounded={'full'}
                                     bg={'blue.400'}
                                     color={'white'}
-                                    onMouseEnter={handleMouseEnter}
-                                    onMouseLeave={handleMouseLeave}
+                                    onMouseEnter={() => handleMouseEnter(follower.username)}
+                                    onMouseLeave={() => handleMouseLeave(follower.username)}
                                     boxShadow={'0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'}
                                     _hover={{
                                         bg: followingStatus[follower.username] ? 'red' : 'blue.700'
                                     }}
                                     onClick={() => toggleFollower(follower)}
                                 >
-                                    {isHovering ? (followingStatus[follower.username] ? 'Unfollow' : 'Follow') : (followingStatus[follower.username] ? 'Following' : 'Follow')}
+                                    {isHovering[follower.username] ? (followingStatus[follower.username] ? 'Unfollow' : 'Follow') : (followingStatus[follower.username] ? 'Following' : 'Follow')}
                                 </Button>}
                                 {(user === profile.username) && <Menu isLazy>
                                     <MenuButton

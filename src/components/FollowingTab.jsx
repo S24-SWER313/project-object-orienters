@@ -34,9 +34,13 @@ function FollowingTab({ profile }) {
     const { user, token } = useAuth();
     const navigate = useNavigate();
     const toast = useToast();
-    const [isHovering, setIsHovering] = useState(false);
-    const handleMouseEnter = () => setIsHovering(true);
-    const handleMouseLeave = () => setIsHovering(false);
+    const [isHovering, setIsHovering] = useState({});
+    const handleMouseEnter = (username) => {
+        setIsHovering(prev => ({ ...prev, [username]: true }));
+    };
+    const handleMouseLeave = (username) => {
+        setIsHovering(prev => ({ ...prev, [username]: false }));
+    };
     const [followingStatus, setFollowingStatus] = useState({});
 
     const fetchIfFollowing = async (followingUsername) => {
@@ -163,15 +167,15 @@ function FollowingTab({ profile }) {
                                     rounded={'full'}
                                     bg={'blue.400'}
                                     color={'white'}
-                                    onMouseEnter={handleMouseEnter}
-                                    onMouseLeave={handleMouseLeave}
+                                    onMouseEnter={() => handleMouseEnter(followingUser.username)}
+                                    onMouseLeave={() => handleMouseLeave(followingUser.username)}
                                     boxShadow={'0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'}
                                     _hover={{
                                         bg: followingStatus[followingUser.username] ? 'red' : 'blue.700'
                                     }}
                                     onClick={() => toggleFollower(followingUser)}
                                 >
-                                    {isHovering ? (followingStatus[followingUser.username] ? 'Unfollow' : 'Follow') : (followingStatus[followingUser.username] ? 'Following' : 'Follow')}
+                                    {isHovering[followingUser.username] ? (followingStatus[followingUser.username] ? 'Unfollow' : 'Follow') : (followingStatus[followingUser.username] ? 'Following' : 'Follow')}
                                 </Button>}
                                 {(user === profile.username) && <Menu isLazy>
                                     <MenuButton
