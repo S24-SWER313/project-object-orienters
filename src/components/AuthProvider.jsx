@@ -34,8 +34,8 @@ const AuthProvider = ({ children }) => {
                 body: JSON.stringify({ username, password }),
             });
             const data = await response.json();
-            if (!response.ok) {
-               // throw new Error(data.errors || 'Failed to log in'); 
+            if (response.status !== 200) {
+                throw new Error(data.errors || 'An error occurred.');
             }
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", data.username);
@@ -49,20 +49,26 @@ const AuthProvider = ({ children }) => {
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
-                position: `top`
-              });
+                position: 'top'
+            });
             navigate("/home");
         } catch (error) {
-            console.error('Login Error:', error);
+            let errorMessage = 'An error occurred.';
+            if (error.message) {
+                errorMessage = error.message;
+            } else if (error.response && error.response.data && error.response.data.errors) {
+                errorMessage = error.response.data.errors;
+            }
             toast({
                 title: "Login Error",
-                description: error.message,
+                description: errorMessage,
                 status: "error",
                 duration: 5000,
                 isClosable: true,
-                position: `top`
+                position: 'top'
             });
         }
+
     };
 
     const oauthLoginAction = async ({ id, username, provider }) => {
@@ -77,7 +83,7 @@ const AuthProvider = ({ children }) => {
             });
 
             const data = await response.json();
-            if(data.token) {
+            if (data.token) {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', data.username);
                 localStorage.setItem('refreshToken', data.refreshToken);
@@ -90,7 +96,7 @@ const AuthProvider = ({ children }) => {
                     duration: 5000,
                     isClosable: true,
                     position: `top`
-                  });
+                });
                 navigate("/home");
             }
         } catch (error) {
@@ -107,7 +113,7 @@ const AuthProvider = ({ children }) => {
 
     };
 
-    const registerLoggedInOAuthUser = async ({username, jwt, refreshToken}) => {
+    const registerLoggedInOAuthUser = async ({ username, jwt, refreshToken }) => {
         localStorage.setItem('token', jwt);
         localStorage.setItem('user', username);
         localStorage.setItem('refreshToken', refreshToken);
@@ -120,7 +126,7 @@ const AuthProvider = ({ children }) => {
             duration: 5000,
             isClosable: true,
             position: `top`
-          });
+        });
         navigate("/home");
     }
 
@@ -146,7 +152,7 @@ const AuthProvider = ({ children }) => {
                 duration: 5000,
                 isClosable: true,
                 position: `top`
-              });
+            });
             navigate("/");
         } catch (error) {
             console.error('Logout Error:', error);
@@ -154,9 +160,9 @@ const AuthProvider = ({ children }) => {
     };
 
 
-    
+
     return (
-        <AuthContext.Provider value={{ token, user,registerLoggedInOAuthUser, oauthLoginAction, loginAction, logOut }}>
+        <AuthContext.Provider value={{ token, user, registerLoggedInOAuthUser, oauthLoginAction, loginAction, logOut }}>
             {children}
         </AuthContext.Provider>
     );

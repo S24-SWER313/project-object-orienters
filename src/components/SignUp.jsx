@@ -47,7 +47,7 @@ export default function SignUp() {
         )
         .then(({ status, data }) => {
           if (status != 200) {
-            // throw new Error(data.message || 'An error occurred.');
+             throw new Error(data.errors.error || 'An error occurred.');
           }
           toast({
             title: 'Account created.',

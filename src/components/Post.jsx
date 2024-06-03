@@ -8,7 +8,7 @@ import {
     ModalBody,
     ModalOverlay,
     ModalContent,
-    Divider,
+    Divider,Toast
 } from '@chakra-ui/react';
 
 import { BiChat, BiLike, BiShare } from 'react-icons/bi';
@@ -20,8 +20,7 @@ import './style.css'; // Import your custom CSS'
 import { ReactionBarSelector } from '@charkour/react-reactions';
 import Popup from 'reactjs-popup';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/default-highlight';
-// import { dark, docco, dracula, gruvboxDark, lightfair, solarizedDark, solarizedLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
-// import { Light } from 'react-syntax-highlighter';
+import { dark, docco, dracula, gruvboxDark, lightfair, solarizedDark, solarizedLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import { useAuth } from './AuthProvider';
 import ApiCalls from './ApiCalls';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -34,7 +33,6 @@ import AddSharedPost from './AddSharedPost';
 import Comments from './Comments/Comments';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import moment from 'moment';
-import { Toast } from '@chakra-ui/react/dist';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import EditPost from './EditPost';
 import DeletePost from './DeletePost';
@@ -184,7 +182,7 @@ const Post = forwardRef(({ post }, ref) => {
 
     return (
         <>
-            <Card ref={ref} key={post.contentID} w={[0.88, 0.9, 0.8]} maxW={550} m='2'>
+            <Card ref={ref} key={post.contentID}  m='2' w={'600px'}>
                 <CardHeader marginBottom='-6'>
                     <Flex spacing='4'>
                         <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
@@ -284,7 +282,7 @@ const Post = forwardRef(({ post }, ref) => {
                         <Box as="span" mr="2">{commentsCount}</Box> Comment
                     </Button>
                     <Button flex='1' variant='ghost' leftIcon={<BiShare />} onClick={onOpenY}>
-                        <Box as="span" mr="2">{sharesCount}</Box> Share
+                        Share
                     </Button>
                 </CardFooter>
             </Card>
@@ -370,3 +368,4 @@ const Post = forwardRef(({ post }, ref) => {
 
 
 export default Post;
+

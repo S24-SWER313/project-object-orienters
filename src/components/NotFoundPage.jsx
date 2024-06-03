@@ -25,7 +25,7 @@ export default function NotFoundPage() {
             fontSize={{ base: '3xl', sm: '4xl', lg: '6xl' }}>
             
             
-            <Text as={'span'} color={'red.400'}>
+            <Text as={'span'} color={'blue.400'}>
               Page Not Found!
             </Text>
             <br />
@@ -39,7 +39,7 @@ export default function NotFoundPage() {
                 position: 'absolute',
                 bottom: 1,
                 left: 0,
-                bg: 'red.400',
+                bg: 'blue.400',
                 zIndex: -1,
               }}>
               404 
@@ -58,8 +58,8 @@ export default function NotFoundPage() {
               fontWeight={'normal'}
               px={6}
               colorScheme={'red'}
-              bg={'red.400'}
-              _hover={{ bg: 'red.500' }}>
+              bg={'blue.400'}
+              _hover={{ bg: 'blue.600' }}>
               Home Page
             </Button>
           </Stack>

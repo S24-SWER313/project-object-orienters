@@ -14,15 +14,16 @@ import TrendPage from './components/Trend/TrendPage';
 import ChatApp from './components/Messages/ChatApp';
 import OAuthRedirect from './components/OAuthRedirect';
 import OAuthLogin from './components/OAuthLogin';
-import CodePage  from './components/CodePage';
+import CodePage from './components/CodePage';
 import NotFoundPage from './components/NotFoundPage';
+import ProfileSearchComponents from './components/ProfileSearchComponents';
+import CompaniesCard from './components/CompaniesCard';
 
 
 
 
 function App() {
     return (
-
 
         <Router>
             <AuthProvider>
@@ -44,7 +45,7 @@ function App() {
                         <Route path="/profiles/:profile" element={<MainLayout><ProfilePage /></MainLayout>} />
                         <Route path="/trends/:value" element={<MainLayout><TrendPage /></MainLayout>} />
                         <Route path="/code" element={<MainLayout><CodePage /></MainLayout>} />
-                        <Route path="/messages" element={<ChatApp/>} />
+                        <Route path="/messages/:profile" element={<ChatApp />} />
 
 
                         <Route path="*" element={<NotFoundPage />} />
@@ -54,7 +55,7 @@ function App() {
                 </Routes>
             </AuthProvider>
         </Router>
-     );
+    );
 }
 
 
