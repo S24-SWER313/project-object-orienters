@@ -8,7 +8,7 @@ import {
     ModalBody,
     ModalOverlay,
     ModalContent,
-    Divider,
+    Divider,Toast
 } from '@chakra-ui/react';
 
 import { BiChat, BiLike, BiShare } from 'react-icons/bi';
@@ -34,7 +34,6 @@ import AddSharedPost from './AddSharedPost';
 import Comments from './Comments/Comments';
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react';
 import moment from 'moment';
-import { Toast } from '@chakra-ui/react/dist';
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 import EditPost from './EditPost';
 import DeletePost from './DeletePost';
