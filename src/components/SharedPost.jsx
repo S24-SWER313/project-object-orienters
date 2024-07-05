@@ -40,7 +40,7 @@ const SharedPost = forwardRef(({ sharedPost }, ref) => {
 
   return (
     <>
-      <Card ref={ref} key={sharedPost.contentID}  m='5'>
+      <Card ref={ref} key={sharedPost.contentID}  mt={5} w={'100%'}>
         <CardHeader marginBottom='-6'>
           <Flex spacing='4'>
             <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
@@ -69,7 +69,8 @@ const SharedPost = forwardRef(({ sharedPost }, ref) => {
         </CardHeader>
         <CardBody >
           <Center>
-            <Post key={sharedPost.post.contentID} post={sharedPost.post} sharedPost={sharedPost}></Post>
+            <Box w={'100%'} textAlign={'left'}><Post key={sharedPost.post.contentID} post={sharedPost.post} sharedPost={sharedPost}></Post></Box>
+            
           </Center>
         </CardBody>
       </Card >

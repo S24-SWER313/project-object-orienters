@@ -112,8 +112,7 @@ export default function FriendCard({ inUser }) {
         <Center>
             <Box
                 h={'200px'}
-                maxW={'270px'}
-                w={'full'}
+                w={'90%'}
                 bg={useColorModeValue('white', 'gray.800')}
                 rounded={'lg'}
                 overflow={'hidden'}>
@@ -140,19 +139,22 @@ export default function FriendCard({ inUser }) {
 
                 <Box p={6}>
                     <Stack spacing={0} align={'center'} mb={1.5}>
-                        <Heading fontSize={'sm'} fontWeight={500} fontFamily={'body'}>
+                        <Heading fontSize={'sm'} fontWeight={500} fontFamily={'body'} mt={1}>
                             {inUser.name}
                         </Heading>
-                        <Text color={'gray.500'} fontSize={'xs'}>
+                        <Text color={'gray.500'} fontSize={'xs'} mt={2}>
                             {inUser.profession}
                         </Text>
-                    </Stack>
+                        <Box 
+                        mt={5}
+                        display={'flex'}
+                        flexDirection={'row'}
+                        gap={3}
+                        
 
-                    
-
-                    <Stack mt={6} direction={'row'} spacing={4} width="full" paddingLeft={8}>
-
-                        <Button
+                        >
+                        
+                            <Button
                             size={'sm'}
 
                             fontSize={'xs'}
@@ -181,7 +183,12 @@ export default function FriendCard({ inUser }) {
                         >
                             {isHovering ? (isFollowing ? 'Unfollow' : 'Follow') : (isFollowing ? 'Following' : 'Follow')}
                         </Button>
+                        </Box>
                     </Stack>
+
+                    
+
+                    
 
                 </Box>
             </Box>
