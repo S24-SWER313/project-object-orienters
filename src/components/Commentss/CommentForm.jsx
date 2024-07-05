@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Box,
@@ -6,21 +6,68 @@ import {
   Input,
   Stack,
   useColorModeValue,
-  VStack
+  VStack,useToast
 } from '@chakra-ui/react';
 import Comment from "../Commentss/Comment";
+import ApiCalls from '../ApiCalls';
+import { useAuth } from '../AuthProvider';
 
-export default function CommentForm() {
-  async function AddComment() {
-    // Example: POST to backend to add a comment
+export default function CommentForm({ post }) {
+  const [comments, setComments] = useState([]);
+  const [text, setText] = useState('');
+  const { user } = useAuth();
+  const toast = useToast();
+  async function getComments() {
+    try {
+      const response = await ApiCalls.get(post._links.comments.href);
+      const data = response.data;
+      setComments(data?._embedded?.commentList);
+    } catch (error) {
+      console.error("Failed to fetch comments:", error);
+    }
   }
+
+  async function addComment() {
+    try {
+      const formData = new FormData();
+      formData.append('text', text);
+      formData.append('commenter', user);
+      const response = await ApiCalls.post(post._links.comments.href, formData);
+      const data = response.data;
+      console.log("data from frontend" + data);
+      toast({
+        title: 'Comment Added Successfully!',
+        description: "Comment Added .",
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: `top`
+    });
+      
+    } catch (error) {
+      toast({
+        title: 'Error Occured.',
+        description: "Unable to add comment at this time.",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: `top`
+    });
+    }
+  }
+
+
+
+  // Fetch comments when the component mounts
+  useEffect(() => {
+    getComments();
+  }, [post]);
 
   return (
     <Flex
       h={'90vh'}
       align={'center'}
       justify={'center'}
-      bg={'blue.900'}
       p={'10px'}>
 
       <Box
@@ -32,39 +79,35 @@ export default function CommentForm() {
         p={6}
         my={12}>
 
-        {/* Scrollable area for comments */}
+     
         <VStack
           spacing={4}
-          overflowY="scroll" // Enables vertical scrolling
-          maxH="60vh" // Maximum height before scrolling
-          pr={2} // Right padding to avoid scrollbar overlay on content
+          overflowY="scroll" 
+          maxH="60vh"
+          pr={2} 
           w="full">
-          <Comment />
-          <Comment />
-          <Comment />
-          <Comment />
-          <Comment />
-          <Comment />
-          <Comment />
+          {comments.map((comment) => (
+            <Comment key={comment.contentID} comment={comment} />
+          ))}
         </VStack>
 
-        {/* Divider to visually separate comments from the form */}
+    
         <Box py={4}>
           <hr />
         </Box>
 
-        {/* Form for adding a new comment */}
+
         <Stack
           spacing={4}
           align={'flex-end'}
           direction={['row']}>
 
           <Input
-          w={'75%'}
+            w={'75%'}
             placeholder="Write a comment..."
             _placeholder={{ color: 'gray.500' }}
             type="text"
-            // onChange={e => setCommentText(e.target.value)}
+            onChange={e => setText(e.target.value)}
           />
 
           <Button
@@ -74,7 +117,8 @@ export default function CommentForm() {
             _hover={{
               bg: 'blue.500',
             }}
-            onClick={AddComment}>
+            onClick={()=> addComment()}
+          >
             Add
           </Button>
         </Stack>
