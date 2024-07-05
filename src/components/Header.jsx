@@ -33,7 +33,7 @@ function Header() {
 
 
     return (
-        <chakra.header bg={bg} w="full" px={{ base: 2, sm: 4 }} position="relative">
+        <chakra.header bg={bg} w="full" px={{ base: 2, sm: 4 }} position="fixed" mb={2} zIndex="10" top="0">
             <Flex alignItems="center" justifyContent="space-between" mx="auto">
                 <HStack display="flex" spacing={3} alignItems="center">
                     <chakra.a

@@ -41,9 +41,15 @@ function TrendCard() {
     }, [location]);
 
     return (
-        <Card mb={3} w={'280px'}>
+        <Card 
+        w={'100%'} 
+        boxShadow="lg"
+        rounded="lg"
+        textAlign={'left'}
+        >
             <CardHeader>
-                <Heading size='md'>Trends</Heading>
+                <Heading size='md'
+                >Trends</Heading>
             </CardHeader>
             <CardBody>
                 <Stack divider={<StackDivider />} spacing='3' fontSize={'lg'}>

@@ -110,13 +110,9 @@ export default function EditProfile() {
 
   return (
     <Flex
-      // minH={'90vh'}
-      h={'95vh'}
-      align={'center'}
       justify={'center'}
-      bg={'white'}
-      // w={'600px'}
-      p={"10px"}>
+      
+      >
       <Stack
         spacing={4}
         w={'full'}
@@ -125,7 +121,8 @@ export default function EditProfile() {
         rounded={'xl'}
         boxShadow={'lg'}
         p={6}
-        my={12}>
+        my={12}
+        >
         <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl' }}>
           {profileData?.username} Profile Update
         </Heading>

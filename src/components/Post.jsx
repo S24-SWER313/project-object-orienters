@@ -206,7 +206,7 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
 
     return (
         <>
-            <Card ref={ref} key={post.contentID}  m='2' w={'600px'}>
+            <Card ref={ref} key={post.contentID}  mt={5} w={'100%'}>
                 <CardHeader marginBottom='-6'>
                     <Flex spacing='4'>
                         <Flex flex='1' gap='4' alignItems='center' flexWrap='wrap'>
@@ -232,8 +232,9 @@ const Post = forwardRef(({ post, sharedPost }, ref) => {
                         </Menu>}
                     </Flex>
                 </CardHeader>
-                <CardBody>
+                <CardBody textAlign={'left'}>
                     <Markdown
+                    
                         remarkPlugins={[remarkGfm]}
                         className="markdown"
                         children={post.textData}

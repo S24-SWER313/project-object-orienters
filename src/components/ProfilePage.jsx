@@ -264,11 +264,12 @@ function ProfilePage() {
     return (
         <>
         
-            <Card mt={2} mb={3} w={'900px'}>
+        <Card w={'100%'} >
                 <CardHeader>
 
                     <Box
-                        w={'full'}
+                    textAlign={'left'}
+                        w={'100%'}
                         bg={useColorModeValue('white', 'gray.800')}
                         // boxShadow={'2xl'}
                         overflow={'hidden'}>
@@ -404,19 +405,20 @@ function ProfilePage() {
                     </Box>
                 </CardHeader>
                 <CardBody>
-                    <ProfilePosts postsURI={profileData?._links?.Posts?.href} />
+                   
                 </CardBody>
-
+ 
                 <CardFooter>
 
 
                 </CardFooter>
             </Card>
+            <ProfilePosts postsURI={profileData?._links?.Posts?.href} />
             <Modal isOpen={isOpen} onClose={onClose} isCentered>
                 <ModalOverlay />
-                <ModalContent maxW="50vw" mt={8}>
-                    <ModalCloseButton mr="-10px" mt="2px" />
-                    <ModalBody m="10px" mt={100}>
+                <ModalContent maxW="45vw" mt={6} h={'950px'}>
+                    <ModalCloseButton  />
+                    <ModalBody >
                         <EditProfile />
                     </ModalBody>
                 </ModalContent>

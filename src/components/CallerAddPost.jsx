@@ -52,13 +52,13 @@ function CallerAddPost() {
     return (
         <>
 
-            <Box display="flex" flexDirection="column" cursor="pointer"  m='2' onClick={handleOpen}>
-                <Card border={'1px'} height="190px" w={'600px'}>
+            <Box display="flex" flexDirection="column" cursor="pointer"  onClick={handleOpen} w={'100%'}>
+                <Card border={'1px'} height="190px" w={'100%'}>
 
                     <CardHeader>
                         <Flex alignItems="center" gap="4">
                             <Avatar name={profileData ? profileData.name : 'No Name'}
-                                src={profileData ? profileData.profilePic?.fileUrl : 'path/to/default/avatar.png'} size='md' />
+                                src={profileData ? profileData.profilePic?.fileUrl : ''} size='md' />
                             <Box>
                                 <Text fontWeight="bold" fontSize="md">{profileData ? profileData.name : 'No Name'}</Text>
                                 <Menu>
