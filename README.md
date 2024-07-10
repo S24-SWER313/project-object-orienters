@@ -41,25 +41,25 @@ This social media app is built using the Spring framework in an MVC architecture
 ### Configuration
 
 1. Connect to a MySQL database named `oop` with user `root` and no password.
-2. To access firebase database store used the following gmail account: `object.orienters@gmail.com` with password `WeAreOopers!` and acccess the [Firestore Console with this link](https://console.firebase.google.com/project/techspot-objectorienters/firestore/databases/-default-/data/~2FChatRooms~2FAlexOrange?view=panel-view)
-3. the default uri for messages is '/'
+2. the default uri for messages is '/'
 
 
 
 ### Steps
 1. Clone the repository.
     ```bash
-    git clone <repository_url>
-    cd <project_directory>
+    git clone https://github.com/S24-SWER313/project-object-orienters.git
+    cd project-object-orienters
     ```
 2. Navigate to the project directory.
 3. Run
 
 ## Roadmap
 
-This backend project is intended to be configured with a REACT-based frontend project in the next phase.
+This backend project is configured with a REACT-based frontend project that can be found [on this repo](https://github.com/SilverBullet70/Tech-Spot-Frontend.git)
 
 ## Credits & Contact
 
 Developed by Angela Salem, Husam Ramoni, and Yousef Al-Bandak for the third-year project at Bethlehem University.
-Contact: object.orienter@gmail.com
+
+Contact us: object.orienter@gmail.com
