@@ -5,6 +5,15 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.app
+    depends_on:
+      database-service:
+        condition: service_healthy
+    environment:
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD:
+      MYSQL_DATABASE: oop
+      MYSQL_HOST: database-service
     ports:
       - "8080:8080"
     networks:
@@ -20,6 +29,9 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_DATABASE: oop
 
+
+
+
     networks:
       - my-network
     healthcheck:
@@ -34,6 +46,7 @@ services:
           "root",
           "-p${MYSQL_ROOT_PASSWORD}"
         ]
+
       interval: 20s
       timeout: 10s
       retries: 5
@@ -43,6 +56,9 @@ services:
     image: phpmyadmin
     ports:
       - "80:80"
+    depends_on:
+      database-service:
+        condition: service_healthy
     environment:
       PMA_HOST: database-service
       MYSQL_ROOT_PASSWORD:
@@ -50,5 +66,6 @@ services:
       - my-network
 
 networks:
-   my-network:
+  my-network:
     driver: bridge
+

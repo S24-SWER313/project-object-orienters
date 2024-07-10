@@ -70,19 +70,19 @@ public class Profile extends UserBase {
     private List<Post> publishedPosts;
 
 
-    public Profile(User user, String name, String profession, String email, DataType profilePic, Gender gender,
-            String dob) {
-        this.owner = user;
-        this.setName(name);
-        this.profession = profession;
-        this.setEmail(email);
-        this.profilePic = profilePic;
-        this.gender = gender;
-        this.followers = new HashSet<>();
-        this.following = new HashSet<>();
-        this.dob = LocalDate.parse(dob);
-        this.setUsername(user.getUsername());
-    }
+//    public Profile(User user, String name, String profession, String email, DataType profilePic, Gender gender,
+//            String dob) {
+//        this.owner = user;
+//        this.setName(name);
+//        this.profession = profession;
+//        this.setEmail(email);
+//        this.profilePic = profilePic;
+//        this.gender = gender;
+//        this.followers = new HashSet<>();
+//        this.following = new HashSet<>();
+//        this.dob = LocalDate.parse(dob);
+//        this.setUsername(user.getUsername());
+//    }
 
     public String toString() {
         return "Username: " + getUsername() + " Name: " + getName() + " Profession: " + profession + " Email: "
