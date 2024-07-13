@@ -1,10 +1,7 @@
 package object_orienters.techspot.post;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import object_orienters.techspot.content.Content;
@@ -15,6 +12,7 @@ import object_orienters.techspot.profile.Profile;
 @Entity
 @Getter
 @Setter
+@Table(name = "sharedpost")
 public class SharedPost extends Content {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id")

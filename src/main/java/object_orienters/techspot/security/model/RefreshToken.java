@@ -9,10 +9,12 @@ import java.time.Instant;
 @Entity
 @Getter
 @Setter
+@Table(name = "refreshtoken")
 public class RefreshToken {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "refresh_seq_gen")
+    @SequenceGenerator(name = "refresh_seq_gen", sequenceName = "refreshtoken_seq", allocationSize = 1)
     private long id;
 
     @OneToOne

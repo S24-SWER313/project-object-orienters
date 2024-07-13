@@ -17,7 +17,8 @@ import java.sql.Timestamp;
 @Data
 public abstract class Content {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "content_seq_gen")
+    @SequenceGenerator(name = "content_seq_gen", sequenceName = "content_seq", allocationSize = 1)
     @Column(name = "content_id", updatable = false, nullable = false, insertable = false)
     @Getter
     private Long contentID;

@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   backend-service:
-    build:
-      context: .
-      dockerfile: Dockerfile.app
+    image: objectorienters/techspot_backend
     depends_on:
       database-service:
         condition: service_healthy
@@ -20,16 +18,12 @@ services:
       - my-network
 
   database-service:
-    build:
-      context: .
-      dockerfile: Dockerfile.sql
+    image: objectorienters/techspot_db
     ports:
       - "3306:3306"
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
       MYSQL_DATABASE: oop
-
-
 
 
     networks:
