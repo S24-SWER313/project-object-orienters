@@ -23,7 +23,7 @@ public class FirebaseConfig {
     public void initializeFirebase() throws IOException {
         logger.info("Initializing Firebase");
         FileInputStream serviceAccount =
-                new FileInputStream("src/main/resources/techspot-objectorienters-firebase-adminsdk-bqho2-f5981f1058.json");
+                new FileInputStream("techspot/src/main/resources/techspot-objectorienters-firebase-adminsdk-bqho2-f5981f1058.json");
 
 
         FirebaseOptions options = new FirebaseOptions.Builder()
