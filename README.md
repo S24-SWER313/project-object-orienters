@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+# TechSpot
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+TechSpot is a social media application hub designed for developers and tech-interested individuals.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Project Main Features](#project-main-features)
+- [Technologies Used](#technologies-used)
+- [Installation](#installation)
+- [Roadmap](#roadmap)
+- [Credits & Contact](#credits--contact)
 
-### `npm start`
+## Project Main Features
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Main Social Media Features
+- Following Users
+- Posting Pictures, Videos, and Audio Content
+- Commenting on Posts
+- Reacting to Posts and Comments
+- Sharing Posts
+- Tagging posts by Topic
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Added Functionality
+- One-to-One Chat Messaging Feature
+- Feed of Posts by Tag
+- Feed of Posts by Following Users 
+- Searching Posts by Tag
+- Searching Users by Name or Username
 
-### `npm test`
+## Technologies Used
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+This social media app is built using the Spring framework in an MVC architecture. It utilizes a Relational Database (MySQL) for storing user data and a NoSQL Real-Time Database (Firebase) for storing messages history. WebSocket technology is employed to provide real-time one-to-one chat functionality.
 
-### `npm run build`
+## Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Prerequisites
+- Java Development Kit (JDK) installed
+- Apache Maven installed
+- MySQL database server installed and running
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Configuration
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+1. Connect to a MySQL database named `oop` with user `root` and no password.
+2. the default uri for messages is '/'
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Steps
+1. Clone the repository.
+    ```bash
+    git clone https://github.com/S24-SWER313/project-object-orienters.git
+    cd project-object-orienters
+    ```
+2. Navigate to the project directory.
+3. Run
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Roadmap
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+This backend project is configured with a REACT-based frontend project that can be found [on this repo](https://github.com/SilverBullet70/Tech-Spot-Frontend.git)
 
-## Learn More
+## Credits & Contact
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Developed by Angela Salem, Husam Ramoni, and Yousef Al-Bandak for the third-year project at Bethlehem University.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Contact us: object.orienter@gmail.com
