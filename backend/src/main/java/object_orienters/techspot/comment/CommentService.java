@@ -36,13 +36,13 @@ public class CommentService {
     private final MediaDataUtilities mediaDataUtilities;
 
     public CommentService(CommentRepository commentRepository,
-                          ReactableContentRepository contentRepository,
-                          ProfileRepository profileRepository,
-                          DataTypeRepository dataTypeRepository,
-                          ReactionRepository reactionRepository,
-                          FileStorageService fileStorageService,
-                          ReactableContentRepository reactableContentRepository,
-                          MediaDataUtilities mediaDataUtilities) {
+            ReactableContentRepository contentRepository,
+            ProfileRepository profileRepository,
+            DataTypeRepository dataTypeRepository,
+            ReactionRepository reactionRepository,
+            FileStorageService fileStorageService,
+            ReactableContentRepository reactableContentRepository,
+            MediaDataUtilities mediaDataUtilities) {
         this.commentRepository = commentRepository;
         this.contentRepository = contentRepository;
         this.profileRepository = profileRepository;
@@ -62,7 +62,8 @@ public class CommentService {
         if (content.getPrivacy().equals(Privacy.PRIVATE)
                 && !content.getContentAuthor().getUsername().equals(username)) {
             throw new ContentNotFoundException(contentId);
-        } else if (content.getPrivacy().equals(Privacy.FRIENDS) && !content.getContentAuthor().getFollowers().contains(prof)) {
+        } else if (content.getPrivacy().equals(Privacy.FRIENDS)
+                && !content.getContentAuthor().getFollowers().contains(prof)) {
 
             throw new ContentNotFoundException(contentId);
         }
@@ -86,15 +87,16 @@ public class CommentService {
         return newComment;
     }
 
-
     public Comment getComment(Long commentId) throws ContentNotFoundException {
         return commentRepository.findByContentID(commentId)
                 .orElseThrow(() -> new ContentNotFoundException(commentId));
     }
 
-
     public Page<Comment> getComments(Long contentId, int pageNumber, int pageSize) throws ContentNotFoundException {
-        return commentRepository.findByCommentedOn(reactableContentRepository.findByContentID(contentId).orElseThrow(() -> new ContentNotFoundException(contentId)), PageRequest.of(pageNumber, pageSize, Sort.by("timestamp").descending()));
+        return commentRepository.findByCommentedOn(
+                reactableContentRepository.findByContentID(contentId)
+                        .orElseThrow(() -> new ContentNotFoundException(contentId)),
+                PageRequest.of(pageNumber, pageSize, Sort.by("timestamp").descending()));
 
     }
 
@@ -127,11 +129,10 @@ public class CommentService {
             commentRepository.delete(comment);
             profileRepository.save(prof);
         });
-        commentRepository.delete(commentRepository.findByContentID(commentId).get());
+        commentRepository.delete(com);
         contentRepository.save(content);
 
     }
-
 
     @Transactional
     public Comment updateComment(Long contentID, Long commentID, List<MultipartFile> files, String text)
@@ -152,5 +153,11 @@ public class CommentService {
         dataTypeRepository.saveAll(allMedia);
         return commentRepository.save(comment);
 
+    }
+
+    public boolean isCommentAuthor(String username, Long commentID) {
+        Comment comment = commentRepository.findByContentID(commentID).get();
+        Profile prof = comment.getContentAuthor();
+        return prof.getUsername().equals(username);
     }
 }
