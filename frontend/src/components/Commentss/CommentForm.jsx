@@ -6,28 +6,41 @@ import {
   Input,
   Stack,
   useColorModeValue,
-  VStack,useToast
+  VStack, useToast
 } from '@chakra-ui/react';
 import Comment from "../Commentss/Comment";
 import ApiCalls from '../ApiCalls';
 import { useAuth } from '../AuthProvider';
+import { faL } from '@fortawesome/free-solid-svg-icons';
 
 export default function CommentForm({ post }) {
   const [comments, setComments] = useState([]);
   const [text, setText] = useState('');
+  const [isEditMode, setEditMode] = useState(false);
+  const [editableComment, setEditableComment] = useState({});
   const { user } = useAuth();
   const toast = useToast();
   async function getComments() {
     try {
       const response = await ApiCalls.get(post._links.comments.href);
       const data = response.data;
-      setComments(data?._embedded?.commentList);
+      if (data?._embedded?.commentList != null) {
+        setComments(data?._embedded?.commentList);
+      }
     } catch (error) {
       console.error("Failed to fetch comments:", error);
     }
   }
 
+  function editMode(comment) {
+    setEditMode(true);
+    setEditableComment(comment);
+    setText(comment.textData);
+  }
+
   async function addComment() {
+    if (text == null || text == "")
+      return;
     try {
       const formData = new FormData();
       formData.append('text', text);
@@ -35,15 +48,17 @@ export default function CommentForm({ post }) {
       const response = await ApiCalls.post(post._links.comments.href, formData);
       const data = response.data;
       console.log("data from frontend" + data);
+      setComments([...comments, data]);
+      setText("");
       toast({
         title: 'Comment Added Successfully!',
-        description: "Comment Added .",
+        description: "Comment Added.",
         status: 'success',
         duration: 5000,
         isClosable: true,
         position: `top`
-    });
-      
+      });
+
     } catch (error) {
       toast({
         title: 'Error Occured.',
@@ -52,7 +67,69 @@ export default function CommentForm({ post }) {
         duration: 5000,
         isClosable: true,
         position: `top`
-    });
+      });
+    }
+  }
+
+  async function editComment(comment, newText) {
+    try {
+
+      const formData = new FormData();
+      formData.append('text', newText);
+      const response = await ApiCalls.put(comment._links?.self.href, formData);
+      const data = response.data;
+      const updatedComments = comments.filter(c => c.contentID !== comment.contentID);
+      setComments([...updatedComments, data]);
+      console.log("data from frontend" + data);
+      //setComments([...comments, data]);
+      setEditMode(false);
+      setText("");
+
+      toast({
+        title: 'Comment Edited Successfully!',
+        description: "Comment Edited.",
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: `top`
+      });
+
+    } catch (error) {
+      toast({
+        title: 'Error Occured.',
+        description: "Unable to add comment at this time.",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: `top`
+      });
+    }
+  }
+
+  async function DeleteComment(comment) {
+    try {
+      const response = await ApiCalls.delete(comment._links?.self.href);
+      const data = response.data;
+      const updatedComments = comments.filter(c => c.contentID !== comment.contentID);
+      setComments(updatedComments);
+      toast({
+        title: 'Comment Deleted Successfully!',
+        description: "Comment Deleted.",
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+        position: `top`
+      });
+
+    } catch (error) {
+      toast({
+        title: 'Error Occured.',
+        description: "Unable to delete comment at this time.",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+        position: `top`
+      });
     }
   }
 
@@ -79,19 +156,20 @@ export default function CommentForm({ post }) {
         p={6}
         my={12}>
 
-     
+
         <VStack
           spacing={4}
-          overflowY="scroll" 
+          overflowY="scroll"
           maxH="60vh"
-          pr={2} 
+          pr={2}
           w="full">
           {comments.map((comment) => (
-            <Comment key={comment.contentID} comment={comment} />
+            <Comment key={comment.contentID} comment={comment} deleteFunction={() => DeleteComment(comment)}
+              editMode={editMode} />
           ))}
         </VStack>
 
-    
+
         <Box py={4}>
           <hr />
         </Box>
@@ -108,6 +186,7 @@ export default function CommentForm({ post }) {
             _placeholder={{ color: 'gray.500' }}
             type="text"
             onChange={e => setText(e.target.value)}
+            value={text}
           />
 
           <Button
@@ -117,9 +196,9 @@ export default function CommentForm({ post }) {
             _hover={{
               bg: 'blue.500',
             }}
-            onClick={()=> addComment()}
+            onClick={() => isEditMode ? editComment(editableComment, text) : addComment()}
           >
-            Add
+            {isEditMode ? 'Edit' : 'Add'}
           </Button>
         </Stack>
       </Box>

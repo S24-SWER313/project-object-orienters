@@ -73,7 +73,7 @@ public class CommentController {
     }
 
     @GetMapping("/comments/{commentID}")
-    @PreAuthorize("@permissionService.canAccessComment(#contentID, authentication.principal.username)")
+    @PreAuthorize("@permissionService.canAccessPost(#contentID, authentication.principal.username)")
     public ResponseEntity<?> getComment(@PathVariable Long commentID, @PathVariable Long contentID) {
         try {
             logger.info(">>>>Retrieving Comment... @ " + getTimestamp() + "<<<<");
@@ -89,7 +89,7 @@ public class CommentController {
     }
 
     @PutMapping("/comments/{commentID}")
-    @PreAuthorize("@impleCommentService.isCommentAuthor(authentication.principal.username,#commentID)")
+    @PreAuthorize("@commentService.isCommentAuthor(authentication.principal.username,#commentID)")
     public ResponseEntity<?> updateComment(@PathVariable long contentID, @PathVariable Long commentID,
                                            @RequestParam(value = "files", required = false) List<MultipartFile> files,
                                            @RequestParam(value = "text", required = false) String text) throws IOException {
@@ -132,7 +132,7 @@ public class CommentController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> deleteComment(@PathVariable long contentID, @PathVariable Long commentID) {
         try {
-            logger.info(">>>>Comment Added. @ " + getTimestamp() + "<<<<");
+            logger.info(">>>>Deleting Comment... @ " + getTimestamp() + "<<<<");
             commentService.deleteComment(contentID, commentID);
             logger.info(">>>>Comment Deleted. @ " + getTimestamp() + "<<<<");
             return ResponseEntity.noContent().build();
